@@ -35,14 +35,18 @@ FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownik
   - Tryb "Emergency" - wyłącza obecne limity i blokady. Zaprojektowany w taki sposób żeby skutecznie zniechęcać użytkownika przed go nadużywaniem
 
 ## Panele / zakładki aplikacji 
+
 - Panel logowania
+- Menu
+- Ustawienia
+- Dodaj limit dla aplikacji
+- Dodaj blokowaną stronę
 
-![image](https://github.com/user-attachments/assets/a271c59d-e3f5-4c74-99b5-7300d4db32a4)
-
-...
+TODO
+zdjęcia i pozostałe
 
 ## Baza danych
-TODO
+TODO - wymyślić jakie dane będą zapisywane w Room DB/SQLite
 ###### Diagram ERD
 
 ###### Opis bazy danych
