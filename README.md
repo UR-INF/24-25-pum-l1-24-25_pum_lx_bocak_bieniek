@@ -27,7 +27,6 @@ FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownik
 - **Logowanie**:
     - Bezpieczny dostęp do aplikacji dzięki PIN'u/biometrii (odcisk palca, rozpoznawanie twarzy).
 
-
 - **Stastytyki użytkowania**:
     - Monitoruj czas spędzony na aplikacjach i stronach w formie dziennych raportów (funkcja opcjonalna).
 
@@ -47,6 +46,7 @@ zdjęcia i pozostałe
 
 ## Baza danych
 TODO - wymyślić jakie dane będą zapisywane w Room DB/SQLite
+
 ###### Diagram ERD
 
 ###### Opis bazy danych
