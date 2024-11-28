@@ -1,0 +1,1 @@
+This file will contain Adapters (Controllers) - files responsible changing UI/inputting data/fetching data from UI
