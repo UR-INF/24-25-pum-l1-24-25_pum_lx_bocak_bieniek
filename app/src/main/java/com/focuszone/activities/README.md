@@ -1,1 +1,0 @@
-This file will contain Activities (Views) - files responsible for printing UI

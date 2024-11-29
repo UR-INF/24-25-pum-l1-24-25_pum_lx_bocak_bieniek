@@ -1,0 +1,1 @@
+This file will contain Models for data and DB - files responsible modelling real world (classes, etc)

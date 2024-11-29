@@ -1,0 +1,1 @@
+This file will contain Activities (Views) and Fragments (Views dynamic components) - files responsible for printing UI

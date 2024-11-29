@@ -1,0 +1,1 @@
+This file will contain Adapters (Controllers) and other logic for app - files responsible changing UI/inputting data/fetching data from UI, logic, etc
