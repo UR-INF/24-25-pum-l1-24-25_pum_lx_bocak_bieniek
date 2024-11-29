@@ -1,0 +1,1 @@
+Fragments are parts of Main Activity. Each is new "view" in main container

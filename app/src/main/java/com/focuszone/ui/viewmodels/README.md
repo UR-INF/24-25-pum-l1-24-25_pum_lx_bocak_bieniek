@@ -1,0 +1,1 @@
+ViewModels manage data and logic per fragment
