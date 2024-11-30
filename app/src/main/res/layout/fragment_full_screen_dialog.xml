@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
-    android:theme="@style/ThemeOverlay.FocusZone.FullscreenContainer"
     tools:context=".ui.fragments.FullScreenDialog">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -17,7 +15,7 @@
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="@string/dummy_content"
-        android:textColor="?attr/fullscreenTextColor"
+        android:textColor="@color/black"
         android:textSize="50sp"
         android:textStyle="bold" />
 
@@ -30,7 +28,6 @@
 
         <LinearLayout
             android:id="@+id/fullscreen_content_controls"
-            style="@style/Widget.Theme.FocusZone.ButtonBar.Fullscreen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
@@ -43,7 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/dummy_button" />
+                android:text="Hello" />
 
         </LinearLayout>
     </FrameLayout>
