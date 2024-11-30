@@ -7,6 +7,14 @@ object Logger {
     // enable/disable
     var isLoggingEnabled: Boolean = true
 
+    // log certain value
+    fun logValue(tag: String, variableName: String, value: Any?) {
+        if (isLoggingEnabled) {
+            val message = "Variable [$variableName]: $value"
+            Log.d(tag, message)
+        }
+    }
+
     // DEBUG
     fun debug(tag: String, message: String) {
         if (isLoggingEnabled) {
