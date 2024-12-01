@@ -1,19 +1,17 @@
 package com.focuszone.domain
 
 // Class for authentication logic - PIN/Biometric
-object Authenticator {
+object Validator {
 
-
-    /* Validate pin from existing source
-    * input not is valid if...
+    /** Validate pin from existing source
+    * input is not valid if...
     * ... given input contains any character different than numbers
-    * ... given input is not equal to stored PIN
     * ... given input is longer than 4
     * ... given input is shorter than 4
     * ... given input is empty
     * ... given input is <= 0
     * */
-    fun validatePin(userInput: String, validPin: String): Boolean {
+    fun isPinValid(userInput: String): Boolean {
         // check if input is empty or contains characters different than numbers
         if (userInput.isEmpty() || !userInput.all { it.isDigit() }) {
             return false
@@ -24,7 +22,15 @@ object Authenticator {
             return false
         }
 
-        // check if input is valid
-        return userInput == validPin
+        return true
+    }
+
+    /** Compare PINs
+    *  input is not valid if...
+    *  ... does not complain with PIN validate function
+    *  ... is not same as stored PIN
+    * */
+    fun comparePins(firstPin: String, secondPin: String): Boolean {
+        return firstPin == secondPin && isPinValid(firstPin)
     }
 }
