@@ -40,35 +40,4 @@ class UserAuthManager(context: Context) {
         return storedPin != null && Validator.comparePins(inputPin, storedPin)
     }
 
-    /**
-     * Toggles biometric login functionality.
-     * @param enabled true to enable biometric login, false to disable.
-     */
-    fun toggleBiometricLogin(enabled: Boolean) {
-        preferencesManager.toggleBiometricEnabled(enabled)
-    }
-
-    /**
-     * Checks if biometric login is enabled.
-     * @return true if biometric login is enabled, false otherwise.
-     */
-    fun isBiometricLoginEnabled(): Boolean {
-        return preferencesManager.isBiometricEnabled()
-    }
-
-    /**
-     * Updates the custom motivational message for the user.
-     * @param message The custom message to save.
-     */
-    fun updateUserMessage(message: String) {
-        preferencesManager.saveUserMessage(message)
-    }
-
-    /**
-     * Retrieves the custom motivational message for the user.
-     * @return The saved custom message, or null if none exists.
-     */
-    fun getUserMessage(): String? {
-        return preferencesManager.getUserMessage()
-    }
 }
