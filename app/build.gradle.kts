@@ -62,4 +62,10 @@ dependencies {
     testImplementation("androidx.room:room-testing:$room_version")
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
+
+    // Biometric APIs
+    implementation("androidx.biometric:biometric:1.1.0")
+
+    // Crypto APIs
+    implementation("androidx.security:security-crypto:1.0.0")
 }
