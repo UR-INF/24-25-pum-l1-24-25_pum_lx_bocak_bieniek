@@ -68,4 +68,7 @@ dependencies {
 
     // Crypto APIs
     implementation("androidx.security:security-crypto:1.0.0")
+
+    // Json serializer
+    implementation("com.google.code.gson:gson:2.10")
 }
