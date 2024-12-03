@@ -1,11 +1,16 @@
 package com.focuszone.data.preferences
 
 import android.content.Context
+import com.focuszone.data.preferences.entities.BlockedSiteEntity
+import com.focuszone.data.preferences.entities.LimitedAppEntity
 import com.focuszone.util.Constants.SHARED_PREF_NAME
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 // Class for managing user preferences saved locally
 class PreferencesManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    private val gson = Gson() // JSON serializer
 
     // Keys for saved values
     companion object {
@@ -13,6 +18,8 @@ class PreferencesManager(context: Context) {
         private const val KEY_USER_PIN = "USER_PIN"
         private const val KEY_BIOMETRIC_ENABLED = "BIOMETRIC_ENABLED"
         private const val KEY_CUSTOM_MESSAGE = "CUSTOM_MESSAGE"
+        private const val KEY_LIMITED_APPS = "LIMITED_APPS"
+        private const val KEY_BLOCKED_SITES = "BLOCKED_SITES"
     }
 
     // PIN functions
@@ -46,4 +53,59 @@ class PreferencesManager(context: Context) {
     fun getUserMessage(): String? {
         return sharedPreferences.getString(KEY_CUSTOM_MESSAGE, null)
     }
+
+    // Limited Apps functions
+    fun addOrUpdateLimitedApp(app: LimitedAppEntity) {
+        val apps = getLimitedApps().toMutableList()
+        val existingAppIndex = apps.indexOfFirst { it.id == app.id }
+
+        if (existingAppIndex != -1) {
+            apps[existingAppIndex] = app
+        } else {
+            apps.add(app)
+        }
+
+        saveLimitedApps(apps)
+    }
+    fun removeLimitedApp(appId: String) {
+        val apps = getLimitedApps().filter { it.id != appId }
+        saveLimitedApps(apps)
+    }
+    fun getLimitedApps(): List<LimitedAppEntity> {
+        val json = sharedPreferences.getString(KEY_LIMITED_APPS, null) ?: return emptyList()
+        val type = object : TypeToken<List<LimitedAppEntity>>() {}.type
+        return gson.fromJson(json, type)
+    }
+    private fun saveLimitedApps(apps: List<LimitedAppEntity>) {
+        val json = gson.toJson(apps)
+        sharedPreferences.edit().putString(KEY_LIMITED_APPS, json).apply()
+    }
+
+    // Blocked sites functions
+    fun addOrUpdateBlockedSite(site: BlockedSiteEntity) {
+        val sites = getBlockedSites().toMutableList()
+        val existingSiteIndex = sites.indexOfFirst { it.url == site.url }
+
+        if (existingSiteIndex != -1) {
+            sites[existingSiteIndex] = site
+        } else {
+            sites.add(site)
+        }
+
+        saveBlockedSites(sites)
+    }
+    fun removeBlockedSite(url: String) {
+        val sites = getBlockedSites().filter { it.url != url }
+        saveBlockedSites(sites)
+    }
+    fun getBlockedSites(): List<BlockedSiteEntity> {
+        val json = sharedPreferences.getString(KEY_BLOCKED_SITES, null) ?: return emptyList()
+        val type = object : TypeToken<List<BlockedSiteEntity>>() {}.type
+        return gson.fromJson(json, type)
+    }
+    private fun saveBlockedSites(sites: List<BlockedSiteEntity>) {
+        val json = gson.toJson(sites)
+        sharedPreferences.edit().putString(KEY_BLOCKED_SITES, json).apply()
+    }
+
 }
