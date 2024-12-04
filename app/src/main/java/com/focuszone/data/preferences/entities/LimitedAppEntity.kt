@@ -5,7 +5,7 @@ data class LimitedAppEntity (
     val id: String,
     val isLimitSet: Boolean,
     val isSessionsSet: Boolean,
-    val limitMinutes: Number?,
-    val numberOfSessions: Number?,
-    val sessionMinutes: Number?
+    val limitMinutes: Int?,
+    val numberOfSessions: Int?,
+    val sessionMinutes: Int?
 )
