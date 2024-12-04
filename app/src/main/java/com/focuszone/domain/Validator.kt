@@ -1,5 +1,7 @@
 package com.focuszone.domain
 
+import com.focuszone.data.preferences.entities.LimitedAppEntity
+
 // Class for authentication logic - PIN/Biometric
 object Validator {
 
@@ -32,5 +34,26 @@ object Validator {
     * */
     fun comparePins(firstPin: String, secondPin: String): Boolean {
         return firstPin == secondPin && isPinValid(firstPin)
+    }
+
+    /** Validate LimitedAppEntity for consistency */
+    fun validateLimitedApp(app: LimitedAppEntity): Boolean {
+        if (app.isLimitSet) {
+            if (app.limitMinutes == null || app.limitMinutes.toInt() <= 0) {
+                return false
+            }
+        }
+
+        if (app.isSessionsSet) {
+            val numberOfSessions = app.numberOfSessions?.toInt()
+            val sessionMinutes = app.sessionMinutes?.toInt()
+            if (numberOfSessions == null || numberOfSessions <= 0 ||
+                sessionMinutes == null || sessionMinutes <= 0
+            ) {
+                return false
+            }
+        }
+
+        return true
     }
 }
