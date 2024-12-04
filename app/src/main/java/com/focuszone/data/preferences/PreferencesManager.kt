@@ -3,6 +3,7 @@ package com.focuszone.data.preferences
 import android.content.Context
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.LimitedAppEntity
+import com.focuszone.domain.Validator
 import com.focuszone.util.Constants.SHARED_PREF_NAME
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -55,7 +56,15 @@ class PreferencesManager(context: Context) {
     }
 
     // Limited Apps functions
-    fun addOrUpdateLimitedApp(app: LimitedAppEntity) {
+    fun addOrUpdateLimitedApp(app: LimitedAppEntity): Boolean {
+        if (!Validator.validateLimitedApp(app)) {
+            return false
+        }
+
+        if (!app.isLimitSet) {
+            return false
+        }
+
         val apps = getLimitedApps().toMutableList()
         val existingAppIndex = apps.indexOfFirst { it.id == app.id }
 
@@ -66,10 +75,18 @@ class PreferencesManager(context: Context) {
         }
 
         saveLimitedApps(apps)
+        return true
     }
-    fun removeLimitedApp(appId: String) {
+    fun removeLimitedApp(appId: String): Boolean {
+        val initialSize = getLimitedApps().size
         val apps = getLimitedApps().filter { it.id != appId }
-        saveLimitedApps(apps)
+
+        if (apps.size < initialSize) {
+            saveLimitedApps(apps)
+            return true
+        }
+
+        return false
     }
     fun getLimitedApps(): List<LimitedAppEntity> {
         val json = sharedPreferences.getString(KEY_LIMITED_APPS, null) ?: return emptyList()
@@ -107,5 +124,4 @@ class PreferencesManager(context: Context) {
         val json = gson.toJson(sites)
         sharedPreferences.edit().putString(KEY_BLOCKED_SITES, json).apply()
     }
-
 }
