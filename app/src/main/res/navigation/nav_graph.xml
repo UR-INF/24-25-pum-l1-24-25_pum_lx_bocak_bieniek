@@ -3,26 +3,128 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
-
+    app:startDestination="@id/welcomeFragment"> <!--TODO: change start destination to login -->
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.focuszone.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+        android:id="@+id/welcomeFragment"
+        android:name="com.focuszone.ui.fragments.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+    <action
+        android:id="@+id/bttnLogin"
+        app:destination="@id/homeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.focuszone.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/homeFragment"
+        android:name="com.focuszone.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <!--app related fragments -->
+    <fragment
+        android:id="@+id/blockedAppsFragment"
+        android:name="com.focuszone.ui.fragments.BlockedAppsFragment"
+        android:label="fragment_blocked_apps"
+        tools:layout="@layout/fragment_blocked_apps" >
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/editButtonApp"
+            app:destination="@id/editAppFragment" />
+        <action
+            android:id="@+id/bttnAddApp"
+            app:destination="@+id/addAppFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editAppFragment"
+        android:name="com.focuszone.ui.fragments.EditAppFragment"
+        android:label="Edit Application"
+        tools:layout="@layout/fragment_edit_app">
+        <argument
+            android:name="appName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAppFragment"
+        android:name="com.focuszone.ui.fragments.AddAppFragment"
+        android:label="Add Application"
+        tools:layout="@layout/fragment_add_app" >
+        <action
+            android:id="@+id/addButton"
+            app:destination="@id/blockedAppsFragment" />
+    </fragment>
+    <!--site related fragments-->
+    <fragment
+        android:id="@+id/blockedSitesFragment"
+        android:name="com.focuszone.ui.fragments.BlockedSitesFragment"
+        tools:layout="@layout/fragment_blocked_sites">
+        <action
+            android:id="@+id/editButtonSite"
+            app:destination="@id/editSiteFragment" />
+        <action
+            android:id="@+id/bttnAddSite"
+            app:destination="@+id/addSiteFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editSiteFragment"
+        android:name="com.focuszone.ui.fragments.EditSiteFragment"
+        android:label="Edit Site"
+        tools:layout="@layout/fragment_edit_site">
+        <argument
+            android:name="siteName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/addSiteFragment"
+        android:name="com.focuszone.ui.fragments.AddSiteFragment"
+        android:label="Add Site"
+        tools:layout="@layout/fragment_add_site" >
+        <action
+            android:id="@+id/addButton"
+            app:destination="@id/blockedSitesFragment" />
+    </fragment>
+    <!--setting related fragments-->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.focuszone.ui.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/bttnPreferences"
+            app:destination="@id/PreferencesFragment" />
+        <action
+            android:id="@+id/bttnAuthorization"
+            app:destination="@id/AuthorizationFragment" />
+        <action
+            android:id="@+id/bttnDisableAllBlocks"
+            app:destination="@id/DisableBlocksFragment" />
+        <action
+            android:id="@+id/bttnCustomMessage"
+            app:destination="@id/CustomMessageFragment" />
+        <action
+            android:id="@+id/bttnAbout"
+            app:destination="@id/AboutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/PreferencesFragment"
+        android:name="com.focuszone.ui.fragments.PreferencesFragment"
+        android:label="fragment_preferences"
+        tools:layout="@layout/fragment_preferences" />
+    <fragment
+        android:id="@+id/AuthorizationFragment"
+        android:name="com.focuszone.ui.fragments.AuthorizationFragment"
+        android:label="fragment_authorization"
+        tools:layout="@layout/fragment_authorization" />
+    <fragment
+        android:id="@+id/DisableBlocksFragment"
+        android:name="com.focuszone.ui.fragments.DisableBlocksFragment"
+        android:label="fragment_disable_blocks"
+        tools:layout="@layout/fragment_disable_blocks" />
+    <fragment
+        android:id="@+id/CustomMessageFragment"
+        android:name="com.focuszone.ui.fragments.CustomMessageFragment"
+        android:label="fragment_custom_message"
+        tools:layout="@layout/fragment_custom_message" />
+    <fragment
+        android:id="@+id/AboutFragment"
+        android:name="com.focuszone.ui.fragments.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>
