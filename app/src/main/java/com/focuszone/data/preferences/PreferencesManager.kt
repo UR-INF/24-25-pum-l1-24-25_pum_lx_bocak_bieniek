@@ -99,7 +99,11 @@ class PreferencesManager(context: Context) {
     }
 
     // Blocked sites functions
-    fun addOrUpdateBlockedSite(site: BlockedSiteEntity) {
+    fun addOrUpdateBlockedSite(site: BlockedSiteEntity): Boolean {
+        if (!Validator.isBlockedSiteValid(site)) {
+            return false
+        }
+
         val sites = getBlockedSites().toMutableList()
         val existingSiteIndex = sites.indexOfFirst { it.url == site.url }
 
@@ -110,6 +114,8 @@ class PreferencesManager(context: Context) {
         }
 
         saveBlockedSites(sites)
+
+        return true
     }
     fun removeBlockedSite(url: String) {
         val sites = getBlockedSites().filter { it.url != url }

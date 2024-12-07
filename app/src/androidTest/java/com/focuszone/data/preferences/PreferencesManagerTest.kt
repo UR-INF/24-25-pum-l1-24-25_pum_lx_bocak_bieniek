@@ -3,6 +3,7 @@ package com.focuszone.data.preferences
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.LimitedAppEntity
 import com.focuszone.util.Constants.DEFAULT_MESSAGE
 import com.focuszone.util.Constants.SHARED_PREF_NAME
@@ -26,6 +27,7 @@ class PreferencesManagerTest {
         sharedPreferences.edit().clear().apply()
     }
 
+    // Registration tests
     @Test
     fun `initial app return registration false`() {
         val registrationState = preferencesManager.isRegistrationComplete()
@@ -42,6 +44,7 @@ class PreferencesManagerTest {
         assertTrue(registrationState)
     }
 
+    // PIN options
     @Test
     fun `initial app PIN returns null`() {
         val pin = preferencesManager.getPin()
@@ -60,6 +63,7 @@ class PreferencesManagerTest {
         assertSame(pin, actualPin)
     }
 
+    // Biometrics options
     @Test
     fun `initial app biometrics returns false`() {
         val biometricsEnabled = preferencesManager.isBiometricEnabled()
@@ -76,6 +80,7 @@ class PreferencesManagerTest {
         assertSame(biometricsEnabled, true)
     }
 
+    // User message
     @Test
     fun `initial user message returns null`() {
         val userMessage = preferencesManager.getUserMessage()
@@ -94,7 +99,7 @@ class PreferencesManagerTest {
         assertSame(currentMessage, newMessage)
     }
 
-
+    // App limits
     @Test
     fun `get limited apps returns empty list when no apps saved`() {
         val apps = preferencesManager.getLimitedApps()
@@ -456,16 +461,88 @@ class PreferencesManagerTest {
         assertEquals("app2", remainingApps[0].id)
     }
 
-
+    // Blocked site options
     @Test
-    fun addOrUpdateBlockedSite() {
+    fun `adding a new blocked site saves it correctly`() {
+        val site = BlockedSiteEntity(url = "https://example.com")
+
+        preferencesManager.addOrUpdateBlockedSite(site)
+
+        val sites = preferencesManager.getBlockedSites()
+        assertTrue("Blocked sites should contain the newly added site", sites.contains(site))
     }
 
     @Test
-    fun removeBlockedSite() {
+    fun `adding an existing blocked site updates it correctly`() {
+        val initialSite = BlockedSiteEntity(url = "https://example.com")
+        val updatedSite = BlockedSiteEntity(url = "https://example.com") // You can add more fields for testing updates
+
+        preferencesManager.addOrUpdateBlockedSite(initialSite)
+        preferencesManager.addOrUpdateBlockedSite(updatedSite)
+
+        val sites = preferencesManager.getBlockedSites()
+        assertEquals("Blocked site should be updated", updatedSite, sites.find { it.url == updatedSite.url })
     }
 
     @Test
-    fun getBlockedSites() {
+    fun `removing a blocked site deletes it correctly`() {
+        val site1 = BlockedSiteEntity(url = "https://example1.com")
+        val site2 = BlockedSiteEntity(url = "https://example2.com")
+
+        preferencesManager.addOrUpdateBlockedSite(site1)
+        preferencesManager.addOrUpdateBlockedSite(site2)
+        preferencesManager.removeBlockedSite("https://example1.com")
+
+        val sites = preferencesManager.getBlockedSites()
+        assertFalse("Blocked sites should not contain the removed site", sites.any { it.url == "https://example1.com" })
+        assertTrue("Blocked sites should still contain the remaining site", sites.contains(site2))
     }
+
+    @Test
+    fun `getting blocked sites returns all saved sites`() {
+        val site1 = BlockedSiteEntity(url = "https://example1.com")
+        val site2 = BlockedSiteEntity(url = "https://example2.com")
+
+        preferencesManager.addOrUpdateBlockedSite(site1)
+        preferencesManager.addOrUpdateBlockedSite(site2)
+
+        val sites = preferencesManager.getBlockedSites()
+        assertEquals("There should be two blocked sites", 2, sites.size)
+        assertTrue("Blocked sites should contain site1", sites.contains(site1))
+        assertTrue("Blocked sites should contain site2", sites.contains(site2))
+    }
+
+    @Test
+    fun `getting blocked sites returns empty list if none exist`() {
+        val sites = preferencesManager.getBlockedSites()
+
+        assertTrue("Blocked sites should be empty", sites.isEmpty())
+    }
+
+    @Test
+    fun `adding a site with empty URL does not save it`() {
+        val site = BlockedSiteEntity(url = "")
+
+        preferencesManager.addOrUpdateBlockedSite(site)
+
+        val sites = preferencesManager.getBlockedSites()
+        assertFalse("Blocked sites should not contain a site with an empty URL", sites.contains(site))
+    }
+
+    @Test
+    fun `removing a site that does not exist does not affect other sites`() {
+        val site1 = BlockedSiteEntity(url = "https://example1.com")
+        val site2 = BlockedSiteEntity(url = "https://example2.com")
+
+        preferencesManager.addOrUpdateBlockedSite(site1)
+        preferencesManager.addOrUpdateBlockedSite(site2)
+
+        preferencesManager.removeBlockedSite("https://nonexistent.com")
+
+        val sites = preferencesManager.getBlockedSites()
+        assertEquals("Number of blocked sites should not change", 2, sites.size)
+        assertTrue("Blocked sites should still contain site1", sites.contains(site1))
+        assertTrue("Blocked sites should still contain site2", sites.contains(site2))
+    }
+
 }

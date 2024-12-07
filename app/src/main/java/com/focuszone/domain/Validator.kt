@@ -1,5 +1,6 @@
 package com.focuszone.domain
 
+import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.LimitedAppEntity
 
 // Class for authentication logic - PIN/Biometric
@@ -45,8 +46,8 @@ object Validator {
         }
 
         if (app.isSessionsSet) {
-            val numberOfSessions = app.numberOfSessions?.toInt()
-            val sessionMinutes = app.sessionMinutes?.toInt()
+            val numberOfSessions = app.numberOfSessions
+            val sessionMinutes = app.sessionMinutes
             if (numberOfSessions == null || numberOfSessions <= 0 ||
                 sessionMinutes == null || sessionMinutes <= 0
             ) {
@@ -55,5 +56,25 @@ object Validator {
         }
 
         return true
+    }
+
+    /**
+     * Validates a URL in a BlockedSiteEntity.
+     * The URL is invalid if:
+     * - It is empty.
+     * - It does not match the pattern of a valid URL.
+     *
+     * @param site The BlockedSiteEntity to validate.
+     * @return true if the URL is valid, false otherwise.
+     */
+    fun isBlockedSiteValid(site: BlockedSiteEntity): Boolean {
+        // Check if URL is empty
+        if (site.url.isBlank()) {
+            return false
+        }
+
+        // Basic regex for validating URLs
+        val urlPattern = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$".toRegex()
+        return site.url.matches(urlPattern)
     }
 }
