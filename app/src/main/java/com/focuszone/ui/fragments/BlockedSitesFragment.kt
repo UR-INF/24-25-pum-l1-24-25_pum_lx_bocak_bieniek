@@ -1,5 +1,6 @@
 package com.focuszone.ui.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ import com.focuszone.ui.adapters.BlockedSitesAdapter
 class BlockedSitesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var blockedSitesAdapter: BlockedSitesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,10 +27,9 @@ class BlockedSitesFragment : Fragment() {
         recyclerView = view.findViewById(R.id.blockedSitesRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-
-        // Sample data
+        // Sample data to view in app
         // TODO: add blocked sites from device
-        val blockedSites = listOf(
+        val blockedSites = mutableListOf(
             BlockedSite("example.com", "1h"),
             BlockedSite("another-site.com", "2h"),
             BlockedSite("blocked-site.com", "30m")
@@ -38,13 +37,34 @@ class BlockedSitesFragment : Fragment() {
 
         val navController = findNavController()
 
-        recyclerView.adapter = BlockedSitesAdapter(blockedSites) { app ->
-            val bundle = Bundle().apply {
-                putString("siteName", app.name)
+        recyclerView.adapter = BlockedSitesAdapter(
+            sites = blockedSites,
+            onEditClick = { site ->
+                val bundle = Bundle().apply {
+                    putString("siteName", site.name)
+                }
+                navController.navigate(R.id.editSiteFragment, bundle)
+            },
+            onDeleteClick = { site ->
+                showDeleteConfirmationDialog(site, blockedSites)
             }
-            navController.navigate(R.id.editSiteFragment, bundle)
-        }
+        )
+
         return view
+    }
+
+    private fun showDeleteConfirmationDialog(site: BlockedSite, sites: MutableList<BlockedSite>) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirmation of deletion")
+            .setMessage("Are you sure you want to remove the site restriction ${site.name}?")
+            .setPositiveButton("Yes") { _, _ ->
+//                sites.remove(site)
+//                recyclerView.adapter?.notifyDataSetChanged()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

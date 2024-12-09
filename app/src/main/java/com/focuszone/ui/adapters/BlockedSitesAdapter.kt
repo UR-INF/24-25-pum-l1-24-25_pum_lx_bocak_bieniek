@@ -10,8 +10,9 @@ import com.focuszone.R
 import com.focuszone.domain.BlockedSite
 
 class BlockedSitesAdapter(
-    private val blockedSites: List<BlockedSite>,
-    private val onEditClick: (BlockedSite) -> Unit
+    private val sites: MutableList<BlockedSite>,
+    private val onEditClick: (BlockedSite) -> Unit,
+    private val onDeleteClick: (BlockedSite) -> Unit
 ) : RecyclerView.Adapter<BlockedSitesAdapter.BlockedSiteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockedSiteViewHolder {
@@ -21,22 +22,25 @@ class BlockedSitesAdapter(
     }
 
     override fun onBindViewHolder(holder: BlockedSiteViewHolder, position: Int) {
-        val blockedSite = blockedSites[position]
-        holder.bind(blockedSite)
-        holder.editButton.setOnClickListener { onEditClick(blockedSite) }
+        val site = sites[position]
+        holder.bind(site)
+
+        holder.editButton.setOnClickListener { onEditClick(site) }
+
+        holder.deleteButton.setOnClickListener { onDeleteClick(site) }
     }
 
-    override fun getItemCount() = blockedSites.size
+    override fun getItemCount(): Int = sites.size
 
-    inner class BlockedSiteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val siteName: TextView = itemView.findViewById(R.id.siteName)
-        private val siteLimit: TextView = itemView.findViewById(R.id.siteLimit)
-        val editButton: Button = itemView.findViewById(R.id.editButtonSite)
+    class BlockedSiteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val siteName: TextView = view.findViewById(R.id.siteName)
+        private val siteLimit: TextView = view.findViewById(R.id.siteLimit)
+        val editButton: Button = view.findViewById(R.id.editButtonSite)
+        val deleteButton: Button = view.findViewById(R.id.deleteButtonApp)
 
-        fun bind(blockedSite: BlockedSite) {
-            siteName.text = blockedSite.name
-            siteLimit.text = "Limit: ${blockedSite.limit}"
+        fun bind(site: BlockedSite) {
+            siteName.text = site.name
+            siteLimit.text = "Limit: ${site.limit}"
         }
     }
 }
-

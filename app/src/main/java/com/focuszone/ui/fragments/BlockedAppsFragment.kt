@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +29,7 @@ class BlockedAppsFragment : Fragment() {
 
         // Sample data to view in app
         // TODO: add blocked apps from device
-        val blockedApps = listOf(
+        val blockedApps = mutableListOf(
             BlockedApp("Facebook", R.drawable.baseline_block, "1h 30min"),
             BlockedApp("Instagram", R.drawable.baseline_block, "1h 30min"),
             BlockedApp("Twitter", R.drawable.baseline_block, "1h 30min"),
@@ -37,14 +38,34 @@ class BlockedAppsFragment : Fragment() {
 
         val navController = findNavController()
 
-        recyclerView.adapter = BlockedAppsAdapter(blockedApps) { app ->
-            val bundle = Bundle().apply {
-                putString("appName", app.name)
+        recyclerView.adapter = BlockedAppsAdapter(
+            apps = blockedApps,
+            onEditClick = { app ->
+                val bundle = Bundle().apply {
+                    putString("appName", app.name)
+                }
+                navController.navigate(R.id.editAppFragment, bundle)
+            },
+            onDeleteClick = { app ->
+                showDeleteConfirmationDialog(app, blockedApps)
             }
-            navController.navigate(R.id.editAppFragment, bundle)
-        }
+        )
 
         return view
+    }
+
+    private fun showDeleteConfirmationDialog(app: BlockedApp, apps: MutableList<BlockedApp>) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Confirmation of deletion")
+            .setMessage("Are you sure you want to remove the application restriction ${app.name}?")
+            .setPositiveButton("Yes") { _, _ ->
+                //apps.remove(app)
+                //recyclerView.adapter?.notifyDataSetChanged()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
