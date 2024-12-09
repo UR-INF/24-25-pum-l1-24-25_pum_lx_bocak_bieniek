@@ -43,4 +43,12 @@ class SiteManager(context: Context) {
     fun getAllBlockedSites(): List<BlockedSiteEntity> {
         return preferencesManager.getBlockedSites()
     }
+
+    /**
+     * Retrieves site url of given blocked sites.
+     * @return A url String.
+     */
+    fun getSiteUrl(site: BlockedSiteEntity): String {
+        return site.url
+    }
 }
