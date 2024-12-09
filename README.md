@@ -1,4 +1,4 @@
-Programowanie urządzeń mobilnych laboratorium L_1_ 
+Programowanie urządzeń mobilnych laboratorium L_1
 
 # Dokumentacja projetu: Aplikacja FocusZone
 
@@ -14,7 +14,7 @@ FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownik
 ## Zakres projektu opis funkcjonalności:
 
 - **Blokowanie aplikacji**:
-    - Ustawianie dziennego limitu czasu lub limit dla pojedynczej sesji i ich ilości dla wybranych aplikacji.
+    - Ustawianie dziennego limitu czasu i ich ilości dla wybranych aplikacji.
     - Blokada aplikacji po przekroczeniu ustawionego limitu.
 
 - **Blokowanie stron internetowych**:
@@ -35,32 +35,31 @@ FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownik
 
 ## Panele / zakładki aplikacji 
 
+- Panel rejestracji
 - Panel logowania
-- Menu
+- Ekran główny
 - Ustawienia
-- Dodaj limit dla aplikacji
-- Dodaj blokowaną stronę
+- Dodaj/Edytuj limit dla aplikacji
+- Dodaj/Edytuj blokowaną stronę
 
 TODO
 zdjęcia i pozostałe
 
 ## Baza danych
-TODO - wymyślić jakie dane będą zapisywane w Room DB/SQLite
 
-###### Diagram ERD
+Aplikacja nie posiada bazy danych w rozumieniu relacyjnym.
 
-###### Opis bazy danych
+Wszystkie dane zapisywane są w `sharedPreferences` pod odpowiednimi kluczami. Nie wszysktie potrzebują pełnych operacji CRUD.
+
+Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 
 ## Wykorzystane uprawnienia aplikacji do:
 
-- Usage Stats (PACKAGE_USAGE_STATS)
-- Accessibility Service
-- System Alert Window (SYSTEM_ALERT_WINDOW)
-- Internet (INTERNET) (opcjonalnie)
-- Biometric Authentication (USE_BIOMETRIC)
-- Write External Storage (WRITE_EXTERNAL_STORAGE) (opcjonalnie)
+- Usage Stats (PACKAGE_USAGE_STATS) - sprawdzanie ile użytkownik korzysta z danych aplikacji
+- Accessibility Service/VPN service - blokowanie ruchu sieciowego do wybranych stron
+- System Alert Window (SYSTEM_ALERT_WINDOW) - alert całoekranowy
+- Biometric Authentication (USE_BIOMETRIC) (opcjonalne)
 - Access Network State (ACCESS_NETWORK_STATE)
-- Alert systemowy (SYSTEM_ALERT_WINDOW)
 
 ## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
 
