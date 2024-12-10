@@ -62,7 +62,7 @@ object Validator {
      * Validates a URL in a BlockedSiteEntity.
      * The URL is invalid if:
      * - It is empty.
-     * - It does not match the pattern of a valid URL.
+     * - It does not match the pattern of a valid URL (http://www.example.com).
      *
      * @param site The BlockedSiteEntity to validate.
      * @return true if the URL is valid, false otherwise.
@@ -73,15 +73,10 @@ object Validator {
             return false
         }
 
-        // Add default https:// if no scheme is provided
-        var url = site.url.trim()
-
-        if (!url.contains("://")) {
-            url = "https://$url"
-        }
+        val url = site.url.trim()
 
         // Regex to match URLs starting with http:// or https://
-        val urlPattern = "^(http|https)://.*.*$".toRegex()
+        val urlPattern = "^(http|https)://www\\.[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}$".toRegex()
         return url.matches(urlPattern)
     }
 }
