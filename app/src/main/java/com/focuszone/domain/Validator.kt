@@ -1,7 +1,7 @@
 package com.focuszone.domain
 
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
-import com.focuszone.data.preferences.entities.LimitedAppEntity
+import com.focuszone.data.preferences.entities.BlockedApp
 
 // Class for authentication logic - PIN/Biometric
 object Validator {
@@ -37,8 +37,8 @@ object Validator {
         return firstPin == secondPin && isPinValid(firstPin)
     }
 
-    /** Validate LimitedAppEntity for consistency */
-    fun validateLimitedApp(app: LimitedAppEntity): Boolean {
+    /** Validate BlockedApp for consistency */
+    fun validateLimitedApp(app: BlockedApp): Boolean {
         if (app.isLimitSet) {
             if (app.limitMinutes == null || app.limitMinutes.toInt() <= 0) {
                 return false

@@ -2,7 +2,7 @@ package com.focuszone.domain
 
 import android.content.Context
 import com.focuszone.data.preferences.PreferencesManager
-import com.focuszone.data.preferences.entities.LimitedAppEntity
+import com.focuszone.data.preferences.entities.BlockedApp
 
 class AppManager(context: Context) {
 
@@ -13,7 +13,7 @@ class AppManager(context: Context) {
      * @param app The app to add or update.
      * @return true if the operation was successful.
      */
-    fun addOrUpdateLimitedApp(app: LimitedAppEntity): Boolean {
+    fun addOrUpdateLimitedApp(app: BlockedApp): Boolean {
         return try {
             preferencesManager.addOrUpdateLimitedApp(app)
             true
@@ -38,18 +38,18 @@ class AppManager(context: Context) {
 
     /**
      * Retrieves a list of all limited apps.
-     * @return A list of `LimitedAppEntity` objects.
+     * @return A list of `BlockedApp` objects.
      */
-    fun getAllLimitedApps(): List<LimitedAppEntity> {
+    fun getAllLimitedApps(): List<BlockedApp> {
         return preferencesManager.getLimitedApps()
     }
 
     /**
      * Retrieves a specific app by its ID (package name).
      * @param appId The ID of the app to retrieve.
-     * @return The corresponding `LimitedAppEntity`, or null if not found.
+     * @return The corresponding `BlockedApp`, or null if not found.
      */
-    fun getLimitedAppById(appId: String): LimitedAppEntity? {
+    fun getLimitedAppById(appId: String): BlockedApp? {
         return preferencesManager.getLimitedApps().find { it.id == appId }
     }
 }

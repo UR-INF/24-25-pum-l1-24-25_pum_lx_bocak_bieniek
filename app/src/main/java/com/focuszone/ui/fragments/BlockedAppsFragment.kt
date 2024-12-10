@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
-import com.focuszone.domain.BlockedApp
+import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.ui.adapters.BlockedAppsAdapter
 
 class BlockedAppsFragment : Fragment() {
@@ -28,10 +28,10 @@ class BlockedAppsFragment : Fragment() {
         // Sample data to view in app
         // TODO: add blocked apps from device
         val blockedApps = mutableListOf(
-            BlockedApp("Facebook", R.drawable.baseline_block, "1h 30min"),
-            BlockedApp("Instagram", R.drawable.baseline_block, "1h 30min"),
-            BlockedApp("Twitter", R.drawable.baseline_block, "1h 30min"),
-            BlockedApp("TikTok", R.drawable.baseline_block, "1h 30min")
+            BlockedApp( "Facebook",  true, false, 90, null, null),
+            BlockedApp( "Instagram",  true, false, 90, null, null),
+            BlockedApp( "Twitter",  true, false, 90, null, null),
+            BlockedApp( "TikTok",  true, false, 90, null, null)
         )
 
         val navController = findNavController()
@@ -40,7 +40,7 @@ class BlockedAppsFragment : Fragment() {
             apps = blockedApps,
             onEditClick = { app ->
                 val bundle = Bundle().apply {
-                    putString("appName", app.name)
+                    putString("appName", app.id)
                 }
                 navController.navigate(R.id.editAppFragment, bundle)
             }

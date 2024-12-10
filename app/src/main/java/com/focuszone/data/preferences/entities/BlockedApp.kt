@@ -1,7 +1,7 @@
 package com.focuszone.data.preferences.entities
 
 //Represents app with set time limit
-data class LimitedAppEntity (
+data class BlockedApp(
     val id: String,
     val isLimitSet: Boolean,
     val isSessionsSet: Boolean,

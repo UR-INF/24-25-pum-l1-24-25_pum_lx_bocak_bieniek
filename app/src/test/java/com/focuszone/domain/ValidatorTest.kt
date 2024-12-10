@@ -1,7 +1,7 @@
 package com.focuszone.domain
 
 
-import com.focuszone.data.preferences.entities.LimitedAppEntity
+import com.focuszone.data.preferences.entities.BlockedApp
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -85,10 +85,10 @@ class ValidatorTest {
         assertThat(result).isTrue()
     }
 
-    // Test LimitedAppEntity validation
+    // Test BlockedApp validation
     @Test
     fun `validate app with valid limit and no sessions`() {
-        val validApp = LimitedAppEntity(
+        val validApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -102,7 +102,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with zero limit minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 0,
@@ -116,7 +116,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with null limit minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = null,
@@ -130,7 +130,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with valid sessions`() {
-        val validApp = LimitedAppEntity(
+        val validApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -144,7 +144,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with zero number of sessions fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -158,7 +158,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with null number of sessions fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -172,7 +172,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with zero session minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -186,7 +186,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with null session minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -200,7 +200,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with no limits set`() {
-        val validApp = LimitedAppEntity(
+        val validApp = BlockedApp(
             id = "app1",
             isLimitSet = false,
             limitMinutes = null,
@@ -214,7 +214,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with negative limit minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = -1,
@@ -228,7 +228,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with negative number of sessions fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -242,7 +242,7 @@ class ValidatorTest {
 
     @Test
     fun `validate app with negative session minutes fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,

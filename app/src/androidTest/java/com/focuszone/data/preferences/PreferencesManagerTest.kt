@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
-import com.focuszone.data.preferences.entities.LimitedAppEntity
+import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.util.Constants.DEFAULT_MESSAGE
 import com.focuszone.util.Constants.SHARED_PREF_NAME
 
@@ -110,7 +110,7 @@ class PreferencesManagerTest {
     @Test
     fun `get limited apps returns correct list after adding apps`() {
         val testApps = listOf(
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
@@ -118,7 +118,7 @@ class PreferencesManagerTest {
                 numberOfSessions = null,
                 sessionMinutes = null
             ),
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
@@ -143,7 +143,7 @@ class PreferencesManagerTest {
     @Test
     fun `get limited apps returns correct list after removing app`() {
         val testApps = listOf(
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
@@ -151,7 +151,7 @@ class PreferencesManagerTest {
                 numberOfSessions = null,
                 sessionMinutes = null
             ),
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
@@ -172,7 +172,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `get limited apps returns correct list after updating app`() {
-        val originalApp = LimitedAppEntity(
+        val originalApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -194,7 +194,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `get limited apps preserves all details of complex app entity`() {
-        val complexApp = LimitedAppEntity(
+        val complexApp = BlockedApp(
             id = "complex_app",
             isLimitSet = true,
             limitMinutes = 60,
@@ -222,12 +222,12 @@ class PreferencesManagerTest {
     fun `updating existing limit sets new limit`() {
         val initialLimit = 5
         val appId = "com.test.app"
-        val limitedApp = LimitedAppEntity(appId, true, false, initialLimit, null, null)
+        val limitedApp = BlockedApp(appId, true, false, initialLimit, null, null)
 
         preferencesManager.addOrUpdateLimitedApp(limitedApp)
 
         val newLimit = 69
-        val limitedAppNewLimit = LimitedAppEntity(appId, true, false, newLimit, null, null)
+        val limitedAppNewLimit = BlockedApp(appId, true, false, newLimit, null, null)
 
         preferencesManager.addOrUpdateLimitedApp(limitedAppNewLimit)
 
@@ -238,7 +238,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add new valid limited app successfully`() {
-        val validApp = LimitedAppEntity(
+        val validApp = BlockedApp(
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
@@ -254,7 +254,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with invalid time limit fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app2",
             isLimitSet = true,
             limitMinutes = 0,
@@ -270,7 +270,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with invalid number of sessions fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app3",
             isLimitSet = true,
             limitMinutes = 30,
@@ -286,7 +286,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with invalid session time fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app4",
             isLimitSet = true,
             limitMinutes = 30,
@@ -302,7 +302,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with no limits set fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app5",
             isLimitSet = false,
             limitMinutes = null,
@@ -318,7 +318,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with negative values fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app7",
             isLimitSet = true,
             limitMinutes = -1,
@@ -334,7 +334,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `add limited app with incomplete session data fails`() {
-        val invalidApp = LimitedAppEntity(
+        val invalidApp = BlockedApp(
             id = "app8",
             isLimitSet = true,
             limitMinutes = 30,
@@ -357,7 +357,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `remove existing app returns true`() {
-        val testApp = LimitedAppEntity(
+        val testApp = BlockedApp(
             id = "test_app",
             isLimitSet = true,
             limitMinutes = 30,
@@ -376,7 +376,7 @@ class PreferencesManagerTest {
     @Test
     fun `remove existing app reduces app list size`() {
         val apps = listOf(
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
@@ -384,7 +384,7 @@ class PreferencesManagerTest {
                 numberOfSessions = null,
                 sessionMinutes = null
             ),
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
@@ -406,7 +406,7 @@ class PreferencesManagerTest {
 
     @Test
     fun `remove multiple times same app works correctly`() {
-        val testApp = LimitedAppEntity(
+        val testApp = BlockedApp(
             id = "test_app",
             isLimitSet = true,
             limitMinutes = 30,
@@ -434,7 +434,7 @@ class PreferencesManagerTest {
     @Test
     fun `removing app preserves other apps`() {
         val apps = listOf(
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
@@ -442,7 +442,7 @@ class PreferencesManagerTest {
                 numberOfSessions = null,
                 sessionMinutes = null
             ),
-            LimitedAppEntity(
+            BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,

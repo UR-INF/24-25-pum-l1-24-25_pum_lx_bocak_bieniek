@@ -7,10 +7,10 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
-import com.focuszone.domain.BlockedApp
+import com.focuszone.data.preferences.entities.BlockedApp
 
 class BlockedAppsAdapter(
-    private val apps: List<BlockedApp>,
+    private val apps: MutableList<BlockedApp>,
     private val onEditClick: (BlockedApp) -> Unit
 ) : RecyclerView.Adapter<BlockedAppsAdapter.BlockedAppViewHolder>() {
 
@@ -34,8 +34,8 @@ class BlockedAppsAdapter(
         val editButton: Button = view.findViewById(R.id.editButtonApp)
 
         fun bind(app: BlockedApp) {
-            appName.text = app.name
-            appLimit.text = "Limit: ${app.limit}"
+            appName.text = app.id
+            appLimit.text = "Limit: ${app.limitMinutes}"
         }
     }
 }
