@@ -73,8 +73,15 @@ object Validator {
             return false
         }
 
-        // Basic regex for validating URLs
-        val urlPattern = "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$".toRegex()
-        return site.url.matches(urlPattern)
+        // Add default https:// if no scheme is provided
+        var url = site.url.trim()
+
+        if (!url.contains("://")) {
+            url = "https://$url"
+        }
+
+        // Regex to match URLs starting with or https://
+        val urlPattern = "^(https://).*$".toRegex()
+        return url.matches(urlPattern)
     }
 }
