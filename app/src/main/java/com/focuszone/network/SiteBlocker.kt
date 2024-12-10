@@ -10,8 +10,8 @@ import java.nio.ByteBuffer
 
 class SiteBlocker : VpnService() {
 
-    private lateinit var preferencesManager: PreferencesManager
-    private var blockedSites: List<BlockedSiteEntity> = emptyList()
+    internal lateinit var preferencesManager: PreferencesManager
+    internal var blockedSites: List<BlockedSiteEntity> = emptyList()
     private var vpnThread: Thread? = null
 
     override fun onCreate() {
@@ -54,7 +54,7 @@ class SiteBlocker : VpnService() {
     /**
      * Turn on VPN and intercept network traffic.
      */
-    private fun runVpn() {
+    internal fun runVpn() {
         val builder = Builder()
         builder.addAddress("10.0.0.2", 24)
         builder.addRoute("0.0.0.0", 0)
@@ -91,11 +91,11 @@ class SiteBlocker : VpnService() {
     /**
      * Check if address is inside blocked list.
      */
-    private fun isBlocked(destination: String): Boolean {
+    internal fun isBlocked(destination: String): Boolean {
         return blockedSites.any { destination.contains(it.url) }
     }
 
-    private fun extractUrlFromPacket(packet: ByteBuffer, length: Int): String {
+    internal fun extractUrlFromPacket(packet: ByteBuffer, length: Int): String {
         try {
             val packetArray = ByteArray(length)
             packet.rewind()
@@ -112,7 +112,7 @@ class SiteBlocker : VpnService() {
         }
     }
 
-    private fun restartVpn() {
+    internal fun restartVpn() {
         vpnThread?.interrupt()
         vpnThread = Thread { runVpn() }
         vpnThread?.start()
