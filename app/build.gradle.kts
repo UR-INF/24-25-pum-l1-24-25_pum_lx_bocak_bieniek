@@ -61,6 +61,9 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
 
+    // Android Test UI automation framework
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+
     // Biometric APIs
     implementation("androidx.biometric:biometric:1.1.0")
 
@@ -69,4 +72,7 @@ dependencies {
 
     // Json serializer
     implementation("com.google.code.gson:gson:2.10")
+
+    // OkHttp client - used as http interceptor
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
