@@ -13,6 +13,9 @@ class PreferencesManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson() // JSON serializer
 
+    // Listener management
+    private val listeners = mutableListOf<OnBlockedSitesChangedListener>()
+
     // Keys for saved values
     companion object {
         private const val KEY_REGISTRATION_COMPLETE = "REGISTRATION_COMPLETE"
@@ -22,6 +25,38 @@ class PreferencesManager(context: Context) {
         private const val KEY_LIMITED_APPS = "LIMITED_APPS"
         private const val KEY_BLOCKED_SITES = "BLOCKED_SITES"
     }
+
+    // Listener setup and functions
+    init {
+        // Register internal SharedPreferences change listener
+        sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+            if (key == KEY_BLOCKED_SITES) {
+                notifyBlockedSitesChanged()
+            }
+        }
+    }
+
+    // Add a custom listener
+    fun addBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
+        listeners.add(listener)
+    }
+
+    // Remove a custom listener
+    fun removeBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
+        listeners.remove(listener)
+    }
+
+    // Notify listeners about changes
+    private fun notifyBlockedSitesChanged() {
+        val blockedSites = getBlockedSites()
+        listeners.forEach { it.onBlockedSitesChanged(blockedSites) }
+    }
+
+    // Listener interface
+    interface OnBlockedSitesChangedListener {
+        fun onBlockedSitesChanged(newBlockedSites: List<BlockedSiteEntity>)
+    }
+
 
     // PIN functions
     fun savePin(pin: String) {
