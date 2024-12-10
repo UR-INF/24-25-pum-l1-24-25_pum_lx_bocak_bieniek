@@ -1,6 +1,7 @@
 package com.focuszone.domain
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.LimitedAppEntity
 
@@ -52,4 +53,32 @@ class AppManager(context: Context) {
     fun getLimitedAppById(appId: String): LimitedAppEntity? {
         return preferencesManager.getLimitedApps().find { it.id == appId }
     }
+
+    /** Retrieves list of all installed packaged in given context
+     * @param context The context of app runtime system
+     * @return List of all installed app Info
+     * **/
+    fun getAllInstalledApps(context: Context): List<ApplicationInfo> {
+        val packageManager = context.packageManager
+        return packageManager.getInstalledApplications(0)
+    }
+
+    /** Usage example
+     * val installedApps = getAllInstalledApps(this)
+     * installedApps.forEach { app ->
+     *     val name = app.loadLabel(packageManager).toString()
+     *     val icon = app.loadIcon(packageManager)
+     *     println("Aplikacja: $name")
+     *     etc.
+     * }
+     * **/
+
+    /** 2nd iteration with only user apps
+     * fun getUserInstalledApps(context: Context): List<ApplicationInfo> {
+     *     val packageManager = context.packageManager
+     *     return packageManager.getInstalledApplications(0).filter { app ->
+     *         (app.flags and ApplicationInfo.FLAG_SYSTEM) == 0
+     *     }
+     * }
+     * **/
 }
