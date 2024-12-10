@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-//    id("kotlin-kapt")
 }
 
 android {
@@ -40,28 +39,27 @@ android {
 }
 
 dependencies {
-//    val room_version = "2.6.1"
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    // JUnit for assertions
     testImplementation(libs.junit)
+
+    // Truth for better assertions
     testImplementation("com.google.truth:truth:1.4.4")
+
+    // JUnit for assertions
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Room database (SQL wrapper + ORM)
-//    implementation("androidx.room:room-runtime:$room_version")
-//    kapt("androidx.room:room-compiler:$room_version")
-    // optional - Kotlin Extensions and Coroutines support for Room
-//    implementation("androidx.room:room-ktx:$room_version")
-    // optional - Test helpers
-//    testImplementation("androidx.room:room-testing:$room_version")
-    // optional - Paging 3 Integration
-//    implementation("androidx.room:room-paging:$room_version")
+    // AndroidX Test framework
+    androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 
     // Biometric APIs
     implementation("androidx.biometric:biometric:1.1.0")
