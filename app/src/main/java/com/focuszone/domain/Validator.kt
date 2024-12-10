@@ -80,8 +80,8 @@ object Validator {
             url = "https://$url"
         }
 
-        // Regex to match URLs starting with or https://
-        val urlPattern = "^(https://).*$".toRegex()
+        // Regex to match URLs starting with http:// or https://
+        val urlPattern = "^(http|https)://.*.*$".toRegex()
         return url.matches(urlPattern)
     }
 }

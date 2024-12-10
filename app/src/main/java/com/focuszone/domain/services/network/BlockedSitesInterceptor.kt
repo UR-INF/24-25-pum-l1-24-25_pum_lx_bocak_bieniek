@@ -15,7 +15,7 @@ class BlockedSitesInterceptor(private val blockedSites: List<BlockedSiteEntity>)
 
         val isBlocked = blockedSites.any { blockedSite ->
             val normalizedBlockedUrl = blockedSite.url.trim().let {
-                if (!it.startsWith("https://")) "https://$it" else it
+                if (!it.startsWith("http://") || !it.startsWith("https://")) "https://$it" else it
             }
             url.startsWith(normalizedBlockedUrl)
         }
