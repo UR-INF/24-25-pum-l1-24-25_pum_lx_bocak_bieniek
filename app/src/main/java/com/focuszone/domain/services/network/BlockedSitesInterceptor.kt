@@ -14,12 +14,8 @@ class BlockedSitesInterceptor(private val blockedSites: List<BlockedSiteEntity>)
         val url = request.url.toString()
 
         val isBlocked = blockedSites.any { blockedSite ->
-            val normalizedBlockedUrl = blockedSite.url.trim().let {
-                if (!it.startsWith("http://") || !it.startsWith("https://")) "https://$it" else it
-            }
-            url.startsWith(normalizedBlockedUrl)
+            url == blockedSite.url
         }
-
         return if (isBlocked) {
             val fakeResponse = chain.proceed(request)
 
