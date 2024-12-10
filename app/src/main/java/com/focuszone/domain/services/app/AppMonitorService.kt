@@ -1,7 +1,11 @@
-package com.focuszone.domain
+package com.focuszone.domain.services.app
+
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
 
 // monitor application activity if any was limited
-object AppMonitor {
+class AppMonitorService : Service() {
 
     /* Listen any opened app and check if its on the limited list
     * */
@@ -18,5 +22,9 @@ object AppMonitor {
         // get app ID/name/package name/etc
         // show fullscreen message
         // tell system to block app
+    }
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
     }
 }
