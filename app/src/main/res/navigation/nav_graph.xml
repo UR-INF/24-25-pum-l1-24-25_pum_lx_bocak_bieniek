@@ -27,9 +27,6 @@
         <action
             android:id="@+id/editButtonApp"
             app:destination="@id/editAppFragment" />
-        <action
-            android:id="@+id/bttnAddApp"
-            app:destination="@+id/addAppFragment" />
     </fragment>
     <fragment
         android:id="@+id/editAppFragment"
@@ -39,15 +36,6 @@
         <argument
             android:name="appName"
             app:argType="string" />
-    </fragment>
-    <fragment
-        android:id="@+id/addAppFragment"
-        android:name="com.focuszone.ui.fragments.AddAppFragment"
-        android:label="Add Application"
-        tools:layout="@layout/fragment_add_app" >
-        <action
-            android:id="@+id/addButton"
-            app:destination="@id/blockedAppsFragment" />
     </fragment>
     <!--site related fragments-->
     <fragment
@@ -87,9 +75,6 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
-            android:id="@+id/bttnPreferences"
-            app:destination="@id/PreferencesFragment" />
-        <action
             android:id="@+id/bttnAuthorization"
             app:destination="@id/AuthorizationFragment" />
         <action
@@ -102,11 +87,6 @@
             android:id="@+id/bttnAbout"
             app:destination="@id/AboutFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/PreferencesFragment"
-        android:name="com.focuszone.ui.fragments.PreferencesFragment"
-        android:label="fragment_preferences"
-        tools:layout="@layout/fragment_preferences" />
     <fragment
         android:id="@+id/AuthorizationFragment"
         android:name="com.focuszone.ui.fragments.AuthorizationFragment"

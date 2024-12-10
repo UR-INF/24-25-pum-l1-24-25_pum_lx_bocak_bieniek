@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,36 +43,9 @@ class BlockedAppsFragment : Fragment() {
                     putString("appName", app.name)
                 }
                 navController.navigate(R.id.editAppFragment, bundle)
-            },
-            onDeleteClick = { app ->
-                showDeleteConfirmationDialog(app, blockedApps)
             }
         )
 
         return view
-    }
-
-    private fun showDeleteConfirmationDialog(app: BlockedApp, apps: MutableList<BlockedApp>) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Confirmation of deletion")
-            .setMessage("Are you sure you want to remove the application restriction ${app.name}?")
-            .setPositiveButton("Yes") { _, _ ->
-                //apps.remove(app)
-                //recyclerView.adapter?.notifyDataSetChanged()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val addButton: Button = view.findViewById(R.id.bttnAddApp)
-
-        addButton.setOnClickListener {
-            findNavController().navigate(R.id.addAppFragment)
-        }
     }
 }
