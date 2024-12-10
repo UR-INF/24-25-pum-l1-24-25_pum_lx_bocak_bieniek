@@ -15,10 +15,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val bttnPreferences = view.findViewById<Button>(R.id.bttnPreferences)
-        bttnPreferences.setOnClickListener {
-            findNavController().navigate(R.id.PreferencesFragment)
-        }
         val bttnAuthorization = view.findViewById<Button>(R.id.bttnAuthorization)
         bttnAuthorization.setOnClickListener {
             findNavController().navigate(R.id.AuthorizationFragment)
