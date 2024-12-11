@@ -55,11 +55,11 @@ Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 
 ## Wykorzystane uprawnienia aplikacji do:
 
-- Usage Stats (PACKAGE_USAGE_STATS) - sprawdzanie ile użytkownik korzysta z danych aplikacji
-- Accessibility Service/VPN service - blokowanie ruchu sieciowego do wybranych stron
-- System Alert Window (SYSTEM_ALERT_WINDOW) - alert całoekranowy
+- Access Network State (ACCESS_NETWORK_STATE) - blokowanie ruchu sieciowego do wybranych stron
+- INTERNET                                    - monitorowanie ruchu sieciowego
+- Usage Stats (PACKAGE_USAGE_STATS)           - sprawdzanie ile użytkownik korzysta z danych aplikacji
+- System Alert Window (SYSTEM_ALERT_WINDOW)   - alert całoekranowy
 - Biometric Authentication (USE_BIOMETRIC) (opcjonalne)
-- Access Network State (ACCESS_NETWORK_STATE)
 
 ## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
 
