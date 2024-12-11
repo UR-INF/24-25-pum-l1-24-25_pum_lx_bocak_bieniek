@@ -42,21 +42,6 @@
         android:id="@+id/blockedSitesFragment"
         android:name="com.focuszone.ui.fragments.BlockedSitesFragment"
         tools:layout="@layout/fragment_blocked_sites">
-        <action
-            android:id="@+id/editButtonSite"
-            app:destination="@id/editSiteFragment" />
-        <action
-            android:id="@+id/bttnAddSite"
-            app:destination="@+id/addSiteFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/editSiteFragment"
-        android:name="com.focuszone.ui.fragments.EditSiteFragment"
-        android:label="Edit Site"
-        tools:layout="@layout/fragment_edit_site">
-        <argument
-            android:name="siteName"
-            app:argType="string" />
     </fragment>
     <!--setting related fragments-->
     <fragment
