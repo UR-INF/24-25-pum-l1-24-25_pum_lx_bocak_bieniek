@@ -7,12 +7,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
-import com.focuszone.domain.BlockedSite
+import com.focuszone.data.preferences.entities.BlockedSiteEntity
 
 class BlockedSitesAdapter(
-    private val sites: MutableList<BlockedSite>,
-    private val onEditClick: (BlockedSite) -> Unit,
-    private val onDeleteClick: (BlockedSite) -> Unit
+    private val sites: MutableList<BlockedSiteEntity>,
+    private val onDeleteClick: (BlockedSiteEntity) -> Unit
 ) : RecyclerView.Adapter<BlockedSitesAdapter.BlockedSiteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockedSiteViewHolder {
@@ -25,8 +24,6 @@ class BlockedSitesAdapter(
         val site = sites[position]
         holder.bind(site)
 
-        holder.editButton.setOnClickListener { onEditClick(site) }
-
         holder.deleteButton.setOnClickListener { onDeleteClick(site) }
     }
 
@@ -34,13 +31,10 @@ class BlockedSitesAdapter(
 
     class BlockedSiteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val siteName: TextView = view.findViewById(R.id.siteName)
-        private val siteLimit: TextView = view.findViewById(R.id.siteLimit)
-        val editButton: Button = view.findViewById(R.id.editButtonSite)
         val deleteButton: Button = view.findViewById(R.id.deleteButtonApp)
 
-        fun bind(site: BlockedSite) {
-            siteName.text = site.name
-            siteLimit.text = "Limit: ${site.limit}"
+        fun bind(site: BlockedSiteEntity) {
+            siteName.text = site.url
         }
     }
 }

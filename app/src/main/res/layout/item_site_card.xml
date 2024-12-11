@@ -27,19 +27,8 @@
                 android:text="Site Name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/siteLimit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Limit: 1h 30m"
-                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/editButtonSite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit" />
         <Button
             android:id="@+id/deleteButtonApp"
             android:layout_width="wrap_content"
