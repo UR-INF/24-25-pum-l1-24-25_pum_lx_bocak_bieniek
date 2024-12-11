@@ -9,32 +9,40 @@ import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.util.Constants.KNOWN_BROWSERS
 
+/** Monitor opened Sites in supported browsers
+ *
+ * HOW TO USE
+ *
+ * On first app start:
+ * val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+ * startActivity(intent)
+ *
+ * It will start automatically as it is now System Service
+ * **/
+
 class SiteBlockerService : AccessibilityService() {
 
-    private val preferenceManager = PreferencesManager(this)
+    private var preferenceManager = PreferencesManager(this)
+    private var blockedSites = preferenceManager.getBlockedSites()
 
-    // List of blocked sites (can be dynamically loaded)
-    private val blockedSites = preferenceManager.getBlockedSites()
-
-    // Called when an event is intercepted
+    /** On event - opened browser package - check URL in Preferences
+     * block if url is in Preferences
+     * "block" means GLOBAL_ACTION_BACK
+     * TODO
+     * **/
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null) return
 
-        // Get the package name of the app where the event occurred
         val packageName = event.packageName?.toString() ?: return
-
-//        val browserInStringRegex = .toRegex()
 
         if (isBrowserPackage(packageName)) {
             val nodeInfo = event.source ?: return
 
-            // Try to extract the URL
             val url = extractUrlFromNode(nodeInfo)
 
             if (url != null && isBlocked(url)) {
-                // Go back to the previous screen
                 performGlobalAction(GLOBAL_ACTION_BACK)
-                showToast("The website $url has been blocked by FocusZone.")
+                Toast.makeText(applicationContext, "The website $url has been blocked by FocusZone.", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -44,12 +52,12 @@ class SiteBlockerService : AccessibilityService() {
         // Handle service interruption
     }
 
-    // Function that checks if the app is a browser
+    // Checks if the app package is in KNOWS_BROWSERS
     private fun isBrowserPackage(packageName: String): Boolean {
         return KNOWN_BROWSERS.contains(packageName)
     }
 
-    // Function to extract the URL from the node
+    // Extract the URL from the node information
     private fun extractUrlFromNode(nodeInfo: AccessibilityNodeInfo?): String? {
         if (nodeInfo == null) return null
 
@@ -68,7 +76,7 @@ class SiteBlockerService : AccessibilityService() {
         return null
     }
 
-    // Function that checks if the URL is on the blocked list
+    // Check if the URL is on the blocked list
     private fun isBlocked(url: String): Boolean {
         return blockedSites.any { blockedSite ->
             url.startsWith(blockedSite.url.trim())
@@ -78,7 +86,6 @@ class SiteBlockerService : AccessibilityService() {
     // Displays a message on the screen
     private fun showToast(message: String) {
         Handler(Looper.getMainLooper()).post {
-            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
