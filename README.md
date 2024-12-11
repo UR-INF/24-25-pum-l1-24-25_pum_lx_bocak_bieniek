@@ -55,8 +55,7 @@ Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 
 ## Wykorzystane uprawnienia aplikacji do:
 
-- Access Network State (ACCESS_NETWORK_STATE) - blokowanie ruchu sieciowego do wybranych stron
-- INTERNET                                    - monitorowanie ruchu sieciowego
+- AccessablilityService                       - blokowanie ruchu sieciowego do wybranych stron w przeglądarkach
 - Usage Stats (PACKAGE_USAGE_STATS)           - sprawdzanie ile użytkownik korzysta z danych aplikacji
 - System Alert Window (SYSTEM_ALERT_WINDOW)   - alert całoekranowy
 - Biometric Authentication (USE_BIOMETRIC) (opcjonalne)
