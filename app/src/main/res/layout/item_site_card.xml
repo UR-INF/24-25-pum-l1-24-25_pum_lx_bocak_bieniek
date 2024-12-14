@@ -24,7 +24,7 @@
                 android:id="@+id/siteName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Site Name"
+                android:text="@string/siteName"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
@@ -32,7 +32,7 @@
             android:id="@+id/deleteButtonApp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
+            android:text="@string/delete"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

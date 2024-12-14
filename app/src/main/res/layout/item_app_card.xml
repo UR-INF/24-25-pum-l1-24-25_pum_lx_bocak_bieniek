@@ -32,14 +32,14 @@
                 android:id="@+id/appName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="App Name"
+                android:text="@string/appEditName"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
                 android:id="@+id/appLimit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Limit: 1h 30m"
+                android:text="@string/limit"
                 android:textColor="@android:color/darker_gray" />
         </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:id="@+id/editButtonApp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
+            android:text="@string/edit"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>

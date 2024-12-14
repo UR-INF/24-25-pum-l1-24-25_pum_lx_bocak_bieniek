@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txtViewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Welcome to FocusZone!"
+        android:text="@string/welcomeText"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/txtViewDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
         android:ems="10"
-        android:hint="PIN"
+        android:hint="@string/pin"
         android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/editPIN2"
@@ -38,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="124dp"
         android:ems="10"
-        android:hint="Repeat PIN"
+        android:hint="@string/repeatPin"
         android:inputType="number"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/bttnRegistration"
@@ -51,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="144dp"
-        android:text="Register"
+        android:text="@string/register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -61,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:text="Enable biometrics"
+        android:text="@string/enableBio"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/bttnRegistration"
         app:layout_constraintEnd_toEndOf="parent"
@@ -70,11 +69,11 @@
         app:layout_constraintVertical_bias="0.494" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtViewDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="44dp"
-        android:text="Insert PIN twice to access application"
+        android:text="@string/registrationInstruction"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/editPIN1"
         app:layout_constraintEnd_toEndOf="parent"

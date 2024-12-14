@@ -10,7 +10,7 @@
         android:id="@+id/editTextSiteAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter site address"
+        android:hint="@string/enterAddress"
         android:inputType="textUri" />
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add" />
+            android:text="@string/add" />
 
         <Button
             android:id="@+id/buttonCancel"
@@ -32,6 +32,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:text="Cancel" />
+            android:text="@string/cancel" />
     </LinearLayout>
 </LinearLayout>
