@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
@@ -24,6 +25,13 @@ class BlockedAppsAdapter(
         val app = apps[position]
         holder.bind(app)
         holder.editButton.setOnClickListener { onEditClick(app) }
+        holder.appSwitch.isChecked = app.isLimitSet
+        holder.appSwitch.text = if (app.isLimitSet) "Disable" else "Enable"
+
+        holder.appSwitch.setOnCheckedChangeListener { _, isChecked ->
+            app.isLimitSet = isChecked
+            holder.appSwitch.text = if (isChecked) "Disable" else "Enable"
+        }
     }
 
     override fun getItemCount(): Int = apps.size
@@ -32,6 +40,8 @@ class BlockedAppsAdapter(
         private val appName: TextView = view.findViewById(R.id.appName)
         private val appLimit: TextView = view.findViewById(R.id.appLimit)
         val editButton: Button = view.findViewById(R.id.editButtonApp)
+        val appSwitch: Switch = view.findViewById(R.id.switchEnableBlock)
+
 
         fun bind(app: BlockedApp) {
             appName.text = app.id
