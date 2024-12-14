@@ -65,5 +65,4 @@
 
     <string name="disable">Disable</string>
     <string name="enable">Enable</string>
-    <string name="aboutDescription">FocusZone is a mobile application for Android that aims to help users manage the time they spend on mobile devices. By blocking applications and websites and setting time limits, FocusZone supports building healthy habits and limiting distractions.</string>
 </resources>
