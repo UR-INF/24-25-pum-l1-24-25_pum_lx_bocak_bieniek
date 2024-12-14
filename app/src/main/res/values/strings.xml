@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FocusZone</string>
+    <string name="app_name" translatable="false">FocusZone</string>
     <!-- Strings used for fragments for navigation -->
     <!-- About fragment strings  -->
     <string name="aboutTitle">About FocusZone</string>
@@ -29,7 +29,7 @@
     <!-- Notification -->
     <string name="notificationTitle">Notification</string>
     <string name="okNotification">OK (close app/site)</string>
-    <string name="noNotification">I understand (add limit to app)</string>
+    <string name="noNotification">I understand (ignore block)</string>
     <string name="contentNotification">App/site usage exceded limit!! (to change)</string>
     <!-- Home -->
     <string name="homeTitle">Home</string>
@@ -37,7 +37,7 @@
     <string name="blockedSites">Blocked Websites: 0</string>
     <!-- Registration -->
     <string name="welcomeText">Welcome to FocusZone!</string>
-    <string name="pin">PIN</string>
+    <string name="pin" translatable="false">PIN</string>
     <string name="repeatPin">Repeat PIN</string>
     <string name="register">Register</string>
     <string name="enableBio">Enable biometrics</string>
@@ -57,12 +57,13 @@
     <string name="insertPin">Insert PIN</string>
     <string name="login">Log In</string>
     <!-- App Card -->
-    <string name="limit">Limit: 1h 30 min</string>
+    <string name="limit" translatable="false">Limit: 1h 30 min</string>
     <string name="edit">Edit</string>
     <!-- Site Card -->
-    <string name="siteName">Site name</string>
-    <string name="delete">Deleted</string>
+    <string name="siteName">Site address</string>
+    <string name="delete">Delete</string>
 
     <string name="disable">Disable</string>
     <string name="enable">Enable</string>
+    <string name="aboutDescription">FocusZone is a mobile application for Android that aims to help users manage the time they spend on mobile devices. By blocking applications and websites and setting time limits, FocusZone supports building healthy habits and limiting distractions.</string>
 </resources>
