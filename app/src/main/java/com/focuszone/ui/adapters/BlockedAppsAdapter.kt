@@ -26,11 +26,19 @@ class BlockedAppsAdapter(
         holder.bind(app)
         holder.editButton.setOnClickListener { onEditClick(app) }
         holder.appSwitch.isChecked = app.isLimitSet
-        holder.appSwitch.text = if (app.isLimitSet) "Disable" else "Enable"
+        holder.appSwitch.text = if (app.isLimitSet) {
+            holder.itemView.context.getString(R.string.disable)
+        } else {
+            holder.itemView.context.getString(R.string.enable)
+        }
 
         holder.appSwitch.setOnCheckedChangeListener { _, isChecked ->
             app.isLimitSet = isChecked
-            holder.appSwitch.text = if (isChecked) "Disable" else "Enable"
+            holder.appSwitch.text = if (isChecked) {
+                holder.itemView.context.getString(R.string.disable)
+            } else {
+                holder.itemView.context.getString(R.string.enable)
+            }
         }
     }
 
