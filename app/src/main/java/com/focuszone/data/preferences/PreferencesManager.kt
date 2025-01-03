@@ -14,7 +14,8 @@ class PreferencesManager(context: Context) {
     private val gson = Gson() // JSON serializer
 
     // Listener management
-    private val listeners = mutableListOf<OnBlockedSitesChangedListener>()
+    private val blockedSitesListeners = mutableListOf<OnBlockedSitesChangedListener>()
+    private val limitedAppsListeners = mutableListOf<OnLimitedAppsChangedListener>()
 
     // Keys for saved values
     companion object {
@@ -30,31 +31,47 @@ class PreferencesManager(context: Context) {
     init {
         // Register internal SharedPreferences change listener
         sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
-            if (key == KEY_BLOCKED_SITES) {
-                notifyBlockedSitesChanged()
+            when (key) {
+                KEY_BLOCKED_SITES -> notifyBlockedSitesChanged()
+                KEY_LIMITED_APPS -> notifyLimitedAppsChanged()
             }
         }
     }
 
-    // Add a custom listener
+    // Blocked Sites Listener Management
     fun addBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
-        listeners.add(listener)
+        blockedSitesListeners.add(listener)
     }
 
-    // Remove a custom listener
     fun removeBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
-        listeners.remove(listener)
+        blockedSitesListeners.remove(listener)
     }
 
-    // Notify listeners about changes
     private fun notifyBlockedSitesChanged() {
         val blockedSites = getBlockedSites()
-        listeners.forEach { it.onBlockedSitesChanged(blockedSites) }
+        blockedSitesListeners.forEach { it.onBlockedSitesChanged(blockedSites) }
     }
 
-    // Listener interface
     interface OnBlockedSitesChangedListener {
         fun onBlockedSitesChanged(newBlockedSites: List<BlockedSiteEntity>)
+    }
+
+    // Limited Apps Listener Management
+    fun addLimitedAppsChangedListener(listener: OnLimitedAppsChangedListener) {
+        limitedAppsListeners.add(listener)
+    }
+
+    fun removeLimitedAppsChangedListener(listener: OnLimitedAppsChangedListener) {
+        limitedAppsListeners.remove(listener)
+    }
+
+    private fun notifyLimitedAppsChanged() {
+        val limitedApps = getLimitedApps()
+        limitedAppsListeners.forEach { it.onLimitedAppsChanged(limitedApps) }
+    }
+
+    interface OnLimitedAppsChangedListener {
+        fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>)
     }
 
 
@@ -96,17 +113,23 @@ class PreferencesManager(context: Context) {
             return false
         }
 
-        if (!app.isLimitSet) {
-            return false
-        }
-
         val apps = getLimitedApps().toMutableList()
         val existingAppIndex = apps.indexOfFirst { it.id == app.id }
 
-        if (existingAppIndex != -1) {
-            apps[existingAppIndex] = app
+        val updatedApp = if (existingAppIndex != -1) {
+            val existingApp = apps[existingAppIndex]
+            app.copy(
+                currentTimeUsage = if (!app.isLimitSet) 0 else existingApp.currentTimeUsage,
+                currentSessionUsage = if (!app.isSessionsSet) 0 else existingApp.currentSessionUsage
+            )
         } else {
-            apps.add(app)
+            app.copy(currentTimeUsage = 0, currentSessionUsage = 0)
+        }
+
+        if (existingAppIndex != -1) {
+            apps[existingAppIndex] = updatedApp
+        } else {
+            apps.add(updatedApp)
         }
 
         saveLimitedApps(apps)
@@ -131,6 +154,24 @@ class PreferencesManager(context: Context) {
     private fun saveLimitedApps(apps: List<BlockedApp>) {
         val json = gson.toJson(apps)
         sharedPreferences.edit().putString(KEY_LIMITED_APPS, json).apply()
+    }
+    fun updateAppUsage(appId: String, timeIncrement: Int, sessionIncrement: Int) {
+        val apps = getLimitedApps().toMutableList()
+        val appIndex = apps.indexOfFirst { it.id == appId }
+
+        if (appIndex != -1) {
+            val app = apps[appIndex]
+            val updatedApp = app.copy(
+                currentTimeUsage = (app.currentTimeUsage ?: 0) + timeIncrement,
+                currentSessionUsage = (app.currentSessionUsage ?: 0) + sessionIncrement
+            )
+            apps[appIndex] = updatedApp
+            saveLimitedApps(apps)
+        }
+    }
+    fun getAppUsage(appId: String): Pair<Int?, Int?> {
+        val app = getLimitedApps().find { it.id == appId }
+        return Pair(app?.currentTimeUsage, app?.currentSessionUsage)
     }
 
     // Blocked sites functions
