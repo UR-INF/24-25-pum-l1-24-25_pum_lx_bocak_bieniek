@@ -7,5 +7,7 @@ data class BlockedApp(
     val isSessionsSet: Boolean,
     val limitMinutes: Int?,
     val numberOfSessions: Int?,
-    val sessionMinutes: Int?
+    val sessionMinutes: Int?,
+    val currentTimeUsage: Int?,
+    val currentSessionUsage: Int?
 )

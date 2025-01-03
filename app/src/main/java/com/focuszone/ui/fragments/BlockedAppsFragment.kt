@@ -29,10 +29,10 @@ class BlockedAppsFragment : Fragment() {
         // Sample data to view in app
         // TODO: add blocked apps from device
         val blockedApps = mutableListOf(
-            BlockedApp( "Facebook",  true, false, 90, null, null),
-            BlockedApp( "Instagram",  true, false, 90, null, null),
-            BlockedApp( "Twitter",  true, false, 90, null, null),
-            BlockedApp( "TikTok",  true, false, 90, null, null)
+            BlockedApp( "Facebook",  true, false, 90, null, null, null, null),
+            BlockedApp( "Instagram",  true, false, 90, null, null, null, null),
+            BlockedApp( "Twitter",  true, false, 90, null, null, null, null),
+            BlockedApp( "TikTok",  true, false, 90, null, null, null, null)
         )
 
         val navController = findNavController()
