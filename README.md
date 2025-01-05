@@ -58,6 +58,7 @@ Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 - AccessablilityService                       - blokowanie aplikacji i stron w wybranych przeglądarkach
 - Powiadomienia (POST_NOTIFICATIONS)          - powiadomienia o monitorowaniu i blokowaniu
 - Biometric Authentication (USE_BIOMETRIC)    - autentykacja za pomocą systemowej biometrii
+- Foreground Service (FOREGROUND_SERVICE)     - uruchomienie procesu monitorowania w tle nawet gdy aplikacja zostanie wyłączona
 
 ## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
 
