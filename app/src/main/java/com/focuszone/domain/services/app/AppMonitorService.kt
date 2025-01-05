@@ -3,7 +3,9 @@ package com.focuszone.domain.services.app
 import android.accessibilityservice.AccessibilityService
 import android.app.Service
 import android.content.Intent
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
@@ -26,6 +28,7 @@ class AppMonitorService : AccessibilityService() {
     private var monitoredApps: List<BlockedApp> = emptyList()
     private var activeAppStartTime: Long = 0
     private var lastActivePackage: String? = null
+    private val handler = Handler(Looper.getMainLooper())
 
     // on creation of this service set listener for changes in sharedPreferences
     override fun onCreate() {
@@ -54,12 +57,10 @@ class AppMonitorService : AccessibilityService() {
 
         val packageName = event.packageName?.toString() ?: return
 
-        // Monitoruj aplikację, jeśli jest dodana do listy
+        // Check if even app is monitored
         val app = monitoredApps.find { it.id == packageName } ?: return
 
-        when (event.eventType) {
-            AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> handleAppSwitch(packageName, app)
-        }
+        // Monitor here TODO
     }
 
     override fun onInterrupt() {
@@ -73,26 +74,17 @@ class AppMonitorService : AccessibilityService() {
      * if app limit is exceeded block app
      * handle app switching
      * */
-    private fun handleAppSwitch(packageName: String, app: BlockedApp) {
-        // Save current usage time after user switches apps
-        if (lastActivePackage != null && lastActivePackage != packageName) {
-            val elapsedTime = (System.currentTimeMillis() - activeAppStartTime) / (1000 * 60)
-            preferencesManager.updateAppUsage(
-                appId = lastActivePackage!!,
-                timeIncrement = elapsedTime.toInt(),
-                sessionIncrement = 1
-            )
-            activeAppStartTime = 0
-        }
+    private fun monitorApp(packageName: String, app: BlockedApp) {
+        val currentTimeUsage = app.currentTimeUsage ?: 0
 
-        // set new active app
-        lastActivePackage = packageName
-        activeAppStartTime = System.currentTimeMillis()
+        val timeSpent = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60 // in minutes
 
-        // Check if app exceeded time
-        val (currentTimeUsage, _) = preferencesManager.getAppUsage(packageName)
-        if ((currentTimeUsage ?: 0) >= (app.limitMinutes ?: Int.MAX_VALUE)) {
+        if (app.isLimitSet && currentTimeUsage + timeSpent >= app.limitMinutes!!) {
             blockApp(packageName)
+        } else {
+            handler.postDelayed({
+                monitorApp(packageName, app)
+            }, 1000)
         }
     }
 
@@ -106,7 +98,7 @@ class AppMonitorService : AccessibilityService() {
 
         performGlobalAction(GLOBAL_ACTION_BACK)
 
-        // Show notification TODO
+        // Show notification via notification manager TODO
         // Show fullscreen message TODO
     }
 

@@ -120,10 +120,9 @@ class PreferencesManager(context: Context) {
             val existingApp = apps[existingAppIndex]
             app.copy(
                 currentTimeUsage = if (!app.isLimitSet) 0 else existingApp.currentTimeUsage,
-                currentSessionUsage = if (!app.isSessionsSet) 0 else existingApp.currentSessionUsage
             )
         } else {
-            app.copy(currentTimeUsage = 0, currentSessionUsage = 0)
+            app.copy(currentTimeUsage = 0)
         }
 
         if (existingAppIndex != -1) {
@@ -155,7 +154,7 @@ class PreferencesManager(context: Context) {
         val json = gson.toJson(apps)
         sharedPreferences.edit().putString(KEY_LIMITED_APPS, json).apply()
     }
-    fun updateAppUsage(appId: String, timeIncrement: Int, sessionIncrement: Int) {
+    fun updateAppUsage(appId: String, timeIncrement: Int) {
         val apps = getLimitedApps().toMutableList()
         val appIndex = apps.indexOfFirst { it.id == appId }
 
@@ -163,15 +162,14 @@ class PreferencesManager(context: Context) {
             val app = apps[appIndex]
             val updatedApp = app.copy(
                 currentTimeUsage = (app.currentTimeUsage ?: 0) + timeIncrement,
-                currentSessionUsage = (app.currentSessionUsage ?: 0) + sessionIncrement
             )
             apps[appIndex] = updatedApp
             saveLimitedApps(apps)
         }
     }
-    fun getAppUsage(appId: String): Pair<Int?, Int?> {
+    fun getAppUsage(appId: String): Int? {
         val app = getLimitedApps().find { it.id == appId }
-        return Pair(app?.currentTimeUsage, app?.currentSessionUsage)
+        return app?.currentTimeUsage
     }
 
     // Blocked sites functions

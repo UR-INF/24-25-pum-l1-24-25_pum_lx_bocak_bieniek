@@ -92,11 +92,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(validApp)).isTrue()
@@ -108,11 +104,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 0,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -124,11 +116,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = null,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -140,11 +128,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(validApp)).isTrue()
@@ -156,11 +140,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 0,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -172,11 +152,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = null,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -188,11 +164,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = 0,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -204,11 +176,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -220,11 +188,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = false,
             limitMinutes = null,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(validApp)).isTrue()
@@ -236,11 +200,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = -1,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -252,11 +212,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = -1,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -268,11 +224,7 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = -1,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()

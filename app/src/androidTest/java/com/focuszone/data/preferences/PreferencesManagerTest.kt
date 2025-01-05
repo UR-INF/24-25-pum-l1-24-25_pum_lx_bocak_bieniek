@@ -114,21 +114,13 @@ class PreferencesManagerTest {
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             ),
             BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
-                isSessionsSet = true,
-                numberOfSessions = 3,
-                sessionMinutes = 15,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             )
         )
 
@@ -151,21 +143,13 @@ class PreferencesManagerTest {
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             ),
             BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
-                isSessionsSet = true,
-                numberOfSessions = 3,
-                sessionMinutes = 15,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             )
         )
 
@@ -184,11 +168,7 @@ class PreferencesManagerTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         preferencesManager.addOrUpdateLimitedApp(originalApp)
@@ -208,11 +188,8 @@ class PreferencesManagerTest {
             id = "complex_app",
             isLimitSet = true,
             limitMinutes = 60,
-            isSessionsSet = true,
-            numberOfSessions = 5,
-            sessionMinutes = 20,
             currentTimeUsage = null,
-            currentSessionUsage = null
+
         )
 
         preferencesManager.addOrUpdateLimitedApp(complexApp)
@@ -225,21 +202,18 @@ class PreferencesManagerTest {
         assertEquals(complexApp.id, retrievedApp.id)
         assertEquals(complexApp.isLimitSet, retrievedApp.isLimitSet)
         assertEquals(complexApp.limitMinutes, retrievedApp.limitMinutes)
-        assertEquals(complexApp.isSessionsSet, retrievedApp.isSessionsSet)
-        assertEquals(complexApp.numberOfSessions, retrievedApp.numberOfSessions)
-        assertEquals(complexApp.sessionMinutes, retrievedApp.sessionMinutes)
     }
 
     @Test
     fun `updating existing limit sets new limit`() {
         val initialLimit = 5
         val appId = "com.test.app"
-        val limitedApp = BlockedApp(appId, true, false, initialLimit, null, null, null, null)
+        val limitedApp = BlockedApp(appId, true, initialLimit, null)
 
         preferencesManager.addOrUpdateLimitedApp(limitedApp)
 
         val newLimit = 69
-        val limitedAppNewLimit = BlockedApp(appId, true, false, newLimit, null, null, null, null)
+        val limitedAppNewLimit = BlockedApp(appId, true, newLimit, 0)
 
         preferencesManager.addOrUpdateLimitedApp(limitedAppNewLimit)
 
@@ -254,11 +228,7 @@ class PreferencesManagerTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(validApp)
@@ -272,11 +242,7 @@ class PreferencesManagerTest {
             id = "app2",
             isLimitSet = true,
             limitMinutes = 0,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -290,11 +256,7 @@ class PreferencesManagerTest {
             id = "app3",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 0,
-            sessionMinutes = 10,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -308,11 +270,7 @@ class PreferencesManagerTest {
             id = "app4",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = 0,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -326,11 +284,7 @@ class PreferencesManagerTest {
             id = "app5",
             isLimitSet = false,
             limitMinutes = null,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -344,11 +298,7 @@ class PreferencesManagerTest {
             id = "app7",
             isLimitSet = true,
             limitMinutes = -1,
-            isSessionsSet = true,
-            numberOfSessions = -1,
-            sessionMinutes = -1,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -362,11 +312,7 @@ class PreferencesManagerTest {
             id = "app8",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = true,
-            numberOfSessions = 3,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         val result = preferencesManager.addOrUpdateLimitedApp(invalidApp)
@@ -387,11 +333,7 @@ class PreferencesManagerTest {
             id = "test_app",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         preferencesManager.addOrUpdateLimitedApp(testApp)
@@ -408,21 +350,13 @@ class PreferencesManagerTest {
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             ),
             BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             )
         )
 
@@ -442,11 +376,7 @@ class PreferencesManagerTest {
             id = "test_app",
             isLimitSet = true,
             limitMinutes = 30,
-            isSessionsSet = false,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = null,
-            currentSessionUsage = null
         )
 
         preferencesManager.addOrUpdateLimitedApp(testApp)
@@ -472,21 +402,13 @@ class PreferencesManagerTest {
                 id = "app1",
                 isLimitSet = true,
                 limitMinutes = 30,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             ),
             BlockedApp(
                 id = "app2",
                 isLimitSet = true,
                 limitMinutes = 45,
-                isSessionsSet = false,
-                numberOfSessions = null,
-                sessionMinutes = null,
                 currentTimeUsage = null,
-                currentSessionUsage = null
             )
         )
 
@@ -504,22 +426,15 @@ class PreferencesManagerTest {
         val app = BlockedApp(
             id = "com.example.app",
             isLimitSet = true,
-            isSessionsSet = false,
             limitMinutes = 15,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = 5,
-            currentSessionUsage = 2
         )
 
-        // Dodaj aplikację
         preferencesManager.addOrUpdateLimitedApp(app)
 
-        // Pobierz czas użycia
-        val (timeUsage, sessionUsage) = preferencesManager.getAppUsage("com.example.app")
+        val timeUsage = preferencesManager.getAppUsage("com.example.app")
 
         assertEquals(5, timeUsage)
-        assertEquals(2, sessionUsage)
     }
 
     @Test
@@ -527,7 +442,6 @@ class PreferencesManagerTest {
         preferencesManager.updateAppUsage(
             appId = "com.nonexistent.app",
             timeIncrement = 10,
-            sessionIncrement = 0
         )
 
         val savedApps = preferencesManager.getLimitedApps()
@@ -539,29 +453,21 @@ class PreferencesManagerTest {
         val app = BlockedApp(
             id = "com.example.app",
             isLimitSet = true,
-            isSessionsSet = false,
             limitMinutes = 15,
-            numberOfSessions = null,
-            sessionMinutes = null,
             currentTimeUsage = 0,
-            currentSessionUsage = 0
         )
 
-        // Dodaj aplikację
         preferencesManager.addOrUpdateLimitedApp(app)
 
-        // Zaktualizuj czas użycia
         preferencesManager.updateAppUsage(
             appId = "com.example.app",
             timeIncrement = 10,
-            sessionIncrement = 0
         )
 
         val savedApps = preferencesManager.getLimitedApps()
         val updatedApp = savedApps.find { it.id == "com.example.app" }
         assertNotNull("App should exist after update", updatedApp)
         assertEquals(10, updatedApp?.currentTimeUsage)
-        assertEquals(0, updatedApp?.currentSessionUsage)
     }
 
 
@@ -648,5 +554,4 @@ class PreferencesManagerTest {
         assertTrue("Blocked sites should still contain site1", sites.contains(site1))
         assertTrue("Blocked sites should still contain site2", sites.contains(site2))
     }
-
 }
