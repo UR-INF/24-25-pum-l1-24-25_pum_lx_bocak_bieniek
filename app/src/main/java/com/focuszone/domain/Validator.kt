@@ -3,7 +3,7 @@ package com.focuszone.domain
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.BlockedApp
 
-// Class for authentication logic - PIN/Biometric
+/** Input Validation manager for app */
 object Validator {
 
     /** Validate pin from existing source
@@ -41,16 +41,6 @@ object Validator {
     fun validateLimitedApp(app: BlockedApp): Boolean {
         if (app.isLimitSet) {
             if (app.limitMinutes == null || app.limitMinutes.toInt() <= 0) {
-                return false
-            }
-        }
-
-        if (app.isSessionsSet) {
-            val numberOfSessions = app.numberOfSessions
-            val sessionMinutes = app.sessionMinutes
-            if (numberOfSessions == null || numberOfSessions <= 0 ||
-                sessionMinutes == null || sessionMinutes <= 0
-            ) {
                 return false
             }
         }

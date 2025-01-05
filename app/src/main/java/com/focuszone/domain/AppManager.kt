@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedApp
 
+/** Interface for CRUD operations on applications in UI */
 class AppManager(context: Context) {
 
     private val preferencesManager = PreferencesManager(context)

@@ -3,6 +3,7 @@ package com.focuszone.domain
 import android.content.Context
 import com.focuszone.data.preferences.PreferencesManager
 
+/** Authentication manager for user UI */
 class UserAuthManager(context: Context) {
 
     private val preferencesManager = PreferencesManager(context)

@@ -3,7 +3,7 @@ package com.focuszone.domain
 import android.content.Context
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
-
+/** Interface for CRUD operations on sites in UI */
 class SiteManager(context: Context) {
 
     private val preferencesManager = PreferencesManager(context)
