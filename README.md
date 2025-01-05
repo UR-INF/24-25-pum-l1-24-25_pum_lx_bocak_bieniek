@@ -59,6 +59,7 @@ Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 - Powiadomienia (POST_NOTIFICATIONS)          - powiadomienia o monitorowaniu i blokowaniu
 - Biometric Authentication (USE_BIOMETRIC)    - autentykacja za pomocą systemowej biometrii
 - Foreground Service (FOREGROUND_SERVICE)     - uruchomienie procesu monitorowania w tle nawet gdy aplikacja zostanie wyłączona
+- System alert (SYSTEM_ALERT_WINDOW)          - Wyświelenie komunikatu z personalizowanym komunikatem
 
 ## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
 
