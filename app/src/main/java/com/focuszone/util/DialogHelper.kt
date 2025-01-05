@@ -2,11 +2,16 @@ package com.focuszone.util
 
 import android.app.AlertDialog
 import android.content.Context
+import android.provider.Settings
 import android.view.WindowManager
 
 class DialogHelper {
     companion object {
         fun showBlockingAlert(context: Context, message: String) {
+            if (!Settings.canDrawOverlays(context)) {
+                return
+            }
+
             val builder = AlertDialog.Builder(context)
                 .setTitle("App Blocked")
                 .setMessage(message)

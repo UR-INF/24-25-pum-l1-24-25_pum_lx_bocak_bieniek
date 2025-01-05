@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.NotificationManager
+import com.focuszone.util.DialogHelper
 
 /** Monitor time spent in applications
  *
@@ -58,25 +59,25 @@ class AppMonitorService : AccessibilityService() {
      * TODO
      * **/
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (event == null || event.packageName == null) return
+        if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            val packageName = event.packageName?.toString()
 
-        val packageName = event.packageName.toString()
+            if (packageName != null && packageName != lastActivePackage) {
+                lastActivePackage = packageName
+                activeAppStartTime = System.currentTimeMillis()
 
-        // Ignore if it's the same app still running
-        if (packageName == lastActivePackage) return
+                val monitoredApp = monitoredApps.find { it.id == packageName }
 
-        // Update time for previous app if it was monitored
-        lastActivePackage?.let { lastPkg ->
-            monitoredApps.find { it.id == lastPkg }?.let { app ->
-                updateAppUsageTime(app)
+                if (monitoredApp != null) {
+                    preferencesManager.getUserMessage()?.let {
+                        DialogHelper.showBlockingAlert(
+                            this,
+                            it
+                        )
+                    }
+                    performGlobalAction(GLOBAL_ACTION_BACK)
+                }
             }
-        }
-
-        // Start monitoring new app if it's restricted
-        monitoredApps.find { it.id == packageName }?.let { app ->
-            lastActivePackage = packageName
-            activeAppStartTime = System.currentTimeMillis()
-            startMonitoringApp(app)
         }
     }
 
