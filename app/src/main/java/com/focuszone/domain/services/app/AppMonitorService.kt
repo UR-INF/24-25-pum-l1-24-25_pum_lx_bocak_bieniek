@@ -1,10 +1,8 @@
 package com.focuszone.domain.services.app
 
 import android.accessibilityservice.AccessibilityService
-import android.app.Service
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
@@ -30,11 +28,17 @@ class AppMonitorService : AccessibilityService() {
     private var activeAppStartTime: Long = 0
     private var lastActivePackage: String? = null
     private val handler = Handler(Looper.getMainLooper())
+    private lateinit var notificationManager: NotificationManager
 
     // on creation of this service set listener for changes in sharedPreferences
+    @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
         preferencesManager = PreferencesManager(this)
+        notificationManager = NotificationManager(this)
+
+        startForeground(1, notificationManager.showAppMonitorServiceRunningNotificationF())
+
 
         monitoredApps = preferencesManager.getLimitedApps()
 
@@ -139,6 +143,7 @@ class AppMonitorService : AccessibilityService() {
                 // Do nothing
             }
         })
+        stopForeground(true)
         super.onDestroy()
     }
 

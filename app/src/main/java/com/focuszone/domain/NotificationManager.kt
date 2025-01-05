@@ -39,7 +39,7 @@ class NotificationManager(private val context: Context) {
         }
     }
 
-    fun showServiceRunningNotification(): android.app.Notification {
+    fun showAppMonitorServiceRunningNotificationF(): android.app.Notification {
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context, 0, intent,
@@ -49,7 +49,7 @@ class NotificationManager(private val context: Context) {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("FocusZone Active")
-            .setContentText("Keeping eye on your digital well being!")
+            .setContentText("Keeping eye on your monitored applications!")
             .setOngoing(true)
             .setContentIntent(pendingIntent)
             .build()
@@ -64,6 +64,22 @@ class NotificationManager(private val context: Context) {
             .build()
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    fun showSiteMonitorServiceRunningNotificationF(): android.app.Notification {
+        val intent = Intent(context, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            context, 0, intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        return NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("FocusZone Active")
+            .setContentText("Keeping eye on sites want to block!")
+            .setOngoing(true)
+            .setContentIntent(pendingIntent)
+            .build()
     }
 
     fun showBlockedSiteNotification(siteName: String) {
