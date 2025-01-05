@@ -49,7 +49,7 @@ class NotificationManager(private val context: Context) {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("FocusZone Active")
-            .setContentText("Monitoring your app usage")
+            .setContentText("Keeping eye on your digital well being!")
             .setOngoing(true)
             .setContentIntent(pendingIntent)
             .build()
@@ -72,17 +72,6 @@ class NotificationManager(private val context: Context) {
             .setContentTitle("Site Blocked")
             .setContentText("$siteName has been blocked")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .build()
-
-        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
-    }
-
-    fun showTimeWarningNotification(appName: String, timeLeft: Long) {
-        val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Time Warning")
-            .setContentText("$appName: ${timeLeft}min remaining")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
