@@ -53,12 +53,11 @@ Wszystkie dane zapisywane są w `sharedPreferences` pod odpowiednimi kluczami. N
 
 Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 
-## Wykorzystane uprawnienia aplikacji do:
+## Wykorzystane uprawnienia aplikacji i API android do:
 
-- AccessablilityService                       - blokowanie ruchu sieciowego do wybranych stron w przeglądarkach
-- Usage Stats (PACKAGE_USAGE_STATS)           - sprawdzanie ile użytkownik korzysta z danych aplikacji
-- System Alert Window (SYSTEM_ALERT_WINDOW)   - alert całoekranowy
-- Biometric Authentication (USE_BIOMETRIC) (opcjonalne)
+- AccessablilityService                       - blokowanie aplikacji i stron w wybranych przeglądarkach
+- Powiadomienia (POST_NOTIFICATIONS)          - powiadomienia o monitorowaniu i blokowaniu
+- Biometric Authentication (USE_BIOMETRIC)    - autentykacja za pomocą systemowej biometrii
 
 ## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
 
