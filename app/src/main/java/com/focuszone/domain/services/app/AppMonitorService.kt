@@ -53,18 +53,35 @@ class AppMonitorService : AccessibilityService() {
      * TODO
      * **/
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (event == null) return
+        if (event == null || event.packageName == null) return
 
-        val packageName = event.packageName?.toString() ?: return
+        val packageName = event.packageName.toString()
 
-        // Check if even app is monitored
-        val app = monitoredApps.find { it.id == packageName } ?: return
+        // Ignore if it's the same app still running
+        if (packageName == lastActivePackage) return
 
-        // Monitor here TODO
+        // Update time for previous app if it was monitored
+        lastActivePackage?.let { lastPkg ->
+            monitoredApps.find { it.id == lastPkg }?.let { app ->
+                updateAppUsageTime(app)
+            }
+        }
+
+        // Start monitoring new app if it's restricted
+        monitoredApps.find { it.id == packageName }?.let { app ->
+            lastActivePackage = packageName
+            activeAppStartTime = System.currentTimeMillis()
+            startMonitoringApp(app)
+        }
+    }
+
+    private fun startMonitoringApp(app: BlockedApp) {
+        handler.removeCallbacksAndMessages(null) // Clear any pending monitors
+        monitorApp(app.id, app)
     }
 
     override fun onInterrupt() {
-        //TODO
+        handler.removeCallbacksAndMessages(null)
     }
 
     /** Monitor time spent in each app BlockedApp
@@ -76,16 +93,23 @@ class AppMonitorService : AccessibilityService() {
      * */
     private fun monitorApp(packageName: String, app: BlockedApp) {
         val currentTimeUsage = app.currentTimeUsage ?: 0
+        val timeSpentMinutes = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60
 
-        val timeSpent = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60 // in minutes
-
-        if (app.isLimitSet && currentTimeUsage + timeSpent >= app.limitMinutes!!) {
+        if (app.isLimitSet && currentTimeUsage + timeSpentMinutes >= app.limitMinutes!!) {
             blockApp(packageName)
         } else {
             handler.postDelayed({
                 monitorApp(packageName, app)
-            }, 1000)
+            }, 1000) // Check every second
         }
+    }
+
+    private fun updateAppUsageTime(app: BlockedApp) {
+        val timeSpentMinutes = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60
+        val updatedApp = app.copy(
+            currentTimeUsage = (app.currentTimeUsage ?: 0) + timeSpentMinutes.toInt()
+        )
+        preferencesManager.addOrUpdateLimitedApp(updatedApp)
     }
 
     /** Block given app to the end of the day
@@ -98,11 +122,15 @@ class AppMonitorService : AccessibilityService() {
 
         performGlobalAction(GLOBAL_ACTION_BACK)
 
+        handler.removeCallbacksAndMessages(null)
+        lastActivePackage = null
+
         // Show notification via notification manager TODO
         // Show fullscreen message TODO
     }
 
     override fun onDestroy() {
+        handler.removeCallbacksAndMessages(null)
         // Remove listener
         preferencesManager.removeLimitedAppsChangedListener(object : PreferencesManager.OnLimitedAppsChangedListener {
             override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
@@ -110,5 +138,10 @@ class AppMonitorService : AccessibilityService() {
             }
         })
         super.onDestroy()
+    }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        monitoredApps = preferencesManager.getLimitedApps()
     }
 }
