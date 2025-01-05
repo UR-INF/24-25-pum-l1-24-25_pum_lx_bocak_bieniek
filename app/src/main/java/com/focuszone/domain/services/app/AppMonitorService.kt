@@ -10,6 +10,7 @@ import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedApp
+import com.focuszone.domain.NotificationManager
 
 /** Monitor time spent in applications
  *
@@ -126,6 +127,7 @@ class AppMonitorService : AccessibilityService() {
         lastActivePackage = null
 
         // Show notification via notification manager TODO
+        NotificationManager(this).showBlockedAppNotification(packageName)
         // Show fullscreen message TODO
     }
 
