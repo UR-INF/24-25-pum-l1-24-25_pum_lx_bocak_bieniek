@@ -87,18 +87,6 @@ class ValidatorTest {
 
     // Test BlockedApp validation
     @Test
-    fun `validate app with valid limit and no sessions`() {
-        val validApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(validApp)).isTrue()
-    }
-
-    @Test
     fun `validate app with zero limit minutes fails`() {
         val invalidApp = BlockedApp(
             id = "app1",
@@ -123,66 +111,6 @@ class ValidatorTest {
     }
 
     @Test
-    fun `validate app with valid sessions`() {
-        val validApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(validApp)).isTrue()
-    }
-
-    @Test
-    fun `validate app with zero number of sessions fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
-    fun `validate app with null number of sessions fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
-    fun `validate app with zero session minutes fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
-    fun `validate app with null session minutes fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
     fun `validate app with no limits set`() {
         val validApp = BlockedApp(
             id = "app1",
@@ -200,30 +128,6 @@ class ValidatorTest {
             id = "app1",
             isLimitSet = true,
             limitMinutes = -1,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
-    fun `validate app with negative number of sessions fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
-            currentTimeUsage = null,
-        )
-
-        assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
-    }
-
-    @Test
-    fun `validate app with negative session minutes fails`() {
-        val invalidApp = BlockedApp(
-            id = "app1",
-            isLimitSet = true,
-            limitMinutes = 30,
             currentTimeUsage = null,
         )
 
