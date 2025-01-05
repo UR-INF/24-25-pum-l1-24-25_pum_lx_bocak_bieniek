@@ -40,7 +40,7 @@
         </service>
 
         <activity
-            android:name=".ui.fragments.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.FocusZone">
             <intent-filter>
