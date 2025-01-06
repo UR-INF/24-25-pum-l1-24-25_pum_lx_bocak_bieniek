@@ -6,17 +6,24 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.focuszone.R
+import com.focuszone.data.preferences.PreferencesManager
+import com.focuszone.domain.UserAuthManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val preferencesManager = PreferencesManager(this)
+        preferencesManager.clearAllData() // !!! clear data to test registration - to delete later
+
         val sharedPreferences = getSharedPreferences("AppPreferences", 0)
         val isDarkModeEnabled = sharedPreferences.getBoolean("dark_mode", false)
         if (isDarkModeEnabled) {
@@ -34,9 +41,15 @@ class MainActivity : AppCompatActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
 
         setContentView(R.layout.activity_main)
-
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val navController = findNavController(R.id.fragment)
+
+        val userAuthManager = UserAuthManager(this)
+        if (userAuthManager.isUserRegistered()) {
+            navController.setGraph(R.navigation.nav_graph)
+        } else {
+            navController.setGraph(R.navigation.auth_nav_graph)
+        }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView.setupWithNavController(navController)
 
@@ -49,5 +62,18 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, 0)
             }
         }
+// Hide bottom navigation bar
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            when (destination.id) {
+                R.id.welcomeFragment, R.id.registrationFragment -> {
+                    bottomNavigationView.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavigationView.visibility = View.VISIBLE
+                }
+            }
+        }
+
     }
 }
