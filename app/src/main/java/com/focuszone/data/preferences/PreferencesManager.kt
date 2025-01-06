@@ -204,4 +204,9 @@ class PreferencesManager(context: Context) {
         val json = gson.toJson(sites)
         sharedPreferences.edit().putString(KEY_BLOCKED_SITES, json).apply()
     }
+
+    // Function to test registration - to delete later
+    fun clearAllData() {
+        sharedPreferences.edit().clear().apply()
+    }
 }
