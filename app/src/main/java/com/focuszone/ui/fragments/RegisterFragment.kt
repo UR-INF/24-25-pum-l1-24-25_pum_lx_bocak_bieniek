@@ -1,5 +1,6 @@
 package com.focuszone.ui.fragments
 
+import android.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.focuszone.R
 import android.os.Bundle
@@ -39,31 +40,38 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
         return view
     }
 
+    private fun showErrorDialog(message: String) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Error")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
     private fun handleRegistration() {
         val pin1 = editPIN1.text.toString()
         val pin2 = editPIN2.text.toString()
 
 
         if (pin1.isEmpty() || pin2.isEmpty()) {
-            Toast.makeText(requireContext(), "error empty pin", Toast.LENGTH_SHORT).show()
+            showErrorDialog("PIN cannot be empty")
             return
         }
 
         if (pin1 != pin2) {
-            Toast.makeText(requireContext(), "error_pin_mismatch", Toast.LENGTH_SHORT).show()
+            showErrorDialog("PINs do not match")
             return
         }
 
         val isRegistered = userAuthManager.registerUser(pin1)
         if (isRegistered) {
-            Toast.makeText(requireContext(), "success_registration", Toast.LENGTH_SHORT).show()
             val navController = findNavController(this)
             navController.setGraph(R.navigation.nav_graph)
             navController.navigate(R.id.homeFragment)
 
             navController.setGraph(R.navigation.nav_graph)
         } else {
-            Toast.makeText(requireContext(), "error_invalid_pin", Toast.LENGTH_SHORT).show()
+            showErrorDialog("Invalid PIN format")
         }
     }
 }
