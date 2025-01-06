@@ -41,6 +41,7 @@
     <string name="repeatPin">Repeat PIN</string>
     <string name="register">Register</string>
     <string name="enableBio">Enable biometrics</string>
+    <string name="disableBio">Disable biometrics</string>
     <string name="registrationInstruction">Insert PIN twice to access application</string>
     <!-- Settings -->
     <string name="settingsTitle">Settings</string>

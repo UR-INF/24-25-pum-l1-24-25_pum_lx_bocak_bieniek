@@ -30,6 +30,7 @@
     <string name="repeatPin">Powtórz PIN</string>
     <string name="register">Zarejestruj</string>
     <string name="enableBio">Włącz biometrię</string>
+    <string name="disableBio">Wyłącz biometrię</string>
     <string name="registrationInstruction">Wprowadź dwukrotnie PIN aby otworzyć aplikację</string>
     <string name="settingsTitle">Ustawienia</string>
     <string name="english">Angielski</string>
