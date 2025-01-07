@@ -209,4 +209,12 @@ class PreferencesManager(context: Context) {
     fun clearAllData() {
         sharedPreferences.edit().clear().apply()
     }
+
+    fun saveBoolean(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
+    fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return sharedPreferences.getBoolean(key, defaultValue)
+    }
 }
