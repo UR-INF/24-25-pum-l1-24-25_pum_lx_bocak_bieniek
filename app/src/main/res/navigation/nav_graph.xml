@@ -67,9 +67,6 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" >
         <action
-            android:id="@+id/bttnAuthorization"
-            app:destination="@id/AuthorizationFragment" />
-        <action
             android:id="@+id/bttnDisableAllBlocks"
             app:destination="@id/DisableBlocksFragment" />
         <action
@@ -79,11 +76,6 @@
             android:id="@+id/bttnAbout"
             app:destination="@id/AboutFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/AuthorizationFragment"
-        android:name="com.focuszone.ui.fragments.AuthorizationFragment"
-        android:label="fragment_authorization"
-        tools:layout="@layout/fragment_authorization" />
     <fragment
         android:id="@+id/DisableBlocksFragment"
         android:name="com.focuszone.ui.fragments.DisableBlocksFragment"
