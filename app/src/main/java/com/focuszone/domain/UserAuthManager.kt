@@ -41,4 +41,19 @@ class UserAuthManager(context: Context) {
         return storedPin != null && Validator.comparePins(inputPin, storedPin)
     }
 
+    private val biometricEnabledKey = "biometric_enabled"
+
+    fun isBiometricEnabled(): Boolean {
+        return preferencesManager.getBoolean(biometricEnabledKey, false)
+    }
+
+    // Włączenie biometrii
+    fun enableBiometric() {
+        preferencesManager.saveBoolean(biometricEnabledKey, true)
+    }
+
+    // Wyłączenie biometrii
+    fun disableBiometric() {
+        preferencesManager.saveBoolean(biometricEnabledKey, false)
+    }
 }
