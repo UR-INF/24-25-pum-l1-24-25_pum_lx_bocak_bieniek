@@ -49,4 +49,8 @@
     <string name="delete">Usuń</string>
     <string name="disable">Wyłącz</string>
     <string name="loginBiometric">Zaloguj się biometrią</string>
+    <string name="change_pin">Zmiana kodu PIN</string>
+    <string name="current_pin">Aktualny kod PIN</string>
+    <string name="new_pin">Nowy kod PIN</string>
+    <string name="confirm_new_pin">Potwierdź nowy kod PIN</string>
 </resources>

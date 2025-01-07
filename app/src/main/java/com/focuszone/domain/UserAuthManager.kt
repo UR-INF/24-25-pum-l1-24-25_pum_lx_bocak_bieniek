@@ -47,13 +47,21 @@ class UserAuthManager(context: Context) {
         return preferencesManager.getBoolean(biometricEnabledKey, false)
     }
 
-    // Włączenie biometrii
     fun enableBiometric() {
         preferencesManager.saveBoolean(biometricEnabledKey, true)
     }
 
-    // Wyłączenie biometrii
     fun disableBiometric() {
         preferencesManager.saveBoolean(biometricEnabledKey, false)
+    }
+
+    private val sharedPreferences = context.getSharedPreferences("UserAuth", Context.MODE_PRIVATE)
+
+//    TODO: something is wrong with that - need to fix
+    fun setNewPin(newPin: String) {
+        with(sharedPreferences.edit()) {
+            putString("user_pin", newPin)
+            apply()
+        }
     }
 }

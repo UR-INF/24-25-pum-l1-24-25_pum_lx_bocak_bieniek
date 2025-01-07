@@ -64,7 +64,11 @@
     <!-- Site Card -->
     <string name="siteName">Site address</string>
     <string name="delete">Delete</string>
-
+    <!-- Change pin -->
+    <string name="change_pin">Change PIN</string>
+    <string name="current_pin">Current PIN</string>
+    <string name="new_pin">New PIN</string>
+    <string name="confirm_new_pin">Confirm new PIN</string>
     <string name="disable">Disable</string>
     <string name="enable">Enable</string>
 </resources>

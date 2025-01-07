@@ -5,8 +5,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -112,22 +114,61 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun enableBiometric() {
-        // Włącz biometryczne logowanie, np. odcisk palca
-        // Użyj odpowiednich metod z Android API, np. BiometricPrompt
         userAuthManager.enableBiometric()
         Toast.makeText(requireContext(), "Biometric authentication enabled", Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun disableBiometric() {
-        // Wyłącz biometryczne logowanie
         userAuthManager.disableBiometric()
         Toast.makeText(requireContext(), "Biometric authentication disabled", Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun showChangePinDialog() {
-        // Wyświetl dialog do zmiany PINu (np. za pomocą fragmentu lub aktywności)
-        // Możesz zapisać nowy PIN za pomocą UserAuthManager
+        val dialogView = layoutInflater.inflate(R.layout.fragment_change_pin, null)
+
+        val currentPinEditText = dialogView.findViewById<EditText>(R.id.editTextCurrentPin)
+        val newPinEditText = dialogView.findViewById<EditText>(R.id.editTextNewPin)
+        val confirmPinEditText = dialogView.findViewById<EditText>(R.id.editTextConfirmNewPin)
+
+        // Tworzenie dialogu
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.change_pin))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.save), null)
+            .setNegativeButton(getString(R.string.cancel), null)
+            .create()
+
+        dialog.setOnShowListener {
+            // Obsługa kliknięcia przycisku "Zapisz"
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val currentPin = currentPinEditText.text.toString()
+                val newPin = newPinEditText.text.toString()
+                val confirmPin = confirmPinEditText.text.toString()
+
+                if (!userAuthManager.authenticateUser(currentPin)) {
+                    Toast.makeText(requireContext(), "invalid_current_pin", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (newPin.isEmpty() || confirmPin.isEmpty()) {
+                    Toast.makeText(requireContext(), "pin_empty", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (newPin != confirmPin) {
+                    Toast.makeText(requireContext(), "pins_do_not_match", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                userAuthManager.setNewPin(newPin)
+                Toast.makeText(requireContext(), "pin_changed_successfully", Toast.LENGTH_SHORT).show()
+
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
     }
+
 }
