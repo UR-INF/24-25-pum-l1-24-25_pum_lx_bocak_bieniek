@@ -18,6 +18,23 @@
         android:name="com.focuszone.ui.fragments.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <!-- login/registration fragments -->
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.focuszone.ui.fragments.RegisterFragment"
+        android:label="register_fragment"
+        tools:layout="@layout/fragment_registration"
+        />
+    <action
+        android:id="@+id/action_global_loginFragment"
+        app:destination="@id/welcomeFragment"
+        />
+    <action
+        android:id="@+id/action_global_registrationFragment"
+        app:destination="@id/registrationFragment"/>
+    <action
+        android:id="@+id/action_registerFragment_to_homeFragment"
+        app:destination="@id/homeFragment" />
     <!--app related fragments -->
     <fragment
         android:id="@+id/blockedAppsFragment"
