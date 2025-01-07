@@ -6,15 +6,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.focuszone.R
+import com.focuszone.domain.UserAuthManager
 import java.util.Locale
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var switchBiometric: Switch
+    private lateinit var buttonChangePin: Button
+    private lateinit var userAuthManager: UserAuthManager
 
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)
@@ -23,7 +28,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val config = Configuration()
         config.setLocale(locale)
 
-        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
+        requireContext().resources.updateConfiguration(
+            config,
+            requireContext().resources.displayMetrics
+        )
 
         with(sharedPreferences.edit()) {
             putString("app_language", languageCode)
@@ -42,7 +50,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         val isDarkModeEnabled = sharedPreferences.getBoolean("dark_mode", false)
         darkModeSwitch.isChecked = isDarkModeEnabled
-        darkModeSwitch.text = if (isDarkModeEnabled) getString(R.string.disable) else getString(R.string.enable)
+        darkModeSwitch.text =
+            if (isDarkModeEnabled) getString(R.string.disable) else getString(R.string.enable)
 
         darkModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -59,6 +68,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
         }
 
+        switchBiometric = view.findViewById(R.id.switchBiometric)
+        buttonChangePin = view.findViewById(R.id.buttonChangePin)
+        userAuthManager = UserAuthManager(requireContext())
+
+        switchBiometric.isChecked = userAuthManager.isBiometricEnabled()
+
+        switchBiometric.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableBiometric()
+            } else {
+                disableBiometric()
+            }
+        }
+
+        buttonChangePin.setOnClickListener {
+            // Zaloguj użytkownika lub pokaż formularz do zmiany PINu
+            showChangePinDialog()
+        }
+
         val bttnPolish = view.findViewById<Button>(R.id.bttnPolish)
         bttnPolish.setOnClickListener {
             setLocale("pl")
@@ -69,10 +97,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             setLocale("en")
         }
 
-        val bttnAuthorization = view.findViewById<Button>(R.id.bttnAuthorization)
-        bttnAuthorization.setOnClickListener {
-            findNavController().navigate(R.id.AuthorizationFragment)
-        }
         val bttnDisableBlocks = view.findViewById<Button>(R.id.bttnDisableAllBlocks)
         bttnDisableBlocks.setOnClickListener {
             findNavController().navigate(R.id.DisableBlocksFragment)
@@ -85,5 +109,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         bttnAbout.setOnClickListener {
             findNavController().navigate(R.id.AboutFragment)
         }
+    }
+
+    private fun enableBiometric() {
+        // Włącz biometryczne logowanie, np. odcisk palca
+        // Użyj odpowiednich metod z Android API, np. BiometricPrompt
+        userAuthManager.enableBiometric()
+        Toast.makeText(requireContext(), "Biometric authentication enabled", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun disableBiometric() {
+        // Wyłącz biometryczne logowanie
+        userAuthManager.disableBiometric()
+        Toast.makeText(requireContext(), "Biometric authentication disabled", Toast.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun showChangePinDialog() {
+        // Wyświetl dialog do zmiany PINu (np. za pomocą fragmentu lub aktywności)
+        // Możesz zapisać nowy PIN za pomocą UserAuthManager
     }
 }
