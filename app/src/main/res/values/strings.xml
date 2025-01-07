@@ -57,6 +57,7 @@
     <string name="welcomeTitle">Welcome to FocusZone!</string>
     <string name="insertPin">Insert PIN</string>
     <string name="login">Log In</string>
+    <string name="loginBiometric">Log in with Biometric</string>
     <!-- App Card -->
     <string name="limit" translatable="false">Limit: 1h 30 min</string>
     <string name="edit">Edit</string>
