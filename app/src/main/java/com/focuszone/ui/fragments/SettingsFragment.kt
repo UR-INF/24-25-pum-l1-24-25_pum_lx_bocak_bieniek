@@ -114,13 +114,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun enableBiometric() {
         userAuthManager.enableBiometric()
-        Toast.makeText(requireContext(), "Biometric authentication enabled", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), getString(R.string.biometric_auth_enabled), Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun disableBiometric() {
         userAuthManager.disableBiometric()
-        Toast.makeText(requireContext(), "Biometric authentication disabled", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), getString(R.string.biometric_auth_disabled), Toast.LENGTH_SHORT)
             .show()
     }
 
@@ -145,22 +145,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 val confirmPin = confirmPinEditText.text.toString()
 
                 if (!userAuthManager.authenticateUser(currentPin)) {
-                    Toast.makeText(requireContext(), "invalid_current_pin", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.invalid_current_pin), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 if (newPin.isEmpty() || confirmPin.isEmpty()) {
-                    Toast.makeText(requireContext(), "pin_empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.pin_empty), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 if (newPin != confirmPin) {
-                    Toast.makeText(requireContext(), "pins_do_not_match", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.pins_do_not_match), Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
                 userAuthManager.setNewPin(newPin)
-                Toast.makeText(requireContext(), "pin_changed_successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.pin_changed_successfully), Toast.LENGTH_SHORT).show()
 
                 dialog.dismiss()
             }

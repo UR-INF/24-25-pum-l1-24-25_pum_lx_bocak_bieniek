@@ -33,14 +33,14 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
         bttnLogin.setOnClickListener {
             val inputPin = editPinLogin.text.toString()
             if (inputPin.isBlank()) {
-                showErrorDialog("PIN can not be empty.")
+                showErrorDialog(getString(R.string.pin_empty))
                 return@setOnClickListener
             }
 
             if (userAuthManager.authenticateUser(inputPin)) {
                 navigateToHome()
             } else {
-                showErrorDialog("Invalid PIN. Try again")
+                showErrorDialog(getString(R.string.invalid_pin))
             }
         }
 
@@ -49,7 +49,7 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
             if (preferencesManager.isBiometricEnabled()) {
                 showBiometricPrompt()
             } else {
-                Toast.makeText(requireContext(), "Biometric log in is disabled.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.biometic_disabled), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -60,9 +60,9 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Error")
+            .setTitle(getString(R.string.error))
             .setMessage(message)
-            .setPositiveButton("OK", null)
+            .setPositiveButton(getString(R.string.ok), null)
             .show()
     }
 
@@ -78,19 +78,19 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
-                    showErrorDialog("Biometric error: $errString")
+                    showErrorDialog(getString(R.string.biometric_error, errString))
                 }
 
                 override fun onAuthenticationFailed() {
                     super.onAuthenticationFailed()
-                    Toast.makeText(requireContext(), "Unsuccessful biometric log in.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.biometric_unsuccessful), Toast.LENGTH_SHORT).show()
                 }
             })
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Biometric log in")
-            .setSubtitle("Use fingerprint to log in")
-            .setNegativeButtonText("Cancel")
+            .setTitle(getString(R.string.biometric_log_in))
+            .setSubtitle(getString(R.string.biometric_descr))
+            .setNegativeButtonText(getString(R.string.cancel))
             .build()
 
         biometricPrompt.authenticate(promptInfo)

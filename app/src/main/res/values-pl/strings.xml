@@ -53,4 +53,19 @@
     <string name="current_pin">Aktualny kod PIN</string>
     <string name="new_pin">Nowy kod PIN</string>
     <string name="confirm_new_pin">Potwierdź nowy kod PIN</string>
+    <string name="invalid_current_pin">Niepoprawny obecny kod PIN</string>
+    <string name="pin_empty">Kod PIN pusty</string>
+    <string name="pins_do_not_match">Kody PIN nie są zgodne</string>
+    <string name="pin_changed_successfully">Kod PIN zmieniony pomyślnie</string>
+    <string name="biometric_auth_enabled">Autentykacja biometrią włączona</string>
+    <string name="biometric_auth_disabled">Autentykacja biometrią wyłączona</string>
+    <string name="invalid_pin">Niepoprawny kod PIN. Spróbuj ponownie</string>
+    <string name="invalid_pin_format">Niepoprawny format kodu PIN</string>
+    <string name="biometric_log_in">Logowanie z biometrią</string>
+    <string name="biometric_descr">Użyj czytnika odcisku palca aby się zalogować</string>
+    <string name="biometic_disabled">Logowanie biometrią jest wyłączone</string>
+    <string name="biometric_error">Błąd biometrii: %s</string>
+    <string name="biometric_unsuccessful">Logowanie biometrią zakończone niepowodzeniem</string>
+    <string name="ok">Ok</string>
+    <string name="error">Error</string>
 </resources>

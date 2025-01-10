@@ -53,6 +53,8 @@
     <string name="disableBlocks">Disable all blocks</string>
     <string name="changeCustomMessage">Change Custom Message</string>
     <string name="about">About</string>
+    <string name="biometric_auth_enabled">Biometric authentication enabled</string>
+    <string name="biometric_auth_disabled">Biometric authentication disabled</string>
     <!-- Welcome -->
     <string name="welcomeTitle">Welcome to FocusZone!</string>
     <string name="insertPin">Insert PIN</string>
@@ -71,4 +73,20 @@
     <string name="confirm_new_pin">Confirm new PIN</string>
     <string name="disable">Disable</string>
     <string name="enable">Enable</string>
+    <!-- PIN communicate -->
+    <string name="invalid_current_pin">Invalid current PIN</string>
+    <string name="pin_empty">PIN cannot be empty</string>
+    <string name="pins_do_not_match">PINs do not match</string>
+    <string name="pin_changed_successfully">PIN changed successfully</string>
+    <string name="invalid_pin">Invalid PIN. Try again</string>
+    <string name="invalid_pin_format">Invalid PIN format</string>
+    <!-- Biometric -->
+    <string name="biometric_log_in">Biometric log in</string>
+    <string name="biometric_descr">Use fingerprint to log in</string>
+
+    <string name="biometic_disabled">Biometric log in disabled</string>
+    <string name="biometric_error">Biometric error: %s</string>
+    <string name="biometric_unsuccessful">Unsuccessful biometric log in</string>
+    <string name="ok">Ok</string>
+    <string name="error">Error</string>
 </resources>

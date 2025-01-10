@@ -47,9 +47,9 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
 
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("Error")
+            .setTitle(getString(R.string.error))
             .setMessage(message)
-            .setPositiveButton("OK", null)
+            .setPositiveButton(getString(R.string.ok), null)
             .show()
     }
 
@@ -60,12 +60,12 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
 
         // PIN validation
         if (pin1.isEmpty() || pin2.isEmpty()) {
-            showErrorDialog("PIN cannot be empty")
+            showErrorDialog(getString(R.string.pin_empty))
             return
         }
 
         if (pin1 != pin2) {
-            showErrorDialog("PINs do not match")
+            showErrorDialog(getString(R.string.pins_do_not_match))
             return
         }
 
@@ -79,7 +79,7 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
             navController.navigate(R.id.homeFragment)
 
         } else {
-            showErrorDialog("Invalid PIN format")
+            showErrorDialog(getString(R.string.invalid_pin_format))
         }
     }
 }

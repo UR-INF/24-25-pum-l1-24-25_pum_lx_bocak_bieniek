@@ -57,7 +57,9 @@ class UserAuthManager(context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences("UserAuth", Context.MODE_PRIVATE)
 
-//    TODO: something is wrong with that - need to fix
+    /**
+     * Sets new PIN provided by user
+     */
     fun setNewPin(newPin: String) {
         if (Validator.isPinValid(newPin)) {
             preferencesManager.savePin(newPin)
