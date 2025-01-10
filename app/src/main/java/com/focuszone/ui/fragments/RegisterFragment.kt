@@ -10,13 +10,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
-import android.widget.Toast
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import com.focuszone.domain.UserAuthManager
+import com.focuszone.data.preferences.PreferencesManager
+import android.widget.Toast
 
 class RegisterFragment : Fragment(R.layout.fragment_registration) {
 
     private lateinit var userAuthManager: UserAuthManager
+    private lateinit var preferencesManager: PreferencesManager
     private lateinit var editPIN1: EditText
     private lateinit var editPIN2: EditText
     private lateinit var switchBiometric: Switch
@@ -28,8 +30,11 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
     ): View {
         val view = inflater.inflate(R.layout.fragment_registration, container, false)
 
+        // Manager initialization
         userAuthManager = UserAuthManager(requireContext())
+        preferencesManager = PreferencesManager(requireContext())
 
+        // View initialization
         editPIN1 = view.findViewById(R.id.editPIN1)
         editPIN2 = view.findViewById(R.id.editPIN2)
         switchBiometric = view.findViewById(R.id.switchBiometric)
@@ -41,8 +46,8 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
     }
 
     private fun showErrorDialog(message: String) {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setTitle("Error")
+        AlertDialog.Builder(requireContext())
+            .setTitle("Error")
             .setMessage(message)
             .setPositiveButton("OK", null)
             .show()
@@ -51,8 +56,9 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
     private fun handleRegistration() {
         val pin1 = editPIN1.text.toString()
         val pin2 = editPIN2.text.toString()
+        val isBiometricEnabled = switchBiometric.isChecked
 
-
+        // PIN validation
         if (pin1.isEmpty() || pin2.isEmpty()) {
             showErrorDialog("PIN cannot be empty")
             return
@@ -65,11 +71,13 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
 
         val isRegistered = userAuthManager.registerUser(pin1)
         if (isRegistered) {
-            val navController = findNavController(this)
-            navController.setGraph(R.navigation.nav_graph)
+            preferencesManager.savePin(pin1)
+            preferencesManager.markRegistrationComplete()
+            preferencesManager.toggleBiometricEnabled(isBiometricEnabled)
+
+            val navController = findNavController()
             navController.navigate(R.id.homeFragment)
 
-            navController.setGraph(R.navigation.nav_graph)
         } else {
             showErrorDialog("Invalid PIN format")
         }
