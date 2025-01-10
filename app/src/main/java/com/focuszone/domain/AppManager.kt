@@ -61,7 +61,9 @@ class AppManager(context: Context) {
      * **/
     fun getAllInstalledApps(context: Context): List<ApplicationInfo> {
         val packageManager = context.packageManager
-        return packageManager.getInstalledApplications(0)
+        return packageManager.getInstalledApplications(0).filter { app ->
+            (app.flags and ApplicationInfo.FLAG_SYSTEM) == 0  // exclude system applications
+        }
     }
 
     /** Usage example

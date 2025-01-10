@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.ui.adapters.BlockedAppsAdapter
+import com.focuszone.domain.AppManager
 
 class BlockedAppsFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchView: SearchView
+    private lateinit var blockedAppsAdapter: BlockedAppsAdapter
+
+    private val blockedApps = mutableListOf<BlockedApp>()
+    private val filteredApps = mutableListOf<BlockedApp>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,29 +30,74 @@ class BlockedAppsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_blocked_apps, container, false)
 
         recyclerView = view.findViewById(R.id.restrictedAppsRecyclerView)
+        searchView = view.findViewById(R.id.searchView)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Sample data to view in app
-        // TODO: add blocked apps from device
-        val blockedApps = mutableListOf(
-            BlockedApp( "Facebook",  true,  90, null),
-            BlockedApp( "Instagram",  true, 90, null),
-            BlockedApp( "Twitter",  true, 90, null),
-            BlockedApp( "TikTok",  true, 90, null)
-        )
-
-        val navController = findNavController()
-
-        recyclerView.adapter = BlockedAppsAdapter(
-            apps = blockedApps,
+        blockedAppsAdapter = BlockedAppsAdapter(
+            apps = filteredApps,
             onEditClick = { app ->
                 val bundle = Bundle().apply {
                     putString("appName", app.id)
                 }
-                navController.navigate(R.id.editAppFragment, bundle)
+                findNavController().navigate(R.id.editAppFragment, bundle)
             }
         )
 
+        recyclerView.adapter = blockedAppsAdapter
+
+        setupSearchView()
+        loadUserApps()
+
         return view
+    }
+
+    private fun loadUserApps() {
+        val appManager = AppManager(requireContext())
+        val installedApps = appManager.getAllInstalledApps(requireContext())
+        val packageManager = requireContext().packageManager
+
+        blockedApps.clear()
+        blockedApps.addAll(installedApps.map { appInfo ->
+            BlockedApp(
+                id = appInfo.loadLabel(packageManager).toString(),
+                isLimitSet = false,
+                limitMinutes = 0,
+                currentTimeUsage = 0,
+                icon = appInfo.loadIcon(packageManager)
+            )
+        })
+
+        filteredApps.clear()
+        filteredApps.addAll(blockedApps)
+        blockedAppsAdapter.notifyDataSetChanged()
+    }
+
+    private fun setupSearchView() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterApps(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterApps(newText)
+                return true
+            }
+        })
+    }
+
+    private fun filterApps(query: String?) {
+        val searchText = query?.lowercase()?.trim() ?: ""
+
+        filteredApps.clear()
+        if (searchText.isEmpty()) {
+            filteredApps.addAll(blockedApps)
+        } else {
+            filteredApps.addAll(
+                blockedApps.filter { it.id.lowercase().contains(searchText) }
+            )
+        }
+        blockedAppsAdapter.notifyDataSetChanged()
     }
 }
