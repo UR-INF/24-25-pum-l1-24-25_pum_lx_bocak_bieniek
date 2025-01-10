@@ -1,6 +1,7 @@
 package com.focuszone.ui.fragments
 
 import android.app.AlertDialog
+import androidx.biometric.BiometricManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -44,14 +45,22 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
             }
         }
 
-        // Logowanie biometryczne
+        // Biometric login
         bttnLoginBiometric.setOnClickListener {
-            if (preferencesManager.isBiometricEnabled()) {
+            if (userAuthManager.isBiometricEnabled() && isBiometricAvailable()) {
                 showBiometricPrompt()
             } else {
                 Toast.makeText(requireContext(), getString(R.string.biometic_disabled), Toast.LENGTH_SHORT).show()
+                bttnLoginBiometric.isEnabled = false
             }
         }
+    }
+
+    private fun isBiometricAvailable(): Boolean {
+        val biometricManager = BiometricManager.from(requireContext())
+        return biometricManager.canAuthenticate(
+            BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        ) == BiometricManager.BIOMETRIC_SUCCESS
     }
 
     private fun navigateToHome() {
