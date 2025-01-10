@@ -75,12 +75,17 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         userAuthManager = UserAuthManager(requireContext())
 
         switchBiometric.isChecked = userAuthManager.isBiometricEnabled()
+        val isBiometricSwitchEnable = userAuthManager.isBiometricEnabled()
+        switchBiometric.text =
+            if (isBiometricSwitchEnable) getString(R.string.disable) else getString(R.string.enable)
 
         switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 enableBiometric()
+                switchBiometric.text = getString(R.string.disable)
             } else {
                 disableBiometric()
+                switchBiometric.text = getString(R.string.enable)
             }
         }
 

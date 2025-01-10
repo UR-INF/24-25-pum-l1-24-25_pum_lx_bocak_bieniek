@@ -83,10 +83,11 @@
     <!-- Biometric -->
     <string name="biometric_log_in">Biometric log in</string>
     <string name="biometric_descr">Use fingerprint to log in</string>
-
+    <string name="biometric_auth">Biometric Authentication</string>
     <string name="biometic_disabled">Biometric log in disabled</string>
     <string name="biometric_error">Biometric error: %s</string>
     <string name="biometric_unsuccessful">Unsuccessful biometric log in</string>
     <string name="ok">OK</string>
     <string name="error">Error</string>
+    <string name="on">On</string>
 </resources>

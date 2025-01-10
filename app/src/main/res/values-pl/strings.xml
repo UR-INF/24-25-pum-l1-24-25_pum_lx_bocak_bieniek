@@ -68,4 +68,6 @@
     <string name="biometric_unsuccessful">Logowanie biometrią zakończone niepowodzeniem</string>
     <string name="ok">OK</string>
     <string name="error">Error</string>
+    <string name="on">On</string>
+    <string name="biometric_auth">Autentykacja biomerią</string>
 </resources>
