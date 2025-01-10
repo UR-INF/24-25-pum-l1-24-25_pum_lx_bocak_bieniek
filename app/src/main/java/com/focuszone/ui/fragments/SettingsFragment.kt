@@ -85,7 +85,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
 
         buttonChangePin.setOnClickListener {
-            // Zaloguj użytkownika lub pokaż formularz do zmiany PINu
             showChangePinDialog()
         }
 
@@ -132,7 +131,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val newPinEditText = dialogView.findViewById<EditText>(R.id.editTextNewPin)
         val confirmPinEditText = dialogView.findViewById<EditText>(R.id.editTextConfirmNewPin)
 
-        // Tworzenie dialogu
         val dialog = AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.change_pin))
             .setView(dialogView)
@@ -141,7 +139,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             .create()
 
         dialog.setOnShowListener {
-            // Obsługa kliknięcia przycisku "Zapisz"
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 val currentPin = currentPinEditText.text.toString()
                 val newPin = newPinEditText.text.toString()

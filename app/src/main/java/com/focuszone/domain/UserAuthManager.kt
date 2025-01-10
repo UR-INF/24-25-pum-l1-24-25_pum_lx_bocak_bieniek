@@ -59,9 +59,10 @@ class UserAuthManager(context: Context) {
 
 //    TODO: something is wrong with that - need to fix
     fun setNewPin(newPin: String) {
-        with(sharedPreferences.edit()) {
-            putString("user_pin", newPin)
-            apply()
+        if (Validator.isPinValid(newPin)) {
+            preferencesManager.savePin(newPin)
+        } else {
+            throw IllegalArgumentException("Invalid PIN format")
         }
     }
 }
