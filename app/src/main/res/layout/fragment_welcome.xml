@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="144dp"
         android:ems="10"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:minHeight="48dp"
         android:hint="@string/pin"
         app:layout_constraintBottom_toTopOf="@+id/bttnLogin"
