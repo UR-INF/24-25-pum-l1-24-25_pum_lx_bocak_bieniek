@@ -66,6 +66,6 @@
     <string name="biometic_disabled">Logowanie biometrią jest wyłączone</string>
     <string name="biometric_error">Błąd biometrii: %s</string>
     <string name="biometric_unsuccessful">Logowanie biometrią zakończone niepowodzeniem</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="error">Error</string>
 </resources>

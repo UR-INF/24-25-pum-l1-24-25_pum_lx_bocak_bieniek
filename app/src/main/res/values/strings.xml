@@ -87,6 +87,6 @@
     <string name="biometic_disabled">Biometric log in disabled</string>
     <string name="biometric_error">Biometric error: %s</string>
     <string name="biometric_unsuccessful">Unsuccessful biometric log in</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="error">Error</string>
 </resources>
