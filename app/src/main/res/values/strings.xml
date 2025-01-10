@@ -90,4 +90,6 @@
     <string name="ok">OK</string>
     <string name="error">Error</string>
     <string name="on">On</string>
+
+    <string name="search_app">Searching application…</string>
 </resources>
