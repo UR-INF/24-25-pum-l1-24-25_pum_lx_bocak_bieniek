@@ -167,9 +167,13 @@ class PreferencesManager(context: Context) {
             saveLimitedApps(apps)
         }
     }
-    fun getAppUsage(appId: String): Int? {
+    fun getCurrentAppUsage(appId: String): Int? {
         val app = getLimitedApps().find { it.id == appId }
         return app?.currentTimeUsage
+    }
+    fun getAppLimit(appId: String): Int? {
+        val app = getLimitedApps().find { it.id == appId }
+        return app?.limitMinutes
     }
 
     // Blocked sites functions
