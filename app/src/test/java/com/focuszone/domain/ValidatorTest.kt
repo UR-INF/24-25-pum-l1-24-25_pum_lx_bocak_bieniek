@@ -93,6 +93,7 @@ class ValidatorTest {
             isLimitSet = true,
             limitMinutes = 0,
             currentTimeUsage = null,
+            icon = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -105,6 +106,7 @@ class ValidatorTest {
             isLimitSet = true,
             limitMinutes = null,
             currentTimeUsage = null,
+            icon = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
@@ -117,6 +119,7 @@ class ValidatorTest {
             isLimitSet = false,
             limitMinutes = null,
             currentTimeUsage = null,
+            icon = null
         )
 
         assertThat(Validator.validateLimitedApp(validApp)).isTrue()
@@ -129,6 +132,7 @@ class ValidatorTest {
             isLimitSet = true,
             limitMinutes = -1,
             currentTimeUsage = null,
+            icon = null
         )
 
         assertThat(Validator.validateLimitedApp(invalidApp)).isFalse()
