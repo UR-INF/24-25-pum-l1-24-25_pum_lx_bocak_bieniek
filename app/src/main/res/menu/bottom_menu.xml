@@ -11,11 +11,11 @@
         android:title=""
         android:icon="@drawable/baseline_app_blocking"
         />
-    <item
-        android:id="@+id/blockedSitesFragment"
-        android:title=""
-        android:icon="@drawable/baseline_block"
-        />
+<!--    <item-->
+<!--        android:id="@+id/blockedSitesFragment"-->
+<!--        android:title=""-->
+<!--        android:icon="@drawable/baseline_block"-->
+<!--        />-->
     <item
         android:id="@+id/settingsFragment"
         android:title=""

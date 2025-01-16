@@ -54,12 +54,12 @@
             android:name="appName"
             app:argType="string" />
     </fragment>
-    <!--site related fragments-->
-    <fragment
-        android:id="@+id/blockedSitesFragment"
-        android:name="com.focuszone.ui.fragments.BlockedSitesFragment"
-        tools:layout="@layout/fragment_blocked_sites">
-    </fragment>
+<!--    &lt;!&ndash;site related fragments&ndash;&gt;-->
+<!--    <fragment-->
+<!--        android:id="@+id/blockedSitesFragment"-->
+<!--        android:name="com.focuszone.ui.fragments.BlockedSitesFragment"-->
+<!--        tools:layout="@layout/fragment_blocked_sites">-->
+<!--    </fragment>-->
     <!--setting related fragments-->
     <fragment
         android:id="@+id/settingsFragment"
