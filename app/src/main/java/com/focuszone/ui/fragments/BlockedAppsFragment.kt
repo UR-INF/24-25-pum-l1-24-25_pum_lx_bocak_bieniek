@@ -57,14 +57,12 @@ class BlockedAppsFragment : Fragment() {
         val installedApps = appManager.getAllInstalledApps(requireContext())
         val packageManager = requireContext().packageManager
 
-        // Pobierz zapisane limity aplikacji
         val limitedApps = appManager.getAllLimitedApps()
 
         blockedApps.clear()
         blockedApps.addAll(installedApps.map { appInfo ->
             val appId = appInfo.packageName
 
-            // Sprawdź, czy aplikacja ma zapisany limit
             val savedLimitApp = limitedApps.find { it.id == appId }
 
             BlockedApp(
