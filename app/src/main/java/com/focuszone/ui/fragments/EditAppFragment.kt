@@ -34,7 +34,7 @@ class EditAppFragment : Fragment() {
 
         hourPicker.minValue = 0
         hourPicker.maxValue = 23
-        minutePicker.minValue = 0
+        minutePicker.minValue = 1
         minutePicker.maxValue = 59
 
         saveButton.setOnClickListener {
@@ -42,22 +42,32 @@ class EditAppFragment : Fragment() {
             val selectedHours = hourPicker.value
             val selectedMinutes = minutePicker.value
 
-            if (newAppName.isNotBlank()) {
-                val selectedTime = "$selectedHours h $selectedMinutes m"
-                Toast.makeText(
-                    requireContext(),
-                    "Saved: $newAppName with limit $selectedTime",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                requireActivity().onBackPressed()
-            } else {
+            if (newAppName.isBlank()) {
                 Toast.makeText(
                     requireContext(),
                     "Please enter an application name!",
                     Toast.LENGTH_SHORT
                 ).show()
+                return@setOnClickListener
             }
+            if (selectedHours == 0 && selectedMinutes == 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Set a time limit greater than 0!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            val selectedTime = "$selectedHours h $selectedMinutes m"
+            Toast.makeText(
+                requireContext(),
+                "Saved: $newAppName with limit $selectedTime",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            requireActivity().onBackPressed()
         }
+
     }
 }
