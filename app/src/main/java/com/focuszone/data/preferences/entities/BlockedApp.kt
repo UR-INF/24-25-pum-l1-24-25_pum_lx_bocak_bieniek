@@ -8,5 +8,5 @@ data class BlockedApp(
     var isLimitSet: Boolean,
     val limitMinutes: Int?,
     val currentTimeUsage: Int?,
-    val icon: Drawable?
+    val icon: Drawable? = null
 )

@@ -10,8 +10,12 @@ import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.focuszone.R
+import com.focuszone.data.preferences.entities.BlockedApp
+import com.focuszone.domain.AppManager
 
 class EditAppFragment : Fragment() {
+
+    private lateinit var appManager: AppManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,13 +27,14 @@ class EditAppFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        appManager = AppManager(requireContext())
+
         val editAppName: EditText = view.findViewById(R.id.editAppName)
         val hourPicker: NumberPicker = view.findViewById(R.id.hourPicker)
         val minutePicker: NumberPicker = view.findViewById(R.id.minutePicker)
         val saveButton: Button = view.findViewById(R.id.saveButton)
 
         val appName = arguments?.getString("appName") ?: "Unknown App"
-
         editAppName.setText(appName)
 
         hourPicker.minValue = 0
@@ -50,6 +55,7 @@ class EditAppFragment : Fragment() {
                 ).show()
                 return@setOnClickListener
             }
+
             if (selectedHours == 0 && selectedMinutes == 0) {
                 Toast.makeText(
                     requireContext(),
@@ -59,15 +65,31 @@ class EditAppFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val selectedTime = "$selectedHours h $selectedMinutes m"
-            Toast.makeText(
-                requireContext(),
-                "Saved: $newAppName with limit $selectedTime",
-                Toast.LENGTH_SHORT
-            ).show()
+            val totalLimitMinutes = (selectedHours * 60) + selectedMinutes
 
-            requireActivity().onBackPressed()
+            val blockedApp = BlockedApp(
+                id = newAppName,
+                isLimitSet = true,
+                limitMinutes = totalLimitMinutes,
+                currentTimeUsage = 0
+            )
+
+            val isSaved = appManager.addOrUpdateLimitedApp(blockedApp)
+
+            if (isSaved) {
+                Toast.makeText(
+                    requireContext(),
+                    "Saved: $newAppName with limit $selectedHours h $selectedMinutes m",
+                    Toast.LENGTH_SHORT
+                ).show()
+                requireActivity().onBackPressed()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to save changes!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-
     }
 }
