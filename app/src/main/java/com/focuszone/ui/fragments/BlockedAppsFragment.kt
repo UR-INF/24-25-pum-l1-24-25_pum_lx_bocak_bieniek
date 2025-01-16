@@ -61,12 +61,12 @@ class BlockedAppsFragment : Fragment() {
 
         blockedApps.clear()
         blockedApps.addAll(installedApps.map { appInfo ->
-            val appId = appInfo.packageName
+            val appId = appInfo.loadLabel(packageManager)
 
             val savedLimitApp = limitedApps.find { it.id == appId }
 
             BlockedApp(
-                id = appId,
+                id = appId.toString(),
                 isLimitSet = savedLimitApp?.isLimitSet ?: false,
                 limitMinutes = savedLimitApp?.limitMinutes ?: 0,
                 currentTimeUsage = savedLimitApp?.currentTimeUsage ?: 0,
