@@ -1,12 +1,19 @@
 package com.focuszone.ui
 
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.accessibility.AccessibilityManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
@@ -14,8 +21,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.domain.UserAuthManager
+import com.focuszone.domain.services.app.AppMonitorService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
+
 
 class MainActivity : AppCompatActivity() {
     private fun setupLanguage() {
@@ -74,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
         checkOverlayPermission()
 
-//        val preferencesManager = PreferencesManager(this)
+        val preferencesManager = PreferencesManager(this)
 //        preferencesManager.clearAllData() // to delete later
 
         val userAuthManager = UserAuthManager(this)
@@ -89,7 +98,52 @@ class MainActivity : AppCompatActivity() {
             }
         )
         navController.graph = navGraph
+
+        //TODO translate
+        if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
+            showAccessibilityAlert()
+        }
     }
 
+    fun isAccessibilityServiceEnabled(
+        context: Context,
+        service: Class<out AccessibilityService?>
+    ): Boolean {
+        val am = context.getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
+        val enabledServices =
+            am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
 
+        for (enabledService in enabledServices) {
+            val enabledServiceInfo: ServiceInfo = enabledService.resolveInfo.serviceInfo
+            if (enabledServiceInfo.packageName.equals(context.packageName) && enabledServiceInfo.name.equals(
+                    service.name
+                )
+            ) return true
+        }
+
+        return false
+    }
+
+    private fun openAccessibilitySettings() {
+        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        startActivity(intent)
+    }
+
+    private fun showAccessibilityAlert() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Enable Accessibility Service")
+            .setMessage("To enable monitoring of app usage, please enable Accessibility for this app. Do you want to open settings?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                // Jeśli użytkownik zgodzi się, otwieramy ustawienia
+                openAccessibilitySettings()
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                // Jeśli użytkownik odmówi, pokazujemy komunikat Toast i kończymy aplikację
+                Toast.makeText(this, "The app cannot function without Accessibility enabled.", Toast.LENGTH_SHORT).show()
+                finish() // Zamyka aplikację
+                dialog.dismiss()
+            }
+            .show()
+    }
 }
