@@ -53,7 +53,22 @@ class BlockedAppsAdapter(
 
         fun bind(app: BlockedApp) {
             appName.text = app.id
-            appLimit.text = "Limit: ${app.limitMinutes}"
+
+            val limitMinutes = app.limitMinutes ?: 0
+
+            if (app.isLimitSet && limitMinutes > 0) {
+                val hours = limitMinutes / 60
+                val minutes = limitMinutes % 60
+                appLimit.text = if (hours > 0) {
+                    "Limit: ${hours}h ${minutes}m"
+                } else {
+                    "Limit: ${minutes}m"
+                }
+            } else {
+                appLimit.text = "Brak limitu"
+            }
         }
+
+
     }
 }
