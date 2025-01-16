@@ -24,30 +24,16 @@ import com.focuszone.util.DialogHelper
 
 class AppMonitorService : AccessibilityService() {
 
-    private var preferencesManager = PreferencesManager(this)
+    private lateinit var preferencesManager: PreferencesManager
     private var monitoredApps: List<BlockedApp> = emptyList()
     private var activeAppStartTime: Long = 0
     private var lastActivePackage: String? = null
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var notificationManager: NotificationManager
 
-    // on creation of this service set listener for changes in sharedPreferences
     @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
-        preferencesManager = PreferencesManager(this)
-        notificationManager = NotificationManager(this)
-
-        startForeground(1, notificationManager.showAppMonitorServiceRunningNotificationF())
-
-
-        monitoredApps = preferencesManager.getLimitedApps()
-
-        preferencesManager.addLimitedAppsChangedListener(object : PreferencesManager.OnLimitedAppsChangedListener {
-            override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
-                monitoredApps = newLimitedApps
-            }
-        })
     }
 
     /** On event run monitor
@@ -122,7 +108,7 @@ class AppMonitorService : AccessibilityService() {
      * get app ID/name/package name/etc
      * show fullscreen message
      * tell system to go back to previous screen
-    * */
+     * */
     fun blockApp(packageName: String){
         Toast.makeText(this, "Aplikacja $packageName została zablokowana", Toast.LENGTH_LONG).show()
 
@@ -148,8 +134,26 @@ class AppMonitorService : AccessibilityService() {
         super.onDestroy()
     }
 
+    // on creation of this service set listener for changes in sharedPreferences
+    @SuppressLint("ForegroundServiceType")
     override fun onServiceConnected() {
         super.onServiceConnected()
+
+        preferencesManager = PreferencesManager(this)
+        notificationManager = NotificationManager(this)
+
+        startForeground(1, notificationManager.showAppMonitorServiceRunningNotificationF())
+
+        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show()
+
+        monitoredApps = preferencesManager.getLimitedApps()
+
+        preferencesManager.addLimitedAppsChangedListener(object : PreferencesManager.OnLimitedAppsChangedListener {
+            override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
+                monitoredApps = newLimitedApps
+            }
+        })
+
         monitoredApps = preferencesManager.getLimitedApps()
     }
 }
