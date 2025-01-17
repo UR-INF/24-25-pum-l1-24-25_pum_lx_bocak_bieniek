@@ -46,13 +46,16 @@ class AppMonitorService : AccessibilityService() {
                 Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
                 if (monitoredApp != null) {
+                    Log.d("AppMonitorService", "Going to show message before blocking app " + preferencesManager.getUserMessage())
                     preferencesManager.getUserMessage()?.let {
+                        Log.d("AppMonitorService", "Showing blocking alert with message: $it")
                         DialogHelper.showBlockingAlert(
                             this,
                             it
                         )
                     }
-                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    NotificationManager(this).showBlockedAppNotification(packageName)
+                    performGlobalAction(GLOBAL_ACTION_HOME)
                     Log.d("AppMonitorService", "App blocked: $packageName")
                 }
             }
@@ -84,7 +87,6 @@ class AppMonitorService : AccessibilityService() {
     override fun onInterrupt() {
         handler.removeCallbacksAndMessages(null)
         Log.d("AppMonitorService", "Service interrupted")
-        Toast.makeText(this, "Service interrupted", Toast.LENGTH_SHORT).show()
     }
 
     private fun monitorApp(packageName: String, app: BlockedApp) {
@@ -108,9 +110,7 @@ class AppMonitorService : AccessibilityService() {
         preferencesManager.addOrUpdateLimitedApp(updatedApp)
     }
 
-    // TODO translate
     fun blockApp(packageName: String){
-        Toast.makeText(this, "Aplikacja $packageName została zablokowana", Toast.LENGTH_LONG).show()
         Log.d("AppMonitorService", "Blocking app: $packageName")
 
         performGlobalAction(GLOBAL_ACTION_BACK)
