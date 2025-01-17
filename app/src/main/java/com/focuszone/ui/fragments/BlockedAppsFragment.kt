@@ -41,8 +41,17 @@ class BlockedAppsFragment : Fragment() {
                     putString("appName", app.id)
                 }
                 findNavController().navigate(R.id.editAppFragment, bundle)
+            },
+            onLimitToggle = { app, isEnabled ->
+                val appManager = AppManager(requireContext())
+                if (isEnabled) {
+                    appManager.enableLimitForApp(app.id)
+                } else {
+                    appManager.disableLimitForApp(app.id)
+                }
             }
         )
+
 
         recyclerView.adapter = blockedAppsAdapter
 

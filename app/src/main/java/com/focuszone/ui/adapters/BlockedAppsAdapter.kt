@@ -12,7 +12,8 @@ import com.focuszone.data.preferences.entities.BlockedApp
 
 class BlockedAppsAdapter(
     private val apps: MutableList<BlockedApp>,
-    private val onEditClick: (BlockedApp) -> Unit
+    private val onEditClick: (BlockedApp) -> Unit,
+    private val onLimitToggle: (BlockedApp, Boolean) -> Unit
 ) : RecyclerView.Adapter<BlockedAppsAdapter.BlockedAppViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockedAppViewHolder {
@@ -33,11 +34,14 @@ class BlockedAppsAdapter(
         }
 
         holder.appSwitch.setOnCheckedChangeListener { _, isChecked ->
-            app.isLimitSet = isChecked
-            holder.appSwitch.text = if (isChecked) {
-                holder.itemView.context.getString(R.string.disable)
-            } else {
-                holder.itemView.context.getString(R.string.enable)
+            if (app.isLimitSet != isChecked) {
+                app.isLimitSet = isChecked
+                holder.appSwitch.text = if (isChecked) {
+                    holder.itemView.context.getString(R.string.disable)
+                } else {
+                    holder.itemView.context.getString(R.string.enable)
+                }
+                onLimitToggle(app, isChecked)
             }
         }
     }
@@ -49,7 +53,6 @@ class BlockedAppsAdapter(
         private val appLimit: TextView = view.findViewById(R.id.appLimit)
         val editButton: Button = view.findViewById(R.id.editButtonApp)
         val appSwitch: Switch = view.findViewById(R.id.switchEnableBlock)
-
 
         fun bind(app: BlockedApp) {
             appName.text = app.appName
@@ -68,7 +71,5 @@ class BlockedAppsAdapter(
                 appLimit.text = "Brak limitu"
             }
         }
-
-
     }
 }
