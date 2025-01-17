@@ -31,7 +31,7 @@
 
         <service
             android:name="com.focuszone.domain.services.app.AppMonitorService"
-            android:exported="true"
+            android:exported="false"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:foregroundServiceType="specialUse">
             <intent-filter>

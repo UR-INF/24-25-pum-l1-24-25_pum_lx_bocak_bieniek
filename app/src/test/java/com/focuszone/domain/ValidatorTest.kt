@@ -90,6 +90,7 @@ class ValidatorTest {
     fun `validate app with zero limit minutes fails`() {
         val invalidApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = true,
             limitMinutes = 0,
             currentTimeUsage = null,
@@ -103,6 +104,7 @@ class ValidatorTest {
     fun `validate app with null limit minutes fails`() {
         val invalidApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = true,
             limitMinutes = null,
             currentTimeUsage = null,
@@ -116,6 +118,7 @@ class ValidatorTest {
     fun `validate app with no limits set`() {
         val validApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = false,
             limitMinutes = null,
             currentTimeUsage = null,
@@ -129,6 +132,7 @@ class ValidatorTest {
     fun `validate app with negative limit minutes fails`() {
         val invalidApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = true,
             limitMinutes = -1,
             currentTimeUsage = null,

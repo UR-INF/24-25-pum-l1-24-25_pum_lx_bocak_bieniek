@@ -4,23 +4,13 @@ import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.NotificationManager
 import com.focuszone.util.DialogHelper
-
-/** Monitor time spent in applications
- *
- * HOW TO USE
- *
- * On first app start:
- * val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
- * startActivity(intent)
- *
- * It will start automatically as it is now System Service
- * **/
 
 class AppMonitorService : AccessibilityService() {
 
@@ -31,28 +21,29 @@ class AppMonitorService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var notificationManager: NotificationManager
 
-    @SuppressLint("ForegroundServiceType")
     override fun onCreate() {
         super.onCreate()
+        Log.d("AppMonitorService", "Service created")
+        preferencesManager = PreferencesManager(this)
+        monitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
+        if (monitoredApps.isEmpty()) {
+            stopSelf()
+        }
+        startPolling()
     }
 
-    /** On event run monitor
-     * check its limit time and current usage
-     * current usage is from where?
-     * if current usage is >= limit blockApp()
-     * monitor changes in current usage - update on add/delete
-     * monitor changes in Preferences - update on add/delete
-     * TODO
-     * **/
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             val packageName = event.packageName?.toString()
+            Log.d("AppMonitorService", "Window state changed: $packageName")
 
             if (packageName != null && packageName != lastActivePackage) {
                 lastActivePackage = packageName
                 activeAppStartTime = System.currentTimeMillis()
 
                 val monitoredApp = monitoredApps.find { it.id == packageName }
+                Log.d("AppMonitorService", "Monitored app: $monitoredApp")
+                Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
                 if (monitoredApp != null) {
                     preferencesManager.getUserMessage()?.let {
@@ -62,9 +53,27 @@ class AppMonitorService : AccessibilityService() {
                         )
                     }
                     performGlobalAction(GLOBAL_ACTION_BACK)
+                    Log.d("AppMonitorService", "App blocked: $packageName")
                 }
             }
         }
+    }
+
+    private fun startPolling() {
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                Log.d("AppMonitorService", "Polling for changes in monitored apps")
+                val newMonitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
+                if (newMonitoredApps != monitoredApps) {
+                    Log.d("AppMonitorService", "Detected changes in monitored apps")
+                    monitoredApps = newMonitoredApps
+                    Log.d("AppMonitorService", "Updated monitored apps: $monitoredApps")
+                } else {
+                    Log.d("AppMonitorService", "No changes detected in monitored apps")
+                }
+                handler.postDelayed(this, 5000) // Poll every 5 seconds
+            }
+        }, 5000)
     }
 
     private fun startMonitoringApp(app: BlockedApp) {
@@ -74,15 +83,10 @@ class AppMonitorService : AccessibilityService() {
 
     override fun onInterrupt() {
         handler.removeCallbacksAndMessages(null)
+        Log.d("AppMonitorService", "Service interrupted")
+        Toast.makeText(this, "Service interrupted", Toast.LENGTH_SHORT).show()
     }
 
-    /** Monitor time spent in each app BlockedApp
-     * get app ID/name/package name/etc
-     * if app is opened count its usage time in Foreground state
-     * if app limit is stopped stop counter but remember its state
-     * if app limit is exceeded block app
-     * handle app switching
-     * */
     private fun monitorApp(packageName: String, app: BlockedApp) {
         val currentTimeUsage = app.currentTimeUsage ?: 0
         val timeSpentMinutes = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60
@@ -104,56 +108,35 @@ class AppMonitorService : AccessibilityService() {
         preferencesManager.addOrUpdateLimitedApp(updatedApp)
     }
 
-    /** Block given app to the end of the day
-     * get app ID/name/package name/etc
-     * show fullscreen message
-     * tell system to go back to previous screen
-     * */
+    // TODO translate
     fun blockApp(packageName: String){
         Toast.makeText(this, "Aplikacja $packageName została zablokowana", Toast.LENGTH_LONG).show()
+        Log.d("AppMonitorService", "Blocking app: $packageName")
 
         performGlobalAction(GLOBAL_ACTION_BACK)
 
-        handler.removeCallbacksAndMessages(null)
         lastActivePackage = null
 
-        // Show notification via notification manager TODO
         NotificationManager(this).showBlockedAppNotification(packageName)
-        // Show fullscreen message TODO
     }
 
     override fun onDestroy() {
-        handler.removeCallbacksAndMessages(null)
-        // Remove listener
-        preferencesManager.removeLimitedAppsChangedListener(object : PreferencesManager.OnLimitedAppsChangedListener {
-            override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
-                // Do nothing
-            }
-        })
         stopForeground(true)
+        handler.removeCallbacksAndMessages(null)
         super.onDestroy()
+        Log.d("AppMonitorService", "Service destroyed")
     }
 
-    // on creation of this service set listener for changes in sharedPreferences
     @SuppressLint("ForegroundServiceType")
     override fun onServiceConnected() {
-        super.onServiceConnected()
-
         preferencesManager = PreferencesManager(this)
         notificationManager = NotificationManager(this)
 
         startForeground(1, notificationManager.showAppMonitorServiceRunningNotificationF())
 
-        Toast.makeText(this, "Service started", Toast.LENGTH_SHORT).show()
+        Log.d("AppMonitorService", "Service connected")
 
         monitoredApps = preferencesManager.getLimitedApps()
-
-        preferencesManager.addLimitedAppsChangedListener(object : PreferencesManager.OnLimitedAppsChangedListener {
-            override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
-                monitoredApps = newLimitedApps
-            }
-        })
-
-        monitoredApps = preferencesManager.getLimitedApps()
+        Log.d("AppMonitorService", "Initial monitored apps: $monitoredApps")
     }
 }

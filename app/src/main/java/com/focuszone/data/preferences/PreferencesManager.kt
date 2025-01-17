@@ -1,6 +1,7 @@
 package com.focuszone.data.preferences
 
 import android.content.Context
+import android.util.Log
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.Validator
@@ -13,10 +14,6 @@ class PreferencesManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson() // JSON serializer
 
-    // Listener management
-    private val blockedSitesListeners = mutableListOf<OnBlockedSitesChangedListener>()
-    private val limitedAppsListeners = mutableListOf<OnLimitedAppsChangedListener>()
-
     // Keys for saved values
     companion object {
         private const val KEY_REGISTRATION_COMPLETE = "REGISTRATION_COMPLETE"
@@ -25,55 +22,8 @@ class PreferencesManager(context: Context) {
         private const val KEY_CUSTOM_MESSAGE = "CUSTOM_MESSAGE"
         private const val KEY_LIMITED_APPS = "LIMITED_APPS"
         private const val KEY_BLOCKED_SITES = "BLOCKED_SITES"
+        private const val TAG = "PreferencesManager"
     }
-
-    // Listener setup and functions
-    init {
-        // Register internal SharedPreferences change listener
-        sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                KEY_BLOCKED_SITES -> notifyBlockedSitesChanged()
-                KEY_LIMITED_APPS -> notifyLimitedAppsChanged()
-            }
-        }
-    }
-
-    // Blocked Sites Listener Management
-    fun addBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
-        blockedSitesListeners.add(listener)
-    }
-
-    fun removeBlockedSitesChangedListener(listener: OnBlockedSitesChangedListener) {
-        blockedSitesListeners.remove(listener)
-    }
-
-    private fun notifyBlockedSitesChanged() {
-        val blockedSites = getBlockedSites()
-        blockedSitesListeners.forEach { it.onBlockedSitesChanged(blockedSites) }
-    }
-
-    interface OnBlockedSitesChangedListener {
-        fun onBlockedSitesChanged(newBlockedSites: List<BlockedSiteEntity>)
-    }
-
-    // Limited Apps Listener Management
-    fun addLimitedAppsChangedListener(listener: OnLimitedAppsChangedListener) {
-        limitedAppsListeners.add(listener)
-    }
-
-    fun removeLimitedAppsChangedListener(listener: OnLimitedAppsChangedListener) {
-        limitedAppsListeners.remove(listener)
-    }
-
-    private fun notifyLimitedAppsChanged() {
-        val limitedApps = getLimitedApps()
-        limitedAppsListeners.forEach { it.onLimitedAppsChanged(limitedApps) }
-    }
-
-    interface OnLimitedAppsChangedListener {
-        fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>)
-    }
-
 
     // PIN functions
     fun savePin(pin: String) {
@@ -149,6 +99,9 @@ class PreferencesManager(context: Context) {
         val json = sharedPreferences.getString(KEY_LIMITED_APPS, null) ?: return emptyList()
         val type = object : TypeToken<List<BlockedApp>>() {}.type
         return gson.fromJson(json, type)
+    }
+    fun hasLimitedApps(): Boolean {
+        return getLimitedApps().any { it.isLimitSet }
     }
     private fun saveLimitedApps(apps: List<BlockedApp>) {
         val json = gson.toJson(apps)

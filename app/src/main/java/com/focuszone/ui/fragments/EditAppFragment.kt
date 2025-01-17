@@ -1,5 +1,6 @@
 package com.focuszone.ui.fragments
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.focuszone.R
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.AppManager
+import com.focuszone.ui.MainActivity
 
 class EditAppFragment : Fragment() {
 
@@ -34,7 +36,13 @@ class EditAppFragment : Fragment() {
         val minutePicker: NumberPicker = view.findViewById(R.id.minutePicker)
         val saveButton: Button = view.findViewById(R.id.saveButton)
 
-        val appName = arguments?.getString("appName") ?: "Unknown App"
+        val appId = arguments?.getString("appName") ?: "Unknown App"
+        val packageManager = requireContext().packageManager
+        val appName = try {
+            packageManager.getApplicationLabel(packageManager.getApplicationInfo(appId, 0)).toString()
+        } catch (e: PackageManager.NameNotFoundException) {
+            "Unknown App"
+        }
         editAppName.setText(appName)
 
         hourPicker.minValue = 0
@@ -68,7 +76,8 @@ class EditAppFragment : Fragment() {
             val totalLimitMinutes = (selectedHours * 60) + selectedMinutes
 
             val blockedApp = BlockedApp(
-                id = newAppName,
+                id = appId,
+                appName = newAppName,
                 isLimitSet = true,
                 limitMinutes = totalLimitMinutes,
                 currentTimeUsage = 0
@@ -83,6 +92,9 @@ class EditAppFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 requireActivity().onBackPressed()
+
+                // Toggle service
+                (activity as? MainActivity)?.startAppMonitorServiceIfNeeded()
             } else {
                 Toast.makeText(
                     requireContext(),

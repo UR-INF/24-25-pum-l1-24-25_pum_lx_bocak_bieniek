@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.content.res.Configuration
 import android.net.Uri
@@ -20,13 +21,16 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
+import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.domain.services.app.AppMonitorService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
 
-
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var preferencesManager: PreferencesManager
+
     private fun setupLanguage() {
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val languageCode = sharedPreferences.getString("app_language", "en") ?: "en"
@@ -75,7 +79,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
         setupLanguage()
@@ -83,9 +86,7 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
         checkOverlayPermission()
 
-        val preferencesManager = PreferencesManager(this)
-//        preferencesManager.clearAllData() // to delete later
-
+        preferencesManager = PreferencesManager(this)
         val userAuthManager = UserAuthManager(this)
         val navController = findNavController(R.id.fragment)
 
@@ -99,10 +100,25 @@ class MainActivity : AppCompatActivity() {
         )
         navController.graph = navGraph
 
+        checkNotificationPermission()
+
         //TODO translate
-        if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
-            showAccessibilityAlert()
+        if (preferencesManager.hasLimitedApps()) {
+            if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
+                showAccessibilityAlert()
+            } else {
+                startService(Intent(this, AppMonitorService::class.java))
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAppMonitorServiceIfNeeded()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     fun isAccessibilityServiceEnabled(
@@ -134,16 +150,42 @@ class MainActivity : AppCompatActivity() {
         builder.setTitle("Enable Accessibility Service")
             .setMessage("To enable monitoring of app usage, please enable Accessibility for this app. Do you want to open settings?")
             .setPositiveButton("Yes") { dialog, _ ->
-                // Jeśli użytkownik zgodzi się, otwieramy ustawienia
                 openAccessibilitySettings()
                 dialog.dismiss()
             }
             .setNegativeButton("No") { dialog, _ ->
-                // Jeśli użytkownik odmówi, pokazujemy komunikat Toast i kończymy aplikację
                 Toast.makeText(this, "The app cannot function without Accessibility enabled.", Toast.LENGTH_SHORT).show()
-                finish() // Zamyka aplikację
+                finish()
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    100
+                )
+            }
+        }
+    }
+
+    // Start/stop service after adding app
+    // Example:
+    //
+    // (activity as? MainActivity)?.startAppMonitorServiceIfNeeded()
+    fun startAppMonitorServiceIfNeeded() {
+        if (preferencesManager.hasLimitedApps()) {
+            if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
+                showAccessibilityAlert()
+            } else {
+                startService(Intent(this, AppMonitorService::class.java))
+            }
+        } else {
+            stopService(Intent(this, AppMonitorService::class.java))
+        }
     }
 }

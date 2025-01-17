@@ -52,7 +52,7 @@ class BlockedAppsAdapter(
 
 
         fun bind(app: BlockedApp) {
-            appName.text = app.id
+            appName.text = app.appName
 
             val limitMinutes = app.limitMinutes ?: 0
 
