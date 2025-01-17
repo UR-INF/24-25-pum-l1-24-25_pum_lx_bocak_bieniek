@@ -5,6 +5,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.content.res.Configuration
 import android.net.Uri
@@ -99,6 +100,8 @@ class MainActivity : AppCompatActivity() {
         )
         navController.graph = navGraph
 
+        checkNotificationPermission()
+
         //TODO translate
         if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
             showAccessibilityAlert()
@@ -145,5 +148,24 @@ class MainActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
             .show()
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) !=
+                PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    100
+                )
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
+            showAccessibilityAlert()
+        }
     }
 }
