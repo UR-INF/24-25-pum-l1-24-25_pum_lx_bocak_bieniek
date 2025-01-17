@@ -112,6 +112,7 @@ class PreferencesManagerTest {
         val testApps = listOf(
             BlockedApp(
                 id = "app1",
+                appName = "Test App 1",
                 isLimitSet = true,
                 limitMinutes = 30,
                 currentTimeUsage = null,
@@ -119,6 +120,7 @@ class PreferencesManagerTest {
             ),
             BlockedApp(
                 id = "app2",
+                appName = "Test App 2",
                 isLimitSet = true,
                 limitMinutes = 45,
                 currentTimeUsage = null,
@@ -143,6 +145,7 @@ class PreferencesManagerTest {
         val testApps = listOf(
             BlockedApp(
                 id = "app1",
+                appName = "Test App 1",
                 isLimitSet = true,
                 limitMinutes = 30,
                 currentTimeUsage = null,
@@ -150,6 +153,7 @@ class PreferencesManagerTest {
             ),
             BlockedApp(
                 id = "app2",
+                appName = "Test App 2",
                 isLimitSet = true,
                 limitMinutes = 45,
                 currentTimeUsage = null,
@@ -170,6 +174,7 @@ class PreferencesManagerTest {
     fun `get limited apps returns correct list after updating app`() {
         val originalApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = true,
             limitMinutes = 30,
             currentTimeUsage = null,
@@ -191,6 +196,7 @@ class PreferencesManagerTest {
     fun `get limited apps preserves all details of complex app entity`() {
         val complexApp = BlockedApp(
             id = "complex_app",
+            appName = "Complex App",
             isLimitSet = true,
             limitMinutes = 60,
             currentTimeUsage = null,
@@ -213,12 +219,13 @@ class PreferencesManagerTest {
     fun `updating existing limit sets new limit`() {
         val initialLimit = 5
         val appId = "com.test.app"
-        val limitedApp = BlockedApp(appId, true, initialLimit, null, null)
+        val appName = "Test App 1"
+        val limitedApp = BlockedApp(appId, appName, true, initialLimit, null, null)
 
         preferencesManager.addOrUpdateLimitedApp(limitedApp)
 
         val newLimit = 69
-        val limitedAppNewLimit = BlockedApp(appId, true, newLimit, 10, null)
+        val limitedAppNewLimit = BlockedApp(appId, appName, true, newLimit, 10, null)
 
         preferencesManager.addOrUpdateLimitedApp(limitedAppNewLimit)
 
@@ -231,6 +238,7 @@ class PreferencesManagerTest {
     fun `add new valid limited app successfully`() {
         val validApp = BlockedApp(
             id = "app1",
+            appName = "Test App 1",
             isLimitSet = true,
             limitMinutes = 30,
             currentTimeUsage = null,
@@ -246,6 +254,7 @@ class PreferencesManagerTest {
     fun `add limited app with no limits sets limit to 0`() {
         val invalidApp = BlockedApp(
             id = "app5",
+            appName = "Test App 5",
             isLimitSet = false,
             limitMinutes = null,
             currentTimeUsage = null,
@@ -261,6 +270,7 @@ class PreferencesManagerTest {
     fun `add limited app with negative values fails`() {
         val invalidApp = BlockedApp(
             id = "app7",
+            appName = "Test App 7",
             isLimitSet = true,
             limitMinutes = -1,
             currentTimeUsage = null,
@@ -283,6 +293,7 @@ class PreferencesManagerTest {
     fun `remove existing app returns true`() {
         val testApp = BlockedApp(
             id = "test_app",
+            appName = "Test App",
             isLimitSet = true,
             limitMinutes = 30,
             currentTimeUsage = null,
@@ -301,6 +312,7 @@ class PreferencesManagerTest {
         val apps = listOf(
             BlockedApp(
                 id = "app1",
+                appName = "Test App 1",
                 isLimitSet = true,
                 limitMinutes = 30,
                 currentTimeUsage = null,
@@ -308,6 +320,7 @@ class PreferencesManagerTest {
             ),
             BlockedApp(
                 id = "app2",
+                appName = "Test App 2",
                 isLimitSet = true,
                 limitMinutes = 45,
                 currentTimeUsage = null,
@@ -329,6 +342,7 @@ class PreferencesManagerTest {
     fun `remove multiple times same app works correctly`() {
         val testApp = BlockedApp(
             id = "test_app",
+            appName = "Test App",
             isLimitSet = true,
             limitMinutes = 30,
             currentTimeUsage = null,
@@ -356,6 +370,7 @@ class PreferencesManagerTest {
         val apps = listOf(
             BlockedApp(
                 id = "app1",
+                appName = "Test App 1",
                 isLimitSet = true,
                 limitMinutes = 30,
                 currentTimeUsage = null,
@@ -363,6 +378,7 @@ class PreferencesManagerTest {
             ),
             BlockedApp(
                 id = "app2",
+                appName = "Test App 2",
                 isLimitSet = true,
                 limitMinutes = 45,
                 currentTimeUsage = null,
@@ -383,6 +399,7 @@ class PreferencesManagerTest {
     fun `get app usage successfully`() {
         val app = BlockedApp(
             id = "com.example.app",
+            appName = "Example app",
             isLimitSet = true,
             limitMinutes = 15,
             currentTimeUsage = 5, // new apps always get 0 current time usage
@@ -412,6 +429,7 @@ class PreferencesManagerTest {
     fun `update app usage successfully`() {
         val app = BlockedApp(
             id = "com.example.app",
+            appName = "Example app",
             isLimitSet = true,
             limitMinutes = 15,
             currentTimeUsage = 0,
