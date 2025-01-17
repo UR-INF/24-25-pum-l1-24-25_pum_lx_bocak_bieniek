@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.focuszone.R
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.AppManager
+import com.focuszone.ui.MainActivity
 
 class EditAppFragment : Fragment() {
 
@@ -83,6 +84,9 @@ class EditAppFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 requireActivity().onBackPressed()
+
+                // Toggle service
+                (activity as? MainActivity)?.startAppMonitorServiceIfNeeded()
             } else {
                 Toast.makeText(
                     requireContext(),

@@ -21,23 +21,14 @@ class AppMonitorService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var notificationManager: NotificationManager
 
-    private val limitedAppsListener = object : PreferencesManager.OnLimitedAppsChangedListener {
-        override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
-            Log.d("AppMonitorService", "Listener triggered with new apps: $newLimitedApps")
-            handler.post {
-                monitoredApps = newLimitedApps
-                Log.d("AppMonitorService", "Updated monitored apps list: $monitoredApps")
-
-                if (monitoredApps.none { it.isLimitSet }) {
-                    stopSelf()
-                }
-            }
-        }
-    }
-
     override fun onCreate() {
         super.onCreate()
         Log.d("AppMonitorService", "Service created")
+        preferencesManager = PreferencesManager(this)
+        monitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
+        if (monitoredApps.isEmpty()) {
+            stopSelf()
+        }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -98,37 +89,24 @@ class AppMonitorService : AccessibilityService() {
         preferencesManager.addOrUpdateLimitedApp(updatedApp)
     }
 
+    // TODO translate
     fun blockApp(packageName: String){
         Toast.makeText(this, "Aplikacja $packageName została zablokowana", Toast.LENGTH_LONG).show()
         Log.d("AppMonitorService", "Blocking app: $packageName")
 
         performGlobalAction(GLOBAL_ACTION_BACK)
 
-        handler.removeCallbacksAndMessages(null)
         lastActivePackage = null
 
         NotificationManager(this).showBlockedAppNotification(packageName)
     }
 
+
     override fun onDestroy() {
-        val listener = object : PreferencesManager.OnLimitedAppsChangedListener {
-            override fun onLimitedAppsChanged(newLimitedApps: List<BlockedApp>) {
-                monitoredApps = newLimitedApps
-            }
-        }
-
-        try {
-            preferencesManager.removeLimitedAppsChangedListener(listener)
-        } catch (e: Exception) {
-            Log.e("AppMonitorService", "Error removing listener", e)
-        }
-
-        handler.removeCallbacksAndMessages(null)
         stopForeground(true)
         super.onDestroy()
         Log.d("AppMonitorService", "Service destroyed")
     }
-
 
     @SuppressLint("ForegroundServiceType")
     override fun onServiceConnected() {
@@ -139,23 +117,7 @@ class AppMonitorService : AccessibilityService() {
 
         Log.d("AppMonitorService", "Service connected")
 
-        // Najpierw dodajemy listener
-        preferencesManager.addLimitedAppsChangedListener(limitedAppsListener)
-        Log.d("AppMonitorService", "Added apps listener")
-
-        // Potem inicjalizujemy listę
         monitoredApps = preferencesManager.getLimitedApps()
         Log.d("AppMonitorService", "Initial monitored apps: $monitoredApps")
-    }
-
-    // Dodaj nową metodę do restartu monitorowania
-    private fun restartMonitoring() {
-        handler.removeCallbacksAndMessages(null)
-        // Restart monitorowania dla aktualnej aplikacji jeśli jest monitorowana
-        lastActivePackage?.let { currentPackage ->
-            monitoredApps.find { it.id == currentPackage }?.let { app ->
-                startMonitoringApp(app)
-            }
-        }
     }
 }
