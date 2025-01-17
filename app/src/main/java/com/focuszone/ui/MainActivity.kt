@@ -85,8 +85,6 @@ class MainActivity : AppCompatActivity() {
         checkOverlayPermission()
 
         val preferencesManager = PreferencesManager(this)
-//        preferencesManager.clearAllData() // to delete later
-
         val userAuthManager = UserAuthManager(this)
         val navController = findNavController(R.id.fragment)
 
@@ -103,8 +101,12 @@ class MainActivity : AppCompatActivity() {
         checkNotificationPermission()
 
         //TODO translate
-        if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
-            showAccessibilityAlert()
+        if (preferencesManager.hasLimitedApps()) {
+            if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
+                showAccessibilityAlert()
+            } else {
+                startService(Intent(this, AppMonitorService::class.java))
+            }
         }
     }
 
@@ -164,8 +166,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
-            showAccessibilityAlert()
+        val preferencesManager = PreferencesManager(this)
+        if (preferencesManager.hasLimitedApps()) {
+            if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
+                showAccessibilityAlert()
+            } else {
+                startService(Intent(this, AppMonitorService::class.java))
+            }
+        } else {
+            stopService(Intent(this, AppMonitorService::class.java))
         }
     }
 }

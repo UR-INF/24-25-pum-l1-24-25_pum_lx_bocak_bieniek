@@ -150,6 +150,9 @@ class PreferencesManager(context: Context) {
         val type = object : TypeToken<List<BlockedApp>>() {}.type
         return gson.fromJson(json, type)
     }
+    fun hasLimitedApps(): Boolean {
+        return getLimitedApps().any { it.isLimitSet }
+    }
     private fun saveLimitedApps(apps: List<BlockedApp>) {
         val json = gson.toJson(apps)
         sharedPreferences.edit().putString(KEY_LIMITED_APPS, json).apply()
