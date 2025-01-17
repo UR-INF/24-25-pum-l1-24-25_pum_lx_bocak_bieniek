@@ -92,4 +92,5 @@
     <string name="on">On</string>
 
     <string name="search_app">Searching application…</string>
+    <string name="accessibility_service_description">Service for monitoring time spent in setted applications by FocusZone</string>
 </resources>

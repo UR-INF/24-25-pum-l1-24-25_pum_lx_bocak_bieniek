@@ -29,6 +29,7 @@ class AppMonitorService : AccessibilityService() {
         if (monitoredApps.isEmpty()) {
             stopSelf()
         }
+        startPolling()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -42,6 +43,7 @@ class AppMonitorService : AccessibilityService() {
 
                 val monitoredApp = monitoredApps.find { it.id == packageName }
                 Log.d("AppMonitorService", "Monitored app: $monitoredApp")
+                Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
                 if (monitoredApp != null) {
                     preferencesManager.getUserMessage()?.let {
@@ -55,6 +57,23 @@ class AppMonitorService : AccessibilityService() {
                 }
             }
         }
+    }
+
+    private fun startPolling() {
+        handler.postDelayed(object : Runnable {
+            override fun run() {
+                Log.d("AppMonitorService", "Polling for changes in monitored apps")
+                val newMonitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
+                if (newMonitoredApps != monitoredApps) {
+                    Log.d("AppMonitorService", "Detected changes in monitored apps")
+                    monitoredApps = newMonitoredApps
+                    Log.d("AppMonitorService", "Updated monitored apps: $monitoredApps")
+                } else {
+                    Log.d("AppMonitorService", "No changes detected in monitored apps")
+                }
+                handler.postDelayed(this, 5000) // Poll every 5 seconds
+            }
+        }, 5000)
     }
 
     private fun startMonitoringApp(app: BlockedApp) {
@@ -101,9 +120,9 @@ class AppMonitorService : AccessibilityService() {
         NotificationManager(this).showBlockedAppNotification(packageName)
     }
 
-
     override fun onDestroy() {
         stopForeground(true)
+        handler.removeCallbacksAndMessages(null)
         super.onDestroy()
         Log.d("AppMonitorService", "Service destroyed")
     }
