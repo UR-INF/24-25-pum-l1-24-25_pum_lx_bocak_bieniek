@@ -1,23 +1,63 @@
 package com.focuszone.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.focuszone.R
+import com.focuszone.data.preferences.entities.BlockedApp
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
-    private val blockedApps = listOf("Facebook", "Instagram", "Twitter", "TikTok")
-    private val blockedWebsites = listOf("example.com", "another-site.com", "blocked-site.com")
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var blockedAppsAdapter: BlockedAppsAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val blockedAppsCount: TextView = view.findViewById(R.id.blockedAppsCount)
-        val blockedWebsitesCount: TextView = view.findViewById(R.id.blockedWebsitesCount)
+        recyclerView = view.findViewById(R.id.blockedAppsList)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        blockedAppsCount.text = "Blocked Apps: ${blockedApps.size}"
-        blockedWebsitesCount.text = "Blocked Websites: ${blockedWebsites.size}"
+        blockedAppsAdapter = BlockedAppsAdapter()
+        recyclerView.adapter = blockedAppsAdapter
+
+        loadBlockedApps()
+    }
+
+    private fun loadBlockedApps() {
+
+    }
+}
+
+class BlockedAppsAdapter : RecyclerView.Adapter<BlockedAppsAdapter.ViewHolder>() {
+    private var blockedApps = listOf<BlockedApp>()
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val appIcon: ImageView = view.findViewById(R.id.appIcon)
+        val appName: TextView = view.findViewById(R.id.appName)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.blocked_app_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val app = blockedApps[position]
+        holder.appIcon.setImageDrawable(app.icon)
+        holder.appName.text = app.appName
+    }
+
+    override fun getItemCount() = blockedApps.size
+
+    fun updateApps(apps: List<BlockedApp>) {
+        blockedApps = apps
+        notifyDataSetChanged()
     }
 }

@@ -1,49 +1,47 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Tytuł ekranu -->
-
-    <!-- Statystyki blokowanych aplikacji -->
-
-    <!-- Statystyki blokowanych stron -->
-
-    <TextView
-        android:id="@+id/homeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:text="@string/homeTitle"
-        android:textSize="24sp"
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="149dp"
+        android:layout_height="153dp"
+        android:layout_marginTop="60dp"
+        android:contentDescription="@string/app_logo"
+        android:src="@drawable/logo_focus_zone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/blockedAppsCount"
+        android:id="@+id/currentlyBlockedTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:text="@string/blockedApps"
-        android:textSize="18sp"
+        android:layout_marginTop="68dp"
+        android:text="@string/currently_blocked_apps"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/homeTitle" />
+        app:layout_constraintTop_toBottomOf="@id/logoImage" />
 
-    <TextView
-        android:id="@+id/blockedWebsitesCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:text="@string/blockedSites"
-        android:textSize="18sp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/blockedAppsList"
+        android:layout_width="384dp"
+        android:layout_height="293dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/blockedAppsCount" />
+        app:layout_constraintTop_toBottomOf="@id/currentlyBlockedTitle"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
