@@ -14,7 +14,6 @@ class PreferencesManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson() // JSON serializer
 
-
     // Keys for saved values
     companion object {
         private const val KEY_REGISTRATION_COMPLETE = "REGISTRATION_COMPLETE"

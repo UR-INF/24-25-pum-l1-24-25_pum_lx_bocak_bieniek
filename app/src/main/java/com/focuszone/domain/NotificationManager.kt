@@ -13,7 +13,6 @@ import com.focuszone.ui.MainActivity
 /** Notification manager for app
  * notify of:
  * - working monitoring
- * - app near limit
  * - blocked site
  * - blocked app
  */
