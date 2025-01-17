@@ -5,6 +5,7 @@ import android.util.Log
 import com.focuszone.data.preferences.entities.BlockedSiteEntity
 import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.Validator
+import com.focuszone.util.Constants
 import com.focuszone.util.Constants.SHARED_PREF_NAME
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -54,7 +55,7 @@ class PreferencesManager(context: Context) {
         sharedPreferences.edit().putString(KEY_CUSTOM_MESSAGE, message).apply()
     }
     fun getUserMessage(): String? {
-        return sharedPreferences.getString(KEY_CUSTOM_MESSAGE, null)
+        return sharedPreferences.getString(KEY_CUSTOM_MESSAGE, Constants.DEFAULT_MESSAGE)
     }
 
     // Limited Apps functions
