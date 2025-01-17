@@ -65,18 +65,6 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
     }
 
-    private fun checkOverlayPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:$packageName")
-                )
-                startActivityForResult(intent, 0)
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -84,7 +72,6 @@ class MainActivity : AppCompatActivity() {
         setupLanguage()
         setupTheme()
         setupNavigation()
-        checkOverlayPermission()
 
         preferencesManager = PreferencesManager(this)
         val userAuthManager = UserAuthManager(this)
@@ -101,8 +88,9 @@ class MainActivity : AppCompatActivity() {
         navController.graph = navGraph
 
         checkNotificationPermission()
+        checkOverlayPermission()
 
-        //TODO translate
+        //TODO start service after something was added into the list
         if (preferencesManager.hasLimitedApps()) {
             if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
                 showAccessibilityAlert()
@@ -169,6 +157,18 @@ class MainActivity : AppCompatActivity() {
                     arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
                     100
                 )
+            }
+        }
+    }
+
+    private fun checkOverlayPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+                startActivityForResult(intent, 0)
             }
         }
     }
