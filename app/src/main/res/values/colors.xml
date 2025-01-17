@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background_light">#D5F2E3</color>
-    <color name="accent_light">#73BA9B</color>
-    <color name="accent_light_second">#003E1F</color>
+    <color name="accent_light">#7164e6</color>
+    <color name="accent_light_second">#a19ce0</color>
     <color name="light_text">#01110A</color>
-    <color name="accent_light_red">#BA2D0B</color>
+    <color name="accent_light_red">#45062E</color>
 
-    <color name="background_dark">#50AA7D</color>
-    <color name="accent_dark">#406655</color>
-    <color name="accent_dark_second">#0D4025</color>
+    <color name="background_dark">#C094E9</color>
+    <color name="accent_dark">#50326C</color>
+    <color name="accent_dark_second">#1D1128</color>
     <color name="dark_text">#020906</color>
-    <color name="accent_dark_red">#592215</color>
+    <color name="accent_dark_red">#2C062C</color>
 </resources>
