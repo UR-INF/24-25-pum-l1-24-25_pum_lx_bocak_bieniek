@@ -3,6 +3,7 @@ package com.focuszone.domain
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.data.preferences.entities.BlockedApp
@@ -57,10 +58,30 @@ class AppManager(context: Context) {
         return preferencesManager.getLimitedApps().find { it.id == appId }
     }
 
+    /** Enables the limit for a specific app. */
+    fun enableLimitForApp(appId: String) {
+        val app = getLimitedAppById(appId)
+        if (app != null) {
+            val updatedApp = app.copy(isLimitSet = true)
+            addOrUpdateLimitedApp(updatedApp)
+            Log.d("test", "enable limit for $appId")
+
+        }
+    }
+
+    /** Disables the limit for a specific app. */
+    fun disableLimitForApp(appId: String) {
+        val app = getLimitedAppById(appId)
+        if (app != null) {
+            val updatedApp = app.copy(isLimitSet = false)
+            addOrUpdateLimitedApp(updatedApp)
+        }
+    }
+
     /** Retrieves list of user visible packages - limited to those user can actually use
      * @param context The context of app runtime system
      * @return List of all installed app Info
-     * **/
+     **/
     fun getAllInstalledApps(context: Context): List<ApplicationInfo>  {
         val packageManager = context.packageManager
 
@@ -99,7 +120,7 @@ class AppManager(context: Context) {
             // Check if app can be launched
             val hasLauncherIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName) != null
 
-            // Check if has excluded package prefis
+            // Check if has excluded package prefix
             val isExcludedPackage = excludedPrefixes.any { prefix ->
                 appInfo.packageName.startsWith(prefix)
             }
@@ -131,7 +152,7 @@ class AppManager(context: Context) {
      *     println("Aplikacja: $name")
      *     etc.
      * }
-     * **/
+     **/
 
     /** 2nd iteration with only user apps
      * fun getUserInstalledApps(context: Context): List<ApplicationInfo> {
@@ -140,5 +161,5 @@ class AppManager(context: Context) {
      *         (app.flags and ApplicationInfo.FLAG_SYSTEM) == 0
      *     }
      * }
-     * **/
+     **/
 }
