@@ -14,6 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.data.preferences.PreferencesManager
 import android.widget.Toast
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.core.content.ContextCompat
 
 class RegisterFragment : Fragment(R.layout.fragment_registration) {
 
@@ -40,9 +43,25 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
         switchBiometric = view.findViewById(R.id.switchBiometric)
         bttnRegistration = view.findViewById(R.id.bttnRegistration)
 
+        checkBiometricAvailability()
         bttnRegistration.setOnClickListener { handleRegistration() }
 
         return view
+    }
+
+    private fun checkBiometricAvailability() {
+        val biometricManager = BiometricManager.from(requireContext())
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                // Biometria jest dostępna, switch pozostaje aktywny
+                switchBiometric.isEnabled = true
+            }
+            else -> {
+                // Biometria niedostępna, dezaktywujemy switch
+                switchBiometric.isEnabled = false
+                switchBiometric.isChecked = false
+            }
+        }
     }
 
     private fun showErrorDialog(message: String) {
@@ -56,7 +75,7 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
     private fun handleRegistration() {
         val pin1 = editPIN1.text.toString()
         val pin2 = editPIN2.text.toString()
-        val isBiometricEnabled = switchBiometric.isChecked
+        val isBiometricEnabled = switchBiometric.isChecked && switchBiometric.isEnabled
 
         // PIN validation
         if (pin1.isEmpty() || pin2.isEmpty()) {

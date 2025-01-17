@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.focuszone.R
 import com.focuszone.domain.UserAuthManager
+import com.focuszone.data.preferences.PreferencesManager
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import java.util.Locale
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -22,6 +25,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var switchBiometric: Switch
     private lateinit var buttonChangePin: Button
     private lateinit var userAuthManager: UserAuthManager
+    private lateinit var preferencesManager: PreferencesManager
 
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)
@@ -47,6 +51,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPreferences = requireContext().getSharedPreferences("AppPreferences", 0)
+        preferencesManager = PreferencesManager(requireContext())
 
         val darkModeSwitch = view.findViewById<Switch>(R.id.switchDarkMode)
 
@@ -74,10 +79,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         buttonChangePin = view.findViewById(R.id.buttonChangePin)
         userAuthManager = UserAuthManager(requireContext())
 
-        switchBiometric.isChecked = userAuthManager.isBiometricEnabled()
-        val isBiometricSwitchEnable = userAuthManager.isBiometricEnabled()
-        switchBiometric.text =
-            if (isBiometricSwitchEnable) getString(R.string.disable) else getString(R.string.enable)
+        checkBiometricAvailability()
+
+
+        val isBiometricEnabled = preferencesManager.isBiometricEnabled()
+        switchBiometric.isChecked = isBiometricEnabled
+        switchBiometric.text = if (isBiometricEnabled) getString(R.string.disable) else getString(R.string.enable)
 
         switchBiometric.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -117,14 +124,30 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 
+    private fun checkBiometricAvailability() {
+        val biometricManager = BiometricManager.from(requireContext())
+        when (biometricManager.canAuthenticate(BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                switchBiometric.isEnabled = true
+            }
+            else -> {
+                switchBiometric.isEnabled = false
+                switchBiometric.isChecked = false
+                preferencesManager.toggleBiometricEnabled(false)
+            }
+        }
+    }
+
     private fun enableBiometric() {
         userAuthManager.enableBiometric()
+        preferencesManager.toggleBiometricEnabled(true)
         Toast.makeText(requireContext(), getString(R.string.biometric_auth_enabled), Toast.LENGTH_SHORT)
             .show()
     }
 
     private fun disableBiometric() {
         userAuthManager.disableBiometric()
+        preferencesManager.toggleBiometricEnabled(false)
         Toast.makeText(requireContext(), getString(R.string.biometric_auth_disabled), Toast.LENGTH_SHORT)
             .show()
     }
