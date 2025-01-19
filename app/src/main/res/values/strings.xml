@@ -97,10 +97,20 @@
     <string name="currently_blocked_apps">Currently Blocked Apps</string>
     <string name="app_icon">App Icon</string>
     <string name="app_blocked">"App $s has been blocked"</string>
-
+    <!-- Custom message -->
     <string name="enter_custom_message">Enter custom message</string>
     <string name="change_custom_message">Change custom message</string>
     <string name="message_empty">Message can not be empty</string>
     <string name="message_saved">Message saved</string>
+    <!-- Notification Manager -->
+    <string name="focuszone_service">FocusZone service</string>
+    <string name="descritpion_message">FocusZone monitoring service notifications</string>
+    <string name="focuszone_active">FocusZone Active</string>
+    <string name="keeping_eye">Keeping eye on your monitored applications!</string>
+    <string name="app_blocked_notification">App Blocked</string>
+    <string name="focuszone_active">FocusZone Active</string>
+    <string name="keeping_eye_site">Keeping eye on sites want to block!</string>
+    <string name="site_blocked">Site Blocked</string>
+    <string name="site_blocked_description">$s has been blocked</string>
 
 </resources>

@@ -80,5 +80,13 @@
     <string name="enter_custom_message">Wprowadź własną wiadomość</string>
     <string name="message_empty">Wiadomość nie może być pusta</string>
     <string name="message_saved">Wiadomość została zapisana</string>
+    <string name="focuszone_service">Usługa FocusZone</string>
+    <string name="descritpion_message">Powiadomienie usługi monitorowania FocusZone</string>
+    <string name="focuszone_active">FocusZone Aktywny</string>
+    <string name="keeping_eye">Miej oko na monitorowane aplikacje!</string>
+    <string name="app_blocked_notification">Aplikacja zablokowana</string>
+    <string name="keeping_eye_site">Miej oko na witryny, które chcesz zablokować!</string>
+    <string name="site_blocked">Strona zablokowana</string>
+    <string name="site_blocked_description">$s została zablokowana</string>
 
 </resources>

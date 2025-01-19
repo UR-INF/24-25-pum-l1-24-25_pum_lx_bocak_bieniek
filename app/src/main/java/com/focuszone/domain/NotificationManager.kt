@@ -29,10 +29,10 @@ class NotificationManager(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "FocusZone Service",
+                R.string.focuszone_service.toString(),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "FocusZone monitoring service notifications"
+                description = R.string.descritpion_message.toString()
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -47,8 +47,8 @@ class NotificationManager(private val context: Context) {
 
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("FocusZone Active")
-            .setContentText("Keeping eye on your monitored applications!")
+            .setContentTitle(R.string.focuszone_active.toString())
+            .setContentText(R.string.keeping_eye.toString())
             .setOngoing(true)
             .setContentIntent(pendingIntent)
             .build()
@@ -57,7 +57,7 @@ class NotificationManager(private val context: Context) {
     fun showBlockedAppNotification(appName: String) {
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("App Blocked")
+            .setContentTitle(R.string.app_blocked_notification.toString())
             .setContentText("$appName has been blocked")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
@@ -74,8 +74,8 @@ class NotificationManager(private val context: Context) {
 
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("FocusZone Active")
-            .setContentText("Keeping eye on sites want to block!")
+            .setContentTitle(R.string.focuszone_active.toString())
+            .setContentText(R.string.keeping_eye_site.toString())
             .setOngoing(true)
             .setContentIntent(pendingIntent)
             .build()
@@ -84,7 +84,7 @@ class NotificationManager(private val context: Context) {
     fun showBlockedSiteNotification(siteName: String) {
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Site Blocked")
+            .setContentTitle(R.string.site_blocked.toString())
             .setContentText("$siteName has been blocked")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .build()
