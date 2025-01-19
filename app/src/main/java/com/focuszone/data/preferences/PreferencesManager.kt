@@ -184,4 +184,13 @@ class PreferencesManager(context: Context) {
     fun getCustomMessage(): String {
         return prefs.getString("custom_message", "") ?: ""
     }
+    fun removeAllAppLimits() {
+        val apps = getLimitedApps().toMutableList()
+
+        apps.forEach { it.isLimitSet = false }
+
+        saveLimitedApps(apps)
+
+        Log.d(TAG, "All app limits have been removed.")
+    }
 }
