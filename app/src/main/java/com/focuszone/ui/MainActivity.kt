@@ -21,7 +21,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
-import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.domain.services.app.AppMonitorService
 import com.focuszone.util.PermissionQueue
@@ -100,8 +99,6 @@ class MainActivity : AppCompatActivity() {
         permissionQueue.add { checkNotificationPermission(permissionQueue) }
         permissionQueue.add { checkOverlayPermission(permissionQueue) }
         permissionQueue.add { checkAccessibilityPermission(permissionQueue) }
-
-        updateAppMonitorServiceState()
     }
 
     override fun onResume() {
@@ -116,21 +113,9 @@ class MainActivity : AppCompatActivity() {
         if (isAccessibilityDialogShown) {
             isAccessibilityDialogShown = false
         }
-
-        updateAppMonitorServiceState()
     }
 
     // Additional functions
-    fun updateAppMonitorServiceState() {
-        if (preferencesManager.hasLimitedApps()) {
-            // Start the service if there are apps to monitor
-            startService(Intent(this, AppMonitorService::class.java))
-        } else {
-            // Stop the service if there are no apps to monitor
-            stopService(Intent(this, AppMonitorService::class.java))
-        }
-    }
-
     fun isAccessibilityServiceEnabled(
         context: Context,
         service: Class<out AccessibilityService?>
