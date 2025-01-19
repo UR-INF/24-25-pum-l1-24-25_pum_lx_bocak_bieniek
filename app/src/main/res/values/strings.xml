@@ -92,14 +92,6 @@
     <string name="ok">OK</string>
     <string name="error">Error</string>
     <string name="on">On</string>
-
-    <string name="search_app">Searching application…</string>
-    <string name="accessibility_service_description">Service for monitoring time spent in setted applications by FocusZone</string>
-    <string name="app_logo">App Logo</string>
-    <string name="currently_blocked_apps">Currently Blocked Apps</string>
-    <string name="app_icon">App Icon</string>
-    <string name="app_blocked">"App $s has been blocked"</string>
-    <string name="confirm">Confirm</string>
     <!-- Custom message -->
     <string name="enter_custom_message">Enter custom message</string>
     <string name="change_custom_message">Change custom message</string>
@@ -114,11 +106,19 @@
     <string name="keeping_eye_site">Keeping eye on sites want to block!</string>
     <string name="site_blocked">Site Blocked</string>
     <string name="site_blocked_description">$s has been blocked</string>
-
     <!-- Main Activity -->
     <string name="accessibility_enable">Enable Accessibility Service</string>
     <string name="accessibility_mssg">To enable monitoring of app usage, please enable Accessibility for this app. Do you want to open settings?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="accessibility_disable">"The app cannot function without Accessibility enabled."</string>
+    <!-- Other stuff -->
+    <string name="search_app">Searching application…</string>
+    <string name="accessibility_service_description">Service for monitoring time spent in setted applications by FocusZone</string>
+    <string name="app_logo">App Logo</string>
+    <string name="currently_blocked_apps">Currently Blocked Apps</string>
+    <string name="app_icon">App Icon</string>
+    <string name="app_blocked">"App $s has been blocked"</string>
+    <string name="confirm">Confirm</string>
+
 </resources>

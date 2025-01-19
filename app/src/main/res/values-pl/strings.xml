@@ -1,100 +1,122 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FocusZone</string>
-    <string name="aboutTitle">O FocusZone</string>
-    <string name="enable">Włącz</string>
-    <string name="aboutDescription">FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownikom w zarządzaniu czasem spędzanym na urządzeniach mobilnych. Dzięki blokowaniu aplikacji i stron internetowych oraz ustawianiu limitów czasowych, FocusZone wspiera budowanie zdrowych nawyków i ograniczanie rozpraszaczy.</string>
-    <string name="aboutAdditionalDescription">Mamy nadzieję, że spodoba Ci się nasza aplikacja!</string>
-    <string name="enterAddress">Podaj adres strony internetowej</string>
+    <string name="app_name" translatable="false">FocusZone</string>
+    <!-- About fragment strings  -->
+    <string name="aboutTitle">O aplikacji FocusZone</string>
+    <string name="aboutDescription">FocusZone to aplikacja mobilna na Androida, która ma na celu pomóc użytkownikom zarządzać czasem spędzanym na urządzeniach mobilnych. Poprzez blokowanie aplikacji i stron internetowych oraz ustawianie limitów czasowych, FocusZone wspiera budowanie zdrowych nawyków i ograniczanie rozproszeń.</string>
+    <string name="aboutAdditionalDescription">Mamy nadzieję, że nasza aplikacja Ci się spodoba!</string>
+    <!-- Add site -->
+    <string name="enterAddress">Wprowadź adres strony</string>
     <string name="add">Dodaj</string>
     <string name="cancel">Anuluj</string>
-    <string name="authorizationTitle">Fragment autoryzacji (zmiana pinu, włączenie biometrii)</string>
-    <string name="blockedAppsTitle">Blokowane aplikacje</string>
-    <string name="blockedSitesTitle">Blokowane strony internetowe</string>
+    <!-- Authorization -->
+    <string name="authorizationTitle">Fragment autoryzacji (zmiana PIN, włączenie biometrii)</string>
+    <!-- Blocked Apps -->
+    <string name="blockedAppsTitle">Zablokowane aplikacje</string>
+    <!-- Blocked site  -->
+    <string name="blockedSitesTitle">Zablokowane strony</string>
     <string name="addSite">Dodaj stronę</string>
-    <string name="customMssgTitle">Niestandardowa wiadomość</string>
+    <!-- Custom message -->
+    <string name="customMssgTitle">Wiadomość niestandardowa</string>
     <string name="mssgToChange">Wiadomość do zmiany</string>
-    <string name="apply">Aplikuj</string>
-    <string name="disableTitle">Fragment wyłączenia blokad</string>
-    <string name="editAppTitle">Edytuuj aplikacje</string>
+    <string name="apply">Zastosuj</string>
+    <!-- Disable blocks -->
+    <string name="disableTitle">Fragment wyłączania blokad</string>
+    <string name="disable_blocks_descr">Wyłączenie blokad może zmniejszyć skuteczność aplikacji. Czy na pewno chcesz kontynuować?</string>
+    <!-- Edit app -->
+    <string name="editAppTitle">Edytuj aplikację</string>
     <string name="appEditName">Nazwa aplikacji</string>
     <string name="save">Zapisz</string>
+    <!-- Notification -->
     <string name="notificationTitle">Powiadomienie</string>
-    <string name="okNotification">Ok (zamknij aplikację/stronę)</string>
+    <string name="okNotification">OK (zamknij aplikację/stronę)</string>
     <string name="noNotification">Rozumiem (ignoruj blokadę)</string>
-    <string name="contentNotification">Przekroczono limit wykorzystania aplikacji/strony!! (do zmiany)</string>
-    <string name="homeTitle">Ekran domowy</string>
-    <string name="blockedApps">Blokowane aplikacje: 0</string>
-    <string name="blockedSites">Blokowane strony internetowe: 0</string>
-    <string name="welcomeText">Witaj w FocusZone!</string>
+    <string name="contentNotification">Limit użycia aplikacji/strony przekroczony!! (do zmiany)</string>
+    <!-- Home -->
+    <string name="homeTitle">Strona główna</string>
+    <string name="blockedApps">Zablokowane aplikacje: 0</string>
+    <string name="blockedSites">Zablokowane strony: 0</string>
+    <!-- Registration -->
+    <string name="welcomeText">Witamy w FocusZone!</string>
+    <string name="pin" translatable="false">PIN</string>
     <string name="repeatPin">Powtórz PIN</string>
     <string name="register">Zarejestruj</string>
     <string name="enableBio">Włącz biometrię</string>
     <string name="disableBio">Wyłącz biometrię</string>
-    <string name="registrationInstruction">Wprowadź dwukrotnie PIN aby otworzyć aplikację</string>
+    <string name="registrationInstruction">Wprowadź PIN dwukrotnie, aby uzyskać dostęp do aplikacji</string>
+    <!-- Settings -->
     <string name="settingsTitle">Ustawienia</string>
     <string name="english">Angielski</string>
     <string name="polish">Polski</string>
     <string name="language">Język</string>
-    <string name="darkMode">Tryb nocny</string>
+    <string name="darkMode">Tryb ciemny</string>
     <string name="authorization">Autoryzacja</string>
     <string name="disableBlocks">Wyłącz wszystkie blokady</string>
-    <string name="changeCustomMessage">Zmień niestandardową wiadomość</string>
+    <string name="changeCustomMessage">Zmień wiadomość niestandardową</string>
     <string name="about">O aplikacji</string>
-    <string name="welcomeTitle">Witaj w FocusZone!</string>
+    <string name="biometric_auth_enabled">Autoryzacja biometryczna włączona</string>
+    <string name="biometric_auth_disabled">Autoryzacja biometryczna wyłączona</string>
+    <!-- Welcome -->
+    <string name="welcomeTitle">Witamy w FocusZone!</string>
     <string name="insertPin">Wprowadź PIN</string>
     <string name="login">Zaloguj się</string>
-    <string name="edit">Edytuuj</string>
+    <string name="loginBiometric">Zaloguj się biometrycznie</string>
+    <!-- App Card -->
+    <string name="limit" translatable="false">Limit: 1h 30 min</string>
+    <string name="edit">Edytuj</string>
+    <!-- Site Card -->
     <string name="siteName">Adres strony</string>
     <string name="delete">Usuń</string>
+    <!-- Change pin -->
+    <string name="change_pin">Zmień PIN</string>
+    <string name="current_pin">Bieżący PIN</string>
+    <string name="new_pin">Nowy PIN</string>
+    <string name="confirm_new_pin">Potwierdź nowy PIN</string>
     <string name="disable">Wyłącz</string>
-    <string name="loginBiometric">Zaloguj się biometrią</string>
-    <string name="change_pin">Zmiana kodu PIN</string>
-    <string name="current_pin">Aktualny kod PIN</string>
-    <string name="new_pin">Nowy kod PIN</string>
-    <string name="confirm_new_pin">Potwierdź nowy kod PIN</string>
-    <string name="invalid_current_pin">Niepoprawny obecny kod PIN</string>
-    <string name="pin_empty">Kod PIN pusty</string>
-    <string name="pins_do_not_match">Kody PIN nie są zgodne</string>
-    <string name="pin_changed_successfully">Kod PIN zmieniony pomyślnie</string>
-    <string name="biometric_auth_enabled">Autentykacja biometrią włączona</string>
-    <string name="biometric_auth_disabled">Autentykacja biometrią wyłączona</string>
-    <string name="invalid_pin">Niepoprawny kod PIN. Spróbuj ponownie</string>
-    <string name="invalid_pin_format">Niepoprawny format kodu PIN</string>
-    <string name="biometric_log_in">Logowanie z biometrią</string>
-    <string name="biometric_descr">Użyj czytnika odcisku palca aby się zalogować</string>
-    <string name="biometic_disabled">Logowanie biometrią jest wyłączone</string>
-    <string name="biometric_error">Błąd biometrii: %s</string>
-    <string name="biometric_unsuccessful">Logowanie biometrią zakończone niepowodzeniem</string>
+    <string name="enable">Włącz</string>
+    <!-- PIN communicate -->
+    <string name="invalid_current_pin">Niepoprawny bieżący PIN</string>
+    <string name="pin_empty">PIN nie może być pusty</string>
+    <string name="pins_do_not_match">PIN-y nie pasują</string>
+    <string name="pin_invalid">Nowy PIN jest taki sam jak stary, zmień go</string>
+    <string name="pin_changed_successfully">PIN zmieniony pomyślnie</string>
+    <string name="invalid_pin">Niepoprawny PIN. Spróbuj ponownie</string>
+    <string name="invalid_pin_format">Niepoprawny format PIN</string>
+    <!-- Biometric -->
+    <string name="biometric_log_in">Logowanie biometryczne</string>
+    <string name="biometric_descr">Użyj odcisku palca do logowania</string>
+    <string name="biometric_auth">Autoryzacja biometryczna</string>
+    <string name="biometic_disabled">Logowanie biometryczne wyłączone</string>
+    <string name="biometric_error">Błąd biometryczny: %s</string>
+    <string name="biometric_unsuccessful">Nieudane logowanie biometryczne</string>
     <string name="ok">OK</string>
-    <string name="error">Error</string>
-    <string name="on">On</string>
-    <string name="biometric_auth">Autentykacja biomerią</string>
-    <string name="search_app">Szukaj aplikacji…</string>
+    <string name="error">Błąd</string>
+    <string name="on">Włączone</string>
+    <!-- Custom message -->
+    <string name="enter_custom_message">Wprowadź wiadomość niestandardową</string>
+    <string name="change_custom_message">Zmień wiadomość niestandardową</string>
+    <string name="message_empty">Wiadomość nie może być pusta</string>
+    <string name="message_saved">Wiadomość zapisana</string>
+    <!-- Notification Manager -->
+    <string name="focuszone_service">Usługa FocusZone</string>
+    <string name="descritpion_message">Powiadomienia o usłudze monitorowania FocusZone</string>
+    <string name="focuszone_active">FocusZone aktywna</string>
+    <string name="keeping_eye">Monitorujemy Twoje aplikacje!</string>
+    <string name="app_blocked_notification">Aplikacja zablokowana</string>
+    <string name="keeping_eye_site">Monitorujemy strony do zablokowania!</string>
+    <string name="site_blocked">Strona zablokowana</string>
+    <string name="site_blocked_description">$s została zablokowana</string>
+    <!-- Main Activity -->
+    <string name="accessibility_enable">Włącz usługę dostępności</string>
+    <string name="accessibility_mssg">Aby umożliwić monitorowanie użycia aplikacji, włącz usługę dostępności dla tej aplikacji. Czy chcesz przejść do ustawień?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="accessibility_disable">"Aplikacja nie może działać bez włączonej usługi dostępności."</string>
+    <!-- Other stuff -->
+    <string name="search_app">Wyszukiwanie aplikacji…</string>
     <string name="accessibility_service_description">Usługa monitorowania czasu spędzonego w ustawionych aplikacjach przez FocusZone</string>
     <string name="app_logo">Logo aplikacji</string>
     <string name="currently_blocked_apps">Aktualnie zablokowane aplikacje</string>
     <string name="app_icon">Ikona aplikacji</string>
-    <string name="app_blocked">Aplikacja $s została zablokowana</string>
-    <string name="change_custom_message">Zmień wiadomość blokady</string>
-    <string name="enter_custom_message">Wprowadź własną wiadomość</string>
-    <string name="message_empty">Wiadomość nie może być pusta</string>
-    <string name="message_saved">Wiadomość została zapisana</string>
-    <string name="focuszone_service">Usługa FocusZone</string>
-    <string name="descritpion_message">Powiadomienie usługi monitorowania FocusZone</string>
-    <string name="focuszone_active">FocusZone Aktywny</string>
-    <string name="keeping_eye">Miej oko na monitorowane aplikacje!</string>
-    <string name="app_blocked_notification">Aplikacja zablokowana</string>
-    <string name="keeping_eye_site">Miej oko na witryny, które chcesz zablokować!</string>
-    <string name="site_blocked">Strona zablokowana</string>
-    <string name="site_blocked_description">$s została zablokowana</string>
-    <string name="pin_invalid">Stary PIN jest taki sam jak nowy, proszę użyć innego</string>
-    <string name="disable_blocks_descr">Wyłączenie blokad może zmniejszyć efektywność aplikacji. Czy na pewno chcesz kontynuować?</string>
+    <string name="app_blocked">"Aplikacja $s została zablokowana"</string>
     <string name="confirm">Potwierdź</string>
-    <string name="accessibility_enable">Włącz usługę ułatwień dostępu</string>
-    <string name="accessibility_mssg">Aby włączyć monitorowanie użycia aplikacji, włącz opcję Dostępność dla tej aplikacji. Czy chcesz otworzyć ustawienia?</string>
-    <string name="yes">Tak</string>
-    <string name="no">Nie</string>
-    <string name="accessibility_disable">Aplikacja nie może działać bez włączonej dostępności.</string>
-
 </resources>
