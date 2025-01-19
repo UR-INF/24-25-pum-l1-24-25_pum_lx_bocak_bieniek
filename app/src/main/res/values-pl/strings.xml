@@ -89,5 +89,7 @@
     <string name="site_blocked">Strona zablokowana</string>
     <string name="site_blocked_description">$s została zablokowana</string>
     <string name="pin_invalid">Stary PIN jest taki sam jak nowy, proszę użyć innego</string>
+    <string name="disable_blocks_descr">Wyłączenie blokad może zmniejszyć efektywność aplikacji. Czy na pewno chcesz kontynuować?</string>
+    <string name="confirm">Potwierdź</string>
 
 </resources>

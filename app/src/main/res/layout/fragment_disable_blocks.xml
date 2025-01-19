@@ -9,7 +9,7 @@
         android:id="@+id/tvWarningMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wyłączenie blokad może zmniejszyć efektywność aplikacji. Czy na pewno chcesz kontynuować?"
+        android:text="@string/disable_blocks_descr"
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:layout_marginBottom="16dp" />
@@ -18,12 +18,12 @@
         android:id="@+id/bttnConfirmDisable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Potwierdź" />
+        android:text="@string/confirm" />
 
     <Button
         android:id="@+id/bttnCancelDisable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Anuluj"
+        android:text="@string/cancel"
         android:layout_marginTop="8dp" />
 </LinearLayout>

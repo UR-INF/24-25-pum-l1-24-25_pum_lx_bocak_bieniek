@@ -22,6 +22,7 @@
     <string name="apply">Apply</string>
     <!-- Disable blocks -->
     <string name="disableTitle">Disable Blocks Fragment</string>
+    <string name="disable_blocks_descr">Disabling locks may reduce the efficiency of the application. Are you sure you want to continue?</string>
     <!-- Edit app -->
     <string name="editAppTitle">Edit Application</string>
     <string name="appEditName">Application Name</string>
@@ -98,6 +99,7 @@
     <string name="currently_blocked_apps">Currently Blocked Apps</string>
     <string name="app_icon">App Icon</string>
     <string name="app_blocked">"App $s has been blocked"</string>
+    <string name="confirm">Confirm</string>
     <!-- Custom message -->
     <string name="enter_custom_message">Enter custom message</string>
     <string name="change_custom_message">Change custom message</string>
