@@ -26,8 +26,12 @@ class BlockedAppsAdapter(
     override fun onBindViewHolder(holder: BlockedAppViewHolder, position: Int) {
         val app = apps[position]
         holder.bind(app)
+
         holder.editButton.setOnClickListener { onEditClick(app) }
+
+        holder.appSwitch.isEnabled = app.isLimitSet
         holder.appSwitch.isChecked = app.isLimitSet
+
         holder.appSwitch.text = if (app.isLimitSet) {
             holder.itemView.context.getString(R.string.disable)
         } else {
