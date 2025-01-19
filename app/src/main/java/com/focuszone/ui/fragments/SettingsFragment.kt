@@ -114,10 +114,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         bttnDisableBlocks.setOnClickListener {
             findNavController().navigate(R.id.DisableBlocksFragment)
         }
+
         val bttnCustomMessage = view.findViewById<Button>(R.id.bttnCustomMessage)
         bttnCustomMessage.setOnClickListener {
-            findNavController().navigate(R.id.CustomMessageFragment)
+            showCustomMessageDialog()
         }
+
         val bttnAbout = view.findViewById<Button>(R.id.bttnAbout)
         bttnAbout.setOnClickListener {
             findNavController().navigate(R.id.AboutFragment)
@@ -190,6 +192,37 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 userAuthManager.setNewPin(newPin)
                 Toast.makeText(requireContext(), getString(R.string.pin_changed_successfully), Toast.LENGTH_SHORT).show()
 
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
+    }
+
+    private fun showCustomMessageDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.fragment_custom_message, null)
+        val messageEditText = dialogView.findViewById<EditText>(R.id.editTextCustomMessage)
+
+        val currentMessage = preferencesManager.getCustomMessage()
+        messageEditText.setText(currentMessage)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.change_custom_message))
+            .setView(dialogView)
+            .setPositiveButton(getString(R.string.save), null)
+            .setNegativeButton(getString(R.string.cancel), null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val newMessage = messageEditText.text.toString()
+
+                if (newMessage.isEmpty()) {
+                    Toast.makeText(requireContext(), getString(R.string.message_empty), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                preferencesManager.saveCustomMessage(newMessage)
+                Toast.makeText(requireContext(), getString(R.string.message_saved), Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
         }

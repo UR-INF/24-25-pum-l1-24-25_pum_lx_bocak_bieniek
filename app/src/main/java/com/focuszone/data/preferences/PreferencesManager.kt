@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken
 class PreferencesManager(context: Context) {
     private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson() // JSON serializer
+    private val prefs = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
 
     // Keys for saved values
     companion object {
@@ -174,5 +175,13 @@ class PreferencesManager(context: Context) {
 
     fun getBoolean(key: String, defaultValue: Boolean): Boolean {
         return sharedPreferences.getBoolean(key, defaultValue)
+    }
+
+    fun saveCustomMessage(message: String) {
+        prefs.edit().putString("custom_message", message).apply()
+    }
+
+    fun getCustomMessage(): String {
+        return prefs.getString("custom_message", "") ?: ""
     }
 }
