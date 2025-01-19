@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -49,12 +50,19 @@ class BlockedAppsAdapter(
     override fun getItemCount(): Int = apps.size
 
     class BlockedAppViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val appIcon: ImageView = view.findViewById(R.id.appIcon)
         private val appName: TextView = view.findViewById(R.id.appName)
         private val appLimit: TextView = view.findViewById(R.id.appLimit)
         val editButton: Button = view.findViewById(R.id.editButtonApp)
         val appSwitch: Switch = view.findViewById(R.id.switchEnableBlock)
 
         fun bind(app: BlockedApp) {
+            app.icon?.let { drawable ->
+                appIcon.setImageDrawable(drawable)
+            } ?: run {
+                appIcon.setImageResource(R.drawable.ic_launcher_foreground)
+            }
+
             appName.text = app.appName
 
             val limitMinutes = app.limitMinutes ?: 0
