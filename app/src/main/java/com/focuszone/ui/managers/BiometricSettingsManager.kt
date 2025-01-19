@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.biometric.BiometricManager
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
+import com.focuszone.util.BiometricConstants
 
 class BiometricManager(
     private val context: Context,
@@ -32,7 +33,7 @@ class BiometricManager(
 
     private fun isBiometricAvailable(): Boolean {
         val biometricManager = BiometricManager.from(context)
-        return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) ==
+        return biometricManager.canAuthenticate(BiometricConstants.BIOMETRIC_AUTH_TYPE) ==
                 BiometricManager.BIOMETRIC_SUCCESS
     }
 

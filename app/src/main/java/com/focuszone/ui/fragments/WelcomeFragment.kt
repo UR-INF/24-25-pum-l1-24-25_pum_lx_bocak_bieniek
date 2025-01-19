@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.domain.UserAuthManager
+import com.focuszone.util.BiometricConstants
 
 class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
@@ -47,7 +48,7 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
         // Biometric login
         bttnLoginBiometric.setOnClickListener {
-            if (userAuthManager.isBiometricEnabled() && isBiometricAvailable()) {
+            if (preferencesManager.isBiometricEnabled() && isBiometricAvailable()) {
                 showBiometricPrompt()
             } else {
                 Toast.makeText(requireContext(), getString(R.string.biometic_disabled), Toast.LENGTH_SHORT).show()
@@ -58,9 +59,8 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
     private fun isBiometricAvailable(): Boolean {
         val biometricManager = BiometricManager.from(requireContext())
-        return biometricManager.canAuthenticate(
-            BiometricManager.Authenticators.BIOMETRIC_WEAK or BiometricManager.Authenticators.DEVICE_CREDENTIAL
-        ) == BiometricManager.BIOMETRIC_SUCCESS
+        return biometricManager.canAuthenticate(BiometricConstants.BIOMETRIC_AUTH_TYPE) ==
+                BiometricManager.BIOMETRIC_SUCCESS
     }
 
     private fun navigateToHome() {
@@ -75,7 +75,6 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
             .show()
     }
 
-    // Biometric log in
     private fun showBiometricPrompt() {
         val executor = ContextCompat.getMainExecutor(requireContext())
         val biometricPrompt = BiometricPrompt(this, executor,
