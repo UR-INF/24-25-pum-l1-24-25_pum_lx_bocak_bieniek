@@ -11,7 +11,7 @@ import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.ui.dialogs.CustomMessageDialog
 import com.focuszone.utils.LocaleManager
 import com.focuszone.utils.ThemeManager
-import com.focuszone.managers.BiometricManager
+import com.focuszone.managers.BiometricSettingsManager
 import com.focuszone.ui.managers.ChangePinDialog
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.ui.managers.DisableBlocksDialog
@@ -19,14 +19,14 @@ import com.focuszone.ui.managers.DisableBlocksDialog
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private lateinit var preferencesManager: PreferencesManager
-    private lateinit var biometricManager: BiometricManager
+    private lateinit var biometricManager: BiometricSettingsManager
     private lateinit var userAuthManager: UserAuthManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         preferencesManager = PreferencesManager(requireContext())
-        biometricManager = BiometricManager(requireContext(), preferencesManager)
+        biometricManager = BiometricSettingsManager(requireContext(), preferencesManager)
         userAuthManager = UserAuthManager(requireContext())
 
         val darkModeSwitch = view.findViewById<Switch>(R.id.switchDarkMode)

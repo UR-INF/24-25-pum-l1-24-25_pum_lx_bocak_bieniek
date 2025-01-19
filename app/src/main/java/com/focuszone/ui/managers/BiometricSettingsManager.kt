@@ -8,7 +8,7 @@ import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.util.BiometricConstants
 
-class BiometricManager(
+class BiometricSettingsManager(
     private val context: Context,
     private val preferencesManager: PreferencesManager
 ) {
