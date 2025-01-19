@@ -88,5 +88,6 @@
     <string name="keeping_eye_site">Miej oko na witryny, które chcesz zablokować!</string>
     <string name="site_blocked">Strona zablokowana</string>
     <string name="site_blocked_description">$s została zablokowana</string>
+    <string name="pin_invalid">Stary PIN jest taki sam jak nowy, proszę użyć innego</string>
 
 </resources>

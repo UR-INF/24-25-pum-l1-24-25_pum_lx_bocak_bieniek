@@ -77,6 +77,7 @@
     <string name="invalid_current_pin">Invalid current PIN</string>
     <string name="pin_empty">PIN cannot be empty</string>
     <string name="pins_do_not_match">PINs do not match</string>
+    <string name="pin_invalid">New PIN same as old PIN, please change</string>
     <string name="pin_changed_successfully">PIN changed successfully</string>
     <string name="invalid_pin">Invalid PIN. Try again</string>
     <string name="invalid_pin_format">Invalid PIN format</string>
