@@ -98,4 +98,9 @@
     <string name="app_icon">App Icon</string>
     <string name="app_blocked">"App $s has been blocked"</string>
 
+    <string name="enter_custom_message">Enter custom message</string>
+    <string name="change_custom_message">Change custom message</string>
+    <string name="message_empty">Message can not be empty</string>
+    <string name="message_saved">Message saved</string>
+
 </resources>

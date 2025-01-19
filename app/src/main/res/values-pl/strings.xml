@@ -76,4 +76,9 @@
     <string name="currently_blocked_apps">Aktualnie zablokowane aplikacje</string>
     <string name="app_icon">Ikona aplikacji</string>
     <string name="app_blocked">Aplikacja $s została zablokowana</string>
+    <string name="change_custom_message">Zmień wiadomość blokady</string>
+    <string name="enter_custom_message">Wprowadź własną wiadomość</string>
+    <string name="message_empty">Wiadomość nie może być pusta</string>
+    <string name="message_saved">Wiadomość została zapisana</string>
+
 </resources>
