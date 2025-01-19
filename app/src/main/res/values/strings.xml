@@ -115,4 +115,10 @@
     <string name="site_blocked">Site Blocked</string>
     <string name="site_blocked_description">$s has been blocked</string>
 
+    <!-- Main Activity -->
+    <string name="accessibility_enable">Enable Accessibility Service</string>
+    <string name="accessibility_mssg">To enable monitoring of app usage, please enable Accessibility for this app. Do you want to open settings?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="accessibility_disable">"The app cannot function without Accessibility enabled."</string>
 </resources>
