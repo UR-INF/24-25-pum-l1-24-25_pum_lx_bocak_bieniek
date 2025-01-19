@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Switch
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.focuszone.R
@@ -49,7 +48,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
         view.findViewById<Button>(R.id.bttnDisableAllBlocks).setOnClickListener {
             DisableBlocksDialog(requireContext(), preferencesManager).show()
-            Toast.makeText(requireContext(), "Wszystkie blokady zostały wyłączone", Toast.LENGTH_SHORT).show()
         }
         view.findViewById<Button>(R.id.bttnCustomMessage).setOnClickListener {
             CustomMessageDialog.show(requireContext(), preferencesManager)
