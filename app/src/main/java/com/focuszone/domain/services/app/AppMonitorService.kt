@@ -46,14 +46,11 @@ class AppMonitorService : AccessibilityService() {
                 Log.d("AppMonitorService", "Monitored app: $monitoredApp")
                 Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
+                //TODO show dialog to go in/out of app
                 if (monitoredApp != null) {
-                    preferencesManager.getUserMessage()?.let {
-                        DialogHelper.showBlockingAlert(
-                            this,
-                            it
-                        )
-                    }
-                    performGlobalAction(GLOBAL_ACTION_BACK)
+                    NotificationManager(this).showBlockedAppNotification(packageName)
+                    performGlobalAction(GLOBAL_ACTION_HOME)
+                    showUserMessageDialog()
                     Log.d("AppMonitorService", "App blocked: $packageName")
                 }
             }
@@ -109,15 +106,26 @@ class AppMonitorService : AccessibilityService() {
         preferencesManager.addOrUpdateLimitedApp(updatedApp)
     }
 
-    fun blockApp(packageName: String){
+    private fun blockApp(packageName: String){
         Toast.makeText(this, getString(R.string.app_blocked), Toast.LENGTH_LONG).show()
         Log.d("AppMonitorService", "Blocking app: $packageName")
 
-        performGlobalAction(GLOBAL_ACTION_BACK)
+        performGlobalAction(GLOBAL_ACTION_HOME)
 
         lastActivePackage = null
 
         NotificationManager(this).showBlockedAppNotification(packageName)
+    }
+
+    private fun showUserMessageDialog() {
+        Log.d("AppMonitorService", "Showing dialog: $monitoredApps")
+
+        preferencesManager.getUserMessage()?.let {
+            DialogHelper.showBlockingAlert(
+                this,
+                it
+            )
+        }
     }
 
     override fun onDestroy() {
