@@ -135,14 +135,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAccessibilityAlert() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle(R.string.accessibility_enable.toString())
-            .setMessage("")
-            .setPositiveButton(R.string.yes.toString()) { dialog, _ ->
+        builder.setTitle(getString(R.string.accessibility_enable))
+            .setMessage(getString(R.string.accessibility_mssg))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                 openAccessibilitySettings()
                 dialog.dismiss()
             }
-            .setNegativeButton(R.string.no.toString()) { dialog, _ ->
-                Toast.makeText(this, R.string.accessibility_disable.toString(), Toast.LENGTH_SHORT).show()
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                Toast.makeText(this, getString(R.string.accessibility_disable), Toast.LENGTH_SHORT).show()
                 finish()
                 dialog.dismiss()
             }

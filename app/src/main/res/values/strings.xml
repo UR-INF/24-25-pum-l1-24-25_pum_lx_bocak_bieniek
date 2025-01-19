@@ -103,6 +103,7 @@
     <string name="focuszone_active">FocusZone Active</string>
     <string name="keeping_eye">Keeping eye on your monitored applications!</string>
     <string name="app_blocked_notification">App Blocked</string>
+    <string name="app_blocked_description">%1$s has been blocked</string>
     <string name="keeping_eye_site">Keeping eye on sites want to block!</string>
     <string name="site_blocked">Site Blocked</string>
     <string name="site_blocked_description">$s has been blocked</string>

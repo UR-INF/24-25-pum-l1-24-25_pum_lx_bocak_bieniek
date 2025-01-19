@@ -102,6 +102,7 @@
     <string name="focuszone_active">FocusZone aktywna</string>
     <string name="keeping_eye">Monitorujemy Twoje aplikacje!</string>
     <string name="app_blocked_notification">Aplikacja zablokowana</string>
+    <string name="app_blocked_description">%1$s została zablokowana</string>
     <string name="keeping_eye_site">Monitorujemy strony do zablokowania!</string>
     <string name="site_blocked">Strona zablokowana</string>
     <string name="site_blocked_description">$s została zablokowana</string>
