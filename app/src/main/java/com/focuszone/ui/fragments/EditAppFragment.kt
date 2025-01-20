@@ -92,9 +92,6 @@ class EditAppFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 requireActivity().onBackPressed()
-
-                // Toggle service
-                (activity as? MainActivity)?.startAppMonitorServiceIfNeeded()
             } else {
                 Toast.makeText(
                     requireContext(),

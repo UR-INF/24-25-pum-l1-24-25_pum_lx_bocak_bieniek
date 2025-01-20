@@ -21,15 +21,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
-import com.focuszone.data.preferences.entities.BlockedApp
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.domain.services.app.AppMonitorService
+import com.focuszone.util.PermissionQueue
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var preferencesManager: PreferencesManager
+    private var isNotificationDialogShown = false
+    private var isOverlayDialogShown = false
+    private var isAccessibilityDialogShown = false
+
 
     private fun setupLanguage() {
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
@@ -86,27 +90,44 @@ class MainActivity : AppCompatActivity() {
             }
         )
         navController.graph = navGraph
+    }
 
-        checkNotificationPermission()
-        checkOverlayPermission()
+    override fun onStart() {
+        super.onStart()
 
-        //TODO start service after something was added into the list
-        if (preferencesManager.hasLimitedApps()) {
-            if (!isAccessibilityServiceEnabled(context = this, service = AppMonitorService::class.java)) {
-                showAccessibilityAlert()
-            } else {
-                startService(Intent(this, AppMonitorService::class.java))
-            }
-        }
+        val permissionQueue = PermissionQueue(this)
+        permissionQueue.add { checkNotificationPermission(permissionQueue) }
+        permissionQueue.add { checkOverlayPermission(permissionQueue) }
+        permissionQueue.add { checkAccessibilityPermission(permissionQueue) }
+
+        updateAppMonitorServiceState()
     }
 
     override fun onResume() {
         super.onResume()
-        startAppMonitorServiceIfNeeded()
+
+        if (isNotificationDialogShown) {
+            isNotificationDialogShown = false
+        }
+        if (isOverlayDialogShown) {
+            isAccessibilityDialogShown = false
+        }
+        if (isAccessibilityDialogShown) {
+            isAccessibilityDialogShown = false
+        }
+
+        updateAppMonitorServiceState()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    // Additional functions
+    fun updateAppMonitorServiceState() {
+        if (preferencesManager.hasLimitedApps()) {
+            // Start the service if there are apps to monitor
+            startService(Intent(this, AppMonitorService::class.java))
+        } else {
+            // Stop the service if there are no apps to monitor
+            stopService(Intent(this, AppMonitorService::class.java))
+        }
     }
 
     fun isAccessibilityServiceEnabled(
@@ -133,59 +154,87 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showAccessibilityAlert() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.accessibility_enable))
-            .setMessage(getString(R.string.accessibility_mssg))
-            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
-                openAccessibilitySettings()
-                dialog.dismiss()
-            }
-            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
-                Toast.makeText(this, getString(R.string.accessibility_disable), Toast.LENGTH_SHORT).show()
-                finish()
-                dialog.dismiss()
-            }
-            .show()
-    }
+    private fun checkNotificationPermission(queue: PermissionQueue) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
 
-    private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) !=
-                PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(
-                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                    100
-                )
-            }
-        }
-    }
-
-    private fun checkOverlayPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:$packageName")
-                )
-                startActivityForResult(intent, 0)
-            }
-        }
-    }
-
-    // Start/stop service after adding app
-    // Example:
-    //
-    // (activity as? MainActivity)?.startAppMonitorServiceIfNeeded()
-    fun startAppMonitorServiceIfNeeded() {
-        if (preferencesManager.hasLimitedApps()) {
-            if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
-                showAccessibilityAlert()
-            } else {
-                startService(Intent(this, AppMonitorService::class.java))
+            if (!isNotificationDialogShown) {
+                isNotificationDialogShown = true
+                AlertDialog.Builder(this)
+                    .setTitle("Enable Notifications")
+                    .setMessage("This app requires notification permissions. Please enable them.")
+                    .setPositiveButton("Grant") { dialog, _ ->
+                        requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 100)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("Deny") { dialog, _ ->
+                        Toast.makeText(this, "Notification permissions denied.", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        isNotificationDialogShown = false // Reset flagi po zamknięciu
+                        queue.onTaskComplete()
+                    }
+                    .show()
             }
         } else {
-            stopService(Intent(this, AppMonitorService::class.java))
+            queue.onTaskComplete()
+        }
+    }
+
+    private fun checkOverlayPermission(queue: PermissionQueue) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            if (!isOverlayDialogShown) {
+                isOverlayDialogShown = true
+                AlertDialog.Builder(this)
+                    .setTitle("Enable Overlay Permissions")
+                    .setMessage("This app requires overlay permissions. Please enable them.")
+                    .setPositiveButton("Grant") { dialog, _ ->
+                        val intent = Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:$packageName")
+                        )
+                        startActivity(intent)
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("Deny") { dialog, _ ->
+                        Toast.makeText(this, "Overlay permissions denied.", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        isOverlayDialogShown = false // Reset flagi po zamknięciu
+                        queue.onTaskComplete()
+                    }
+                    .show()
+            }
+        } else {
+            queue.onTaskComplete()
+        }
+    }
+
+    private fun checkAccessibilityPermission(queue: PermissionQueue) {
+        if (!isAccessibilityServiceEnabled(this, AppMonitorService::class.java)) {
+            if (!isAccessibilityDialogShown) {
+                isAccessibilityDialogShown = true
+                AlertDialog.Builder(this)
+                    .setTitle("Enable Accessibility Service")
+                    .setMessage("To monitor apps, enable the Accessibility Service.")
+                    .setPositiveButton("Grant") { dialog, _ ->
+                        openAccessibilitySettings()
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton("Deny") { dialog, _ ->
+                        Toast.makeText(this, "Accessibility permissions denied.", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        isAccessibilityDialogShown = false // Reset flagi po zamknięciu
+                        queue.onTaskComplete()
+                    }
+                    .show()
+            }
+        } else {
+            queue.onTaskComplete()
         }
     }
 }
