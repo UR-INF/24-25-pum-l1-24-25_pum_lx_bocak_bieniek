@@ -19,7 +19,8 @@ class AppMonitorService : AccessibilityService() {
     private var monitoredApps: List<BlockedApp> = emptyList()
     private var activeAppStartTime: Long = 0
     private var lastActivePackage: String? = null
-    private val handler = Handler(Looper.getMainLooper())
+    private val pollHandler = Handler(Looper.getMainLooper())
+    private val monitorHandler = Handler(Looper.getMainLooper())
     private lateinit var notificationManager: NotificationManager
 
     override fun onCreate() {
@@ -27,9 +28,7 @@ class AppMonitorService : AccessibilityService() {
         Log.d("AppMonitorService", "Service created")
         preferencesManager = PreferencesManager(this)
         monitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
-        if (monitoredApps.isEmpty()) {
-            stopSelf()
-        }
+
         startPolling()
     }
 
@@ -39,26 +38,26 @@ class AppMonitorService : AccessibilityService() {
             Log.d("AppMonitorService", "Window state changed: $packageName")
 
             if (packageName != null && packageName != lastActivePackage) {
+                DialogHelper.checkAndResetState(this, packageName)
+
+                monitorHandler.removeCallbacksAndMessages(null)
                 lastActivePackage = packageName
                 activeAppStartTime = System.currentTimeMillis()
 
+                // find if given package is under monitoring
                 val monitoredApp = monitoredApps.find { it.id == packageName }
                 Log.d("AppMonitorService", "Monitored app: $monitoredApp")
                 Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
-                //TODO show dialog to go in/out of app
                 if (monitoredApp != null) {
-                    NotificationManager(this).showBlockedAppNotification(packageName)
-                    performGlobalAction(GLOBAL_ACTION_HOME)
-                    showUserMessageDialog()
-                    Log.d("AppMonitorService", "App blocked: $packageName")
+                    monitorApp(monitoredApp)
                 }
             }
         }
     }
 
     private fun startPolling() {
-        handler.postDelayed(object : Runnable {
+        pollHandler.postDelayed(object : Runnable {
             override fun run() {
                 Log.d("AppMonitorService", "Polling for changes in monitored apps")
                 val newMonitoredApps = preferencesManager.getLimitedApps().filter { it.isLimitSet }
@@ -69,44 +68,35 @@ class AppMonitorService : AccessibilityService() {
                 } else {
                     Log.d("AppMonitorService", "No changes detected in monitored apps")
                 }
-                handler.postDelayed(this, 5000) // Poll every 5 seconds
+                pollHandler.postDelayed(this, 5000) // Poll every 5 seconds
             }
         }, 5000)
     }
 
-    private fun startMonitoringApp(app: BlockedApp) {
-        handler.removeCallbacksAndMessages(null) // Clear any pending monitors
-        monitorApp(app.id, app)
+    private fun monitorApp(app: BlockedApp) {
+        showUserMessageDialog()
+        monitorHandler.postDelayed(object : Runnable {
+            override fun run() {
+                val timeSpent = 5
+                Log.d("AppMonitorService", "Monitoring time for app ${app.id}. Time spent: +$timeSpent seconds")
+
+                preferencesManager.updateAppUsage(app.id, timeSpent)
+
+                val currentTimeUsage = preferencesManager.getCurrentAppUsage(app.id) ?: 0
+                Log.d("AppMonitorService", "Usage of app: ${app.id}. Current Time spent: $currentTimeUsage seconds")
+
+                val appLimit = preferencesManager.getAppLimit(app.id) ?: 0
+                if (appLimit > 0 && currentTimeUsage >= appLimit * 60) {
+                    Log.d("AppMonitorService", "App blocked: ${app.id}")
+                    blockApp(app.id)
+                } else {
+                    monitorHandler.postDelayed(this, 5000)
+                }
+            }
+        }, 5000)
     }
 
-    override fun onInterrupt() {
-        handler.removeCallbacksAndMessages(null)
-        Log.d("AppMonitorService", "Service interrupted")
-        Toast.makeText(this, "Service interrupted", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun monitorApp(packageName: String, app: BlockedApp) {
-        val currentTimeUsage = app.currentTimeUsage ?: 0
-        val timeSpentMinutes = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60
-
-        if (app.isLimitSet && currentTimeUsage + timeSpentMinutes >= app.limitMinutes!!) {
-            blockApp(packageName)
-        } else {
-            handler.postDelayed({
-                monitorApp(packageName, app)
-            }, 1000) // Check every second
-        }
-    }
-
-    private fun updateAppUsageTime(app: BlockedApp) {
-        val timeSpentMinutes = (System.currentTimeMillis() - activeAppStartTime) / 1000 / 60
-        val updatedApp = app.copy(
-            currentTimeUsage = (app.currentTimeUsage ?: 0) + timeSpentMinutes.toInt()
-        )
-        preferencesManager.addOrUpdateLimitedApp(updatedApp)
-    }
-
-    private fun blockApp(packageName: String){
+    private fun blockApp(packageName: String) {
         Toast.makeText(this, getString(R.string.app_blocked), Toast.LENGTH_LONG).show()
         Log.d("AppMonitorService", "Blocking app: $packageName")
 
@@ -128,9 +118,17 @@ class AppMonitorService : AccessibilityService() {
         }
     }
 
+    override fun onInterrupt() {
+        pollHandler.removeCallbacksAndMessages(null)
+        monitorHandler.removeCallbacksAndMessages(null)
+        Log.d("AppMonitorService", "Service interrupted")
+        Toast.makeText(this, "Service interrupted", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onDestroy() {
         stopForeground(true)
-        handler.removeCallbacksAndMessages(null)
+        pollHandler.removeCallbacksAndMessages(null)
+        monitorHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
         Log.d("AppMonitorService", "Service destroyed")
     }
