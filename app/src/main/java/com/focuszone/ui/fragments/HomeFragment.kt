@@ -47,7 +47,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return try {
             context.packageManager.getApplicationIcon(packageName)
         } catch (e: PackageManager.NameNotFoundException) {
-            context.getDrawable(R.drawable.logo_focus_zone)
+            context.getDrawable(R.drawable.logo_focuszone)
         }
     }
 }
