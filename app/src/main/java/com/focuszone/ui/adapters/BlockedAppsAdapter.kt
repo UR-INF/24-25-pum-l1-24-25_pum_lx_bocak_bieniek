@@ -80,7 +80,7 @@ class BlockedAppsAdapter(
                     "Limit: ${minutes}m"
                 }
             } else {
-                appLimit.text = "Brak limitu"
+                appLimit.text = itemView.context.getString(R.string.no_limit)
             }
         }
     }

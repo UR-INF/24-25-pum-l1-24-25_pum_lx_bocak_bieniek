@@ -121,5 +121,6 @@
     <string name="app_icon">App Icon</string>
     <string name="app_blocked">"App $s has been blocked"</string>
     <string name="confirm">Confirm</string>
+    <string name="no_limit">No limit</string>
 
 </resources>
