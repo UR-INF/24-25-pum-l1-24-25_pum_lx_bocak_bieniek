@@ -38,14 +38,13 @@ class AppMonitorService : AccessibilityService() {
             Log.d("AppMonitorService", "Window state changed: $packageName")
 
             if (packageName != null && packageName != lastActivePackage) {
-                // Sprawdź czy to launcher i ewentualnie zresetuj stan
                 DialogHelper.checkAndResetState(this, packageName)
 
                 monitorHandler.removeCallbacksAndMessages(null)
                 lastActivePackage = packageName
                 activeAppStartTime = System.currentTimeMillis()
 
-                // Sprawdź, czy aplikacja jest monitorowana
+                // find if given package is under monitoring
                 val monitoredApp = monitoredApps.find { it.id == packageName }
                 Log.d("AppMonitorService", "Monitored app: $monitoredApp")
                 Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
@@ -78,23 +77,20 @@ class AppMonitorService : AccessibilityService() {
         showUserMessageDialog()
         monitorHandler.postDelayed(object : Runnable {
             override fun run() {
-                val timeSpent = 5 // Dodajemy 5 sekund na iterację
+                val timeSpent = 5
                 Log.d("AppMonitorService", "Monitoring time for app ${app.id}. Time spent: +$timeSpent seconds")
 
-                // Zaktualizuj czas spędzony w aplikacji w SharedPreferences
                 preferencesManager.updateAppUsage(app.id, timeSpent)
 
-                // Pobierz zaktualizowany czas spędzony w aplikacji
                 val currentTimeUsage = preferencesManager.getCurrentAppUsage(app.id) ?: 0
                 Log.d("AppMonitorService", "Usage of app: ${app.id}. Current Time spent: $currentTimeUsage seconds")
 
-                // Sprawdź, czy przekroczono limit
                 val appLimit = preferencesManager.getAppLimit(app.id) ?: 0
                 if (appLimit > 0 && currentTimeUsage >= appLimit * 60) {
                     Log.d("AppMonitorService", "App blocked: ${app.id}")
                     blockApp(app.id)
                 } else {
-                    monitorHandler.postDelayed(this, 5000) // Kontynuuj monitorowanie po 5 sekundach
+                    monitorHandler.postDelayed(this, 5000)
                 }
             }
         }, 5000)
