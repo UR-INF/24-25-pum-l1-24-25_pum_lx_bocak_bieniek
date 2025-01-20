@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.Switch
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
 import com.focuszone.ui.dialogs.CustomMessageDialog
@@ -51,9 +50,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
         view.findViewById<Button>(R.id.bttnCustomMessage).setOnClickListener {
             CustomMessageDialog.show(requireContext(), preferencesManager)
-        }
-        view.findViewById<Button>(R.id.bttnAbout).setOnClickListener {
-            findNavController().navigate(R.id.AboutFragment)
         }
         view.findViewById<Button>(R.id.buttonChangePin).setOnClickListener {
             ChangePinDialog.show(requireContext(), userAuthManager)

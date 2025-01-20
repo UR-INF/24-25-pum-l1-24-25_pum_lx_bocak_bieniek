@@ -11,49 +11,62 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/appIcon"
-            android:layout_width="38dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_launcher_foreground" />
-
+        <!-- Górna sekcja z ikoną i nazwą -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/appIcon"
+                android:layout_width="38dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_launcher_foreground" />
 
             <TextView
                 android:id="@+id/appName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/appEditName"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/appLimit"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/limit"
                 android:textColor="@android:color/darker_gray" />
+
+            <Switch
+                android:id="@+id/switchEnableBlock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/editButtonApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit" />
         </LinearLayout>
-
-        <Switch
-            android:id="@+id/switchEnableBlock"
-            android:layout_width="5dp"
-            android:layout_height="58dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/editButtonApp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit"
-            android:layout_marginStart="8dp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
