@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.focuszone.R
 import com.focuszone.data.preferences.PreferencesManager
@@ -64,8 +65,15 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
     }
 
     private fun navigateToHome() {
-        findNavController().navigate(R.id.homeFragment)
+        findNavController().navigate(
+            R.id.homeFragment,
+            null,
+            NavOptions.Builder()
+                .setPopUpTo(R.id.welcomeFragment, true) // Wyczyść stos nawigacyjny
+                .build()
+        )
     }
+
 
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(requireContext())

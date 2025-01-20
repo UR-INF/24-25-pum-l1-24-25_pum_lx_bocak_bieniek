@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavOptions
 import com.focuszone.util.BiometricConstants
 
 class RegisterFragment : Fragment(R.layout.fragment_registration) {
@@ -91,7 +92,13 @@ class RegisterFragment : Fragment(R.layout.fragment_registration) {
             preferencesManager.toggleBiometricEnabled(isBiometricEnabled)
 
             val navController = findNavController()
-            navController.navigate(R.id.homeFragment)
+            navController.navigate(
+                R.id.homeFragment,
+                null,
+                NavOptions.Builder()
+                    .setPopUpTo(R.id.registrationFragment, true)
+                    .build()
+            )
 
         } else {
             showErrorDialog(getString(R.string.invalid_pin_format))
