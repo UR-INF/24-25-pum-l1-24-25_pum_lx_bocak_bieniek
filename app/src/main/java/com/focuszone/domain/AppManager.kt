@@ -109,7 +109,8 @@ class AppManager(context: Context) {
             "com.android.systemui", // System UI
             "com.android.providers", // OS providers
             "com.qualcomm",
-            "com.mediatek"
+            "com.mediatek",
+            "com.focuszone"
         )
 
         // Get all apps
