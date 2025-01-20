@@ -84,7 +84,7 @@
     <!-- Biometric -->
     <string name="biometric_log_in">Logowanie biometryczne</string>
     <string name="biometric_descr">Użyj odcisku palca do logowania</string>
-    <string name="biometric_auth">Autoryzacja biometryczna</string>
+    <string name="biometric_auth">Biometria</string>
     <string name="biometic_disabled">Logowanie biometryczne wyłączone</string>
     <string name="biometric_error">Błąd biometryczny: %s</string>
     <string name="biometric_unsuccessful">Nieudane logowanie biometryczne</string>
