@@ -38,27 +38,20 @@ class AppMonitorService : AccessibilityService() {
             Log.d("AppMonitorService", "Window state changed: $packageName")
 
             if (packageName != null && packageName != lastActivePackage) {
+                // Sprawdź czy to launcher i ewentualnie zresetuj stan
+                DialogHelper.checkAndResetState(this, packageName)
+
+                monitorHandler.removeCallbacksAndMessages(null)
                 lastActivePackage = packageName
                 activeAppStartTime = System.currentTimeMillis()
 
-                // find if given package is under monitoring
+                // Sprawdź, czy aplikacja jest monitorowana
                 val monitoredApp = monitoredApps.find { it.id == packageName }
                 Log.d("AppMonitorService", "Monitored app: $monitoredApp")
                 Log.d("AppMonitorService", "Monitored apps: $monitoredApps")
 
-                //TODO find app usage time
-                //TODO monitoring and updating time of limited App via handler + updateAppUsageTime
-                //TODO block app if limit is surpassed
                 if (monitoredApp != null) {
-
-                    // check if limits are set and surpassed
-                    if (monitoredApp.currentTimeUsage != null &&  monitoredApp.limitMinutes != null && monitoredApp.currentTimeUsage >= monitoredApp.limitMinutes) {
-                        //TODO show dialog to go in/out of app with custom message instead of just dialog
-                        showUserMessageDialog()
-
-                        Log.d("AppMonitorService", "App blocked: $packageName")
-                        blockApp(monitoredApp.id)
-                    }
+                    monitorApp(monitoredApp)
                 }
             }
         }
@@ -82,26 +75,32 @@ class AppMonitorService : AccessibilityService() {
     }
 
     private fun monitorApp(app: BlockedApp) {
-        pollHandler.postDelayed(object : Runnable {
+        showUserMessageDialog()
+        monitorHandler.postDelayed(object : Runnable {
             override fun run() {
-                Log.d("AppMonitorService", "Monitoring time spent monitored app")
+                val timeSpent = 5 // Dodajemy 5 sekund na iterację
+                Log.d("AppMonitorService", "Monitoring time for app ${app.id}. Time spent: +$timeSpent seconds")
 
-                //TODO implement logic to monitor time spent in app and save it to preferences via updateAppUsageTime
+                // Zaktualizuj czas spędzony w aplikacji w SharedPreferences
+                preferencesManager.updateAppUsage(app.id, timeSpent)
 
+                // Pobierz zaktualizowany czas spędzony w aplikacji
+                val currentTimeUsage = preferencesManager.getCurrentAppUsage(app.id) ?: 0
+                Log.d("AppMonitorService", "Usage of app: ${app.id}. Current Time spent: $currentTimeUsage seconds")
 
-                pollHandler.postDelayed(this, 5000) //
+                // Sprawdź, czy przekroczono limit
+                val appLimit = preferencesManager.getAppLimit(app.id) ?: 0
+                if (appLimit > 0 && currentTimeUsage >= appLimit * 60) {
+                    Log.d("AppMonitorService", "App blocked: ${app.id}")
+                    blockApp(app.id)
+                } else {
+                    monitorHandler.postDelayed(this, 5000) // Kontynuuj monitorowanie po 5 sekundach
+                }
             }
         }, 5000)
     }
 
-    private fun updateAppUsageTime(app: BlockedApp, timeSpent: Int) {
-        val updatedApp = app.copy(
-            currentTimeUsage = (app.currentTimeUsage ?: 0) + timeSpent
-        )
-        preferencesManager.addOrUpdateLimitedApp(updatedApp)
-    }
-
-    private fun blockApp(packageName: String){
+    private fun blockApp(packageName: String) {
         Toast.makeText(this, getString(R.string.app_blocked), Toast.LENGTH_LONG).show()
         Log.d("AppMonitorService", "Blocking app: $packageName")
 
@@ -125,6 +124,7 @@ class AppMonitorService : AccessibilityService() {
 
     override fun onInterrupt() {
         pollHandler.removeCallbacksAndMessages(null)
+        monitorHandler.removeCallbacksAndMessages(null)
         Log.d("AppMonitorService", "Service interrupted")
         Toast.makeText(this, "Service interrupted", Toast.LENGTH_SHORT).show()
     }
@@ -132,6 +132,7 @@ class AppMonitorService : AccessibilityService() {
     override fun onDestroy() {
         stopForeground(true)
         pollHandler.removeCallbacksAndMessages(null)
+        monitorHandler.removeCallbacksAndMessages(null)
         super.onDestroy()
         Log.d("AppMonitorService", "Service destroyed")
     }
