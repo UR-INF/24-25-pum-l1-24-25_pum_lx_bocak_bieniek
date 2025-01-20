@@ -1,6 +1,7 @@
 package com.focuszone.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,10 +45,17 @@ class BlockedAppsFragment : Fragment() {
             },
             onLimitToggle = { app, isEnabled ->
                 val appManager = AppManager(requireContext())
-                if (isEnabled) {
-                    appManager.enableLimitForApp(app.id)
-                } else {
-                    appManager.disableLimitForApp(app.id)
+                try {
+                    if (isEnabled) {
+                        appManager.enableLimitForApp(app.id)
+                        Log.d("BlockedAppsFragment", "Enabled limit for app: ${app.appName} (${app.id})")
+                    } else {
+                        appManager.disableLimitForApp(app.id)
+                        Log.d("BlockedAppsFragment", "Disabled limit for app: ${app.appName} (${app.id})")
+                    }
+                } catch (e: Exception) {
+                    blockedAppsAdapter.notifyDataSetChanged()
+                    Log.e("BlockedAppsFragment", "Error toggling limit for ${app.appName} (${app.id})", e)
                 }
             }
         )
