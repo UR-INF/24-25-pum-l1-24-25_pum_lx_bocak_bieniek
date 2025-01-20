@@ -8,7 +8,7 @@ Gabriela Bieniek_
 
 ## Opis projektu
 
-FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownikom w zarządzaniu czasem spędzanym na urządzeniach mobilnych. Dzięki blokowaniu aplikacji i stron internetowych oraz ustawianiu limitów czasowych, FocusZone wspiera budowanie zdrowych nawyków i ograniczanie rozpraszaczy.
+FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownikom w zarządzaniu czasem spędzanym na urządzeniach mobilnych. Dzięki blokowaniu aplikacji oraz ustawianiu limitów czasowych, FocusZone wspiera budowanie zdrowych nawyków i ograniczanie rozpraszaczy.
 
 
 ## Zakres projektu opis funkcjonalności:
@@ -17,33 +17,34 @@ FocusZone to aplikacja mobilna na Androida, której celem jest pomoc użytkownik
     - Ustawianie dziennego limitu czasu i ich ilości dla wybranych aplikacji.
     - Blokada aplikacji po przekroczeniu ustawionego limitu.
 
-- **Blokowanie stron internetowych**:
-    - Dodaj strony do listy blokowanych.
-    - Uniwersalna blokada stron działająca we wszystkich przeglądarkach.
-
 - **Personalizacja komunikatów blokady**:
     - Dostosuj pełnoekranowe wiadomości wyświetlane przed otwarciem aplikacji lub strony.
 
 - **Logowanie**:
     - Bezpieczny dostęp do aplikacji dzięki PIN'u/biometrii (odcisk palca, rozpoznawanie twarzy).
 
-- **Stastytyki użytkowania**:
-    - Monitoruj czas spędzony na aplikacjach i stronach w formie dziennych raportów (funkcja opcjonalna).
-
-- **Tymczasowe wyłączenie blokad**:
-  - Tryb "Emergency" - wyłącza obecne limity i blokady. Zaprojektowany w taki sposób żeby skutecznie zniechęcać użytkownika przed go nadużywaniem
+- **Wyłączenie blokad blokad**:
+  - Tryb "Emergency" - wyłącza obecne limity i blokady.
 
 ## Panele / zakładki aplikacji 
 
 - Panel rejestracji
-- Panel logowania
-- Ekran główny
-- Ustawienia
-- Dodaj/Edytuj limit dla aplikacji
-- Dodaj/Edytuj blokowaną stronę
+![img.png](img.png)
 
-TODO
-zdjęcia i pozostałe
+- Panel logowania
+![img_1.png](img_1.png)
+
+- Ekran główny
+![img_2.png](img_2.png)
+
+- Ustawienia
+![img_3.png](img_3.png)
+
+- Widok dostępnych aplikacji
+![img_4.png](img_4.png)
+
+- Edytuj limit dla aplikacji
+![img_5.png](img_5.png)
 
 ## Baza danych
 
@@ -60,7 +61,3 @@ Do zarządzania nimi została stworzona klasa `PreferenceManager`.
 - Biometric Authentication (USE_BIOMETRIC)    - autentykacja za pomocą systemowej biometrii
 - Foreground Service (FOREGROUND_SERVICE)     - uruchomienie procesu monitorowania w tle nawet gdy aplikacja zostanie wyłączona
 - System alert (SYSTEM_ALERT_WINDOW)          - Wyświelenie komunikatu z personalizowanym komunikatem
-
-## Dane potrzebne do konfiguracji podczas pierwszego uruchomienia (jeśli wymagane)
-
-TODO
