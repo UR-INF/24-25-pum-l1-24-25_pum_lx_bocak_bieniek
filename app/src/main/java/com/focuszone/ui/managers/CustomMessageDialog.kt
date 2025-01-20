@@ -23,7 +23,7 @@ object CustomMessageDialog {
                 if (newMessage.isEmpty()) {
                     Toast.makeText(context, context.getString(R.string.message_empty), Toast.LENGTH_SHORT).show()
                 } else {
-                    preferencesManager.saveCustomMessage(newMessage)
+                    preferencesManager.saveUserMessage(newMessage)
                     Toast.makeText(context, context.getString(R.string.message_saved), Toast.LENGTH_SHORT).show()
                 }
             }
