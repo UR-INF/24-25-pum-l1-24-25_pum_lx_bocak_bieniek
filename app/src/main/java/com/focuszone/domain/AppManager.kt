@@ -82,7 +82,7 @@ class AppManager(context: Context) {
      * @param context The context of app runtime system
      * @return List of all installed app Info
      **/
-    fun getAllInstalledApps(context: Context): List<ApplicationInfo>  {
+    fun getAllInstalledApps(context: Context): List<ApplicationInfo> {
         val packageManager = context.packageManager
 
         // App categories
@@ -116,30 +116,24 @@ class AppManager(context: Context) {
         // Get all apps
         var installedApps = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
 
-        // Filter apps for categories and exclude them
+        // Filter apps and sort by app name
         installedApps = installedApps.filter { appInfo ->
-            // Check if app can be launched
             val hasLauncherIntent = packageManager.getLaunchIntentForPackage(appInfo.packageName) != null
-
-            // Check if has excluded package prefix
             val isExcludedPackage = excludedPrefixes.any { prefix ->
                 appInfo.packageName.startsWith(prefix)
             }
-
-            // Exclude system apps
             val isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
             val isUpdatedSystemApp = (appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
-
-            // Filter for categories
             val isRelevantCategory = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 appInfo.category in relevantCategories
             } else {
-                // API lesser than 26 has no support for categories
                 false
             }
 
-            // Get only relevant apps
             hasLauncherIntent && !isSystemApp && !isUpdatedSystemApp && !isExcludedPackage && isRelevantCategory
+        }.sortedBy { appInfo ->
+            // Get app name and sort by it
+            appInfo.loadLabel(packageManager).toString().lowercase()
         }
 
         return installedApps
