@@ -89,6 +89,7 @@ class AppMonitorService : AccessibilityService() {
                 if (appLimit > 0 && currentTimeUsage >= appLimit * 60) {
                     Log.d("AppMonitorService", "App blocked: ${app.id}")
                     blockApp(app.id)
+                    NotificationManager(this@AppMonitorService).showBlockedAppNotification(app.appName)
                 } else {
                     monitorHandler.postDelayed(this, 5000)
                 }
