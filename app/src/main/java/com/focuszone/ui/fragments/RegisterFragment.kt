@@ -13,10 +13,7 @@ import android.widget.Switch
 import androidx.navigation.fragment.findNavController
 import com.focuszone.domain.UserAuthManager
 import com.focuszone.data.preferences.PreferencesManager
-import android.widget.Toast
 import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavOptions
 import com.focuszone.util.BiometricConstants
 
