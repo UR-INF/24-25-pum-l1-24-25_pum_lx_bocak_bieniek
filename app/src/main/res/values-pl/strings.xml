@@ -112,6 +112,10 @@
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="accessibility_disable">"Aplikacja nie może działać bez włączonej usługi dostępności."</string>
+    <!-- Dialog Helper -->
+    <string name="attention">Uwaga</string>
+    <string name="continue_str">Kontynuuj</string>
+    <string name="end">Zakończ</string>
     <!-- Other stuff -->
     <string name="search_app">Wyszukiwanie aplikacji…</string>
     <string name="accessibility_service_description">Usługa monitorowania czasu spędzonego w ustawionych aplikacjach przez FocusZone</string>

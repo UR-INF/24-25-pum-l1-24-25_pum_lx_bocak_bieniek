@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import com.focuszone.R
 
 class DialogHelper {
     companion object {
@@ -36,16 +37,16 @@ class DialogHelper {
             Log.d("DialogHelper", "Showing blocking alert with message: $message")
 
             val builder = AlertDialog.Builder(context)
-                .setTitle("Uwaga")
+                .setTitle(context.getString(R.string.attention))
                 .setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton("Kontynuuj") { dialog, _ ->
+                .setPositiveButton(context.getString(R.string.continue_str)) { dialog, _ ->
                     dialog.dismiss()
                     isDialogShown = true
                     shouldContinue = true
                     Log.d("DialogHelper", "User chose to continue")
                 }
-                .setNegativeButton("Zakończ") { dialog, _ ->
+                .setNegativeButton(context.getString(R.string.end)) { dialog, _ ->
                     dialog.dismiss()
                     isDialogShown = true
                     shouldContinue = false

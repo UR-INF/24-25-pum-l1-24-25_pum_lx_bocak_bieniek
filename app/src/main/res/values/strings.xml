@@ -113,6 +113,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="accessibility_disable">"The app cannot function without Accessibility enabled."</string>
+    <!-- Dialog Helper -->
+    <string name="attention">Attention</string>
+    <string name="continue_str">Continue</string>
+    <string name="end">End</string>
     <!-- Other stuff -->
     <string name="search_app">Searching application…</string>
     <string name="accessibility_service_description">Service for monitoring time spent in setted applications by FocusZone</string>
